@@ -1,0 +1,16 @@
+Package: ElliptCopulas
+Type: Package
+Title: Inference of Elliptical Distributions and Copulas
+Version: 0.1.0
+Description: Provides functions for the simulation and the nonparametric estimation of elliptical distributions and copulas.
+Authors@R: c(
+  person("Alexis", "Derumigny",, email = "a.f.f.derumigny@tudelft.nl", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6163-8097")),
+  person("Jean-David", "Fermanian",, email = "Jean-David.Fermanian@ensae.fr", role = "aut", comment = c(ORCID = "0000-0001-5960-5555"))
+  )
+License: GPL-3
+Encoding: UTF-8
+LazyLoad: yes
+RoxygenNote: 7.1.1
+Depends: 
+	R (>= 3.6.0)
+Roxygen: list(markdown = TRUE)
