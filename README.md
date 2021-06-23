@@ -1,5 +1,5 @@
-Package MMDCopula
-===================
+Package ElliptCopulas
+=====================
 
 
 **Inference of Elliptical Distributions**
