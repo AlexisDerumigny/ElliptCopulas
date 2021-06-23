@@ -26,10 +26,9 @@ Package MMDCopula
 
 * `Convert_gd_To_g1`, `Convert_g1_To_Fg1`, `Convert_g1_To_Qg1`, `Convert_g1_To_f1`, `Convert_gd_To_fR2`:
 convert between
-  * a $d$-dimensional generator gd
-  * the $1$-dimensional version g1
-  * the density f1 of a $1$ dimensional margin
-  * the cdf Fg1 of a $1$-dimensional margin
-  * the quantile function Qg1 of a $1$-dimensional margin
-  * the density fR2 of the random variable $R^2$, where $X = R V$, with $V$ uniform on the $d$-dimensional unit sphere,
-  and $X$ is an elliptically distributed random vector.
+  * a d-dimensional generator gd
+  * the 1-dimensional version g1
+  * the density f1 of a 1 dimensional margin
+  * the cdf Fg1 of a 1-dimensional margin
+  * the quantile function Qg1 of a 1-dimensional margin
+  * the density fR2 of the random variable R^2, where X = RV, with R the modular variable of X, V uniform on the d-dimensional unit sphere, and X is an elliptically distributed random vector.
