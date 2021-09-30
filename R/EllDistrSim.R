@@ -14,6 +14,7 @@
 #' @param density_R2 density of the random variable \eqn{R^2},
 #' i.e. the density of the \eqn{||X||_2^2} if \eqn{\mu=0}
 #' and \eqn{A} is the identity matrix.
+#' Note that this function must return \eqn{0} for negative inputs.
 #' @param niter number of iterations of the Metropolis-Hasting algorithm.
 #'
 #' @seealso \code{\link{EllCopSim}} for the simulation of elliptical copula samples,

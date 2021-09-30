@@ -17,7 +17,8 @@ EllDistrSim(n, d, A = diag(d), mu = 0, density_R2, niter = 500)
 
 \item{density_R2}{density of the random variable \eqn{R^2},
 i.e. the density of the \eqn{||X||_2^2} if \eqn{\mu=0}
-and \eqn{A} is the identity matrix.}
+and \eqn{A} is the identity matrix.
+Note that this function must return \eqn{0} for negative inputs.}
 
 \item{niter}{number of iterations of the Metropolis-Hasting algorithm.}
 }
