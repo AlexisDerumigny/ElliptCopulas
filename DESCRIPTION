@@ -10,7 +10,11 @@ Authors@R: c(
 License: GPL-3
 Encoding: UTF-8
 LazyLoad: yes
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Depends: 
 	R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
+Imports: 
+    Runuran,
+    pcaPP,
+    Matrix

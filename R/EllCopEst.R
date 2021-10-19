@@ -1,6 +1,6 @@
 
 
-#' Estimate the density generator of a d-dimensional copula using pseudos-observations
+#' Estimate the density generator of a d-dimensional (meta-)elliptical copula
 #'
 #'
 #' @param dataU the data matrix on the \eqn{[0,1]} scale.
@@ -24,10 +24,9 @@
 #' @param prenormalization if `TRUE`, the procedure will normalize the variables
 #' at each iteration so that the variance is \eqn{1}.
 #'
-#' @references Liebscher, E. (2005).
-#' A semiparametric density estimator based on elliptical distributions.
-#' Journal of Multivariate Analysis, 92(1), 205.
-#' \doi{10.1016/j.jmva.2003.09.007}
+#' @references Derumigny, A., & Fermanian, J. D. (2021).
+#' Identifiability and estimation of meta-elliptical copula generators.
+#' ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
 #'
 #' @seealso \code{\link{EllDistrEst}} for the estimation of elliptical distributions,
 #' \code{\link{EllCopSim}} for the simulation of elliptical copula samples,
@@ -47,10 +46,12 @@
 #' @export
 #'
 EllCopEst <- function(
-  dataU, grid, Sigma_m1, niter = 10, h, a = 1, Kernel = "epanechnikov",
-  verbose = 1, startPoint = "gaussian", prenormalization = FALSE)
+  dataU, Sigma_m1, h, grid = seq(0,10,by = 0.01),
+  niter = 10, a = 1, Kernel = "epanechnikov",
+  verbose = 1, startPoint = "identity", prenormalization = FALSE)
 {
-  stopifnot(all(c(dataU >= 0, dataU <= 1)))
+  whichNA = which(is.na(dataU))
+  stopifnot(all(c(dataU[!whichNA] >= 0, dataU[!whichNA] <= 1)))
 
   stepSize = unique(diff(grid))
   stopifnot(max(diff(stepSize)) < 1e-15)

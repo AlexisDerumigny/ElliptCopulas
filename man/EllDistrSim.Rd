@@ -2,9 +2,9 @@
 % Please edit documentation in R/EllDistrSim.R
 \name{EllDistrSim}
 \alias{EllDistrSim}
-\title{Simulation of elliptically symmetric random variables}
+\title{Simulation of elliptically symmetric random vectors}
 \usage{
-EllDistrSim(n, d, A = diag(d), mu = 0, density_R2, niter = 500)
+EllDistrSim(n, d, A = diag(d), mu = 0, density_R2)
 }
 \arguments{
 \item{n}{number of observations.}
@@ -19,8 +19,6 @@ EllDistrSim(n, d, A = diag(d), mu = 0, density_R2, niter = 500)
 i.e. the density of the \eqn{||X||_2^2} if \eqn{\mu=0}
 and \eqn{A} is the identity matrix.
 Note that this function must return \eqn{0} for negative inputs.}
-
-\item{niter}{number of iterations of the Metropolis-Hasting algorithm.}
 }
 \description{
 This function uses the decomposition \eqn{X = \mu + R * A * U}
@@ -31,9 +29,15 @@ Note that R is generated using the Metropolis-Hasting algorithm.
 }
 \examples{
 # Sample from a 3-dimensional normal distribution
-X=EllDistrSim(n = 200, d = 3, density_R2 = function(x){stats::pchisq(q=x,df=3)})
+X = EllDistrSim(n = 200, d = 3, density_R2 = function(x){stats::dchisq(x=x,df=3)})
 plot(X[,1], X[,2])
 
+# Sample from an Elliptical distribution for which the squared radius
+# follows an exponential distribution
+cov1 = rbind(c(1,0.5), c(0.5,1))
+X = EllDistrSim(n = 1000, d = 2,
+                A = chol(cov1), mu = c(2,6),
+                density_R2 = function(x){return(exp(-x) * (x > 0))} )
 
 }
 \seealso{

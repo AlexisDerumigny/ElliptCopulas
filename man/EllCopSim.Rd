@@ -4,7 +4,7 @@
 \alias{EllCopSim}
 \title{Simulation from an elliptical copula model}
 \usage{
-EllCopSim(n, d, grid, g_d, A = diag(d), niter = 500)
+EllCopSim(n, d, grid, g_d, A = diag(d))
 }
 \arguments{
 \item{n}{number of observations.}

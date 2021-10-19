@@ -2,31 +2,31 @@
 % Please edit documentation in R/EllCopEst.R
 \name{EllCopEst}
 \alias{EllCopEst}
-\title{Estimate the density generator of a d-dimensional copula using pseudos-observations}
+\title{Estimate the density generator of a d-dimensional (meta-)elliptical copula}
 \usage{
 EllCopEst(
   dataU,
-  grid,
   Sigma_m1,
-  niter = 10,
   h,
+  grid = seq(0, 10, by = 0.01),
+  niter = 10,
   a = 1,
   Kernel = "epanechnikov",
   verbose = 1,
-  startPoint = "gaussian",
+  startPoint = "identity",
   prenormalization = FALSE
 )
 }
 \arguments{
 \item{dataU}{the data matrix on the \eqn{[0,1]} scale.}
 
-\item{grid}{the grid at which the density generator is estimated.}
-
 \item{Sigma_m1}{the inverse of the correlation matrix of the components of data}
 
-\item{niter}{the number of iterations}
-
 \item{h}{bandwidth of the kernel}
+
+\item{grid}{the grid at which the density generator is estimated.}
+
+\item{niter}{the number of iterations}
 
 \item{a}{tuning parameter to improve the performance at 0.
 See Liebscher (2005), Example p.210}
@@ -49,7 +49,7 @@ the Gaussian quantile function.
 at each iteration so that the variance is \eqn{1}.}
 }
 \description{
-Estimate the density generator of a d-dimensional copula using pseudos-observations
+Estimate the density generator of a d-dimensional (meta-)elliptical copula
 }
 \examples{
 # Simulation from a Gaussian copula
@@ -63,10 +63,9 @@ lines(grid, result$g_d_norm, col = "red", xlim = c(0,2))
 
 }
 \references{
-Liebscher, E. (2005).
-A semiparametric density estimator based on elliptical distributions.
-Journal of Multivariate Analysis, 92(1), 205.
-\doi{10.1016/j.jmva.2003.09.007}
+Derumigny, A., & Fermanian, J. D. (2021).
+Identifiability and estimation of meta-elliptical copula generators.
+ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
 }
 \seealso{
 \code{\link{EllDistrEst}} for the estimation of elliptical distributions,
