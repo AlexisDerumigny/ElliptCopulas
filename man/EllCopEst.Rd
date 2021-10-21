@@ -55,11 +55,22 @@ Estimate the density generator of a d-dimensional (meta-)elliptical copula
 # Simulation from a Gaussian copula
 grid = seq(0,10,by = 0.01)
 g_d = DensityGenerator.normalize(grid, grid_g = exp(-grid), d = 3)
-U = EllCopSim(n = 100, d = 3, grid = grid, g_d = g_d)
+n = 100
+U = EllCopSim(n = n, d = 3, grid = grid, g_d = g_d)
 result = EllCopEst(dataU = U, grid, Sigma_m1 = diag(3),
-h = 0.1, a = 0.5)
+                   h = 0.1, a = 0.5)
 plot(grid, g_d, type = "l", xlim = c(0,2))
 lines(grid, result$g_d_norm, col = "red", xlim = c(0,2))
+
+# Adding missing observations
+n_NA = 10
+U_NA = U
+for (i in 1:n_NA){
+  U_NA[sample.int(n,1), sample.int(3,1)] = NA
+}
+resultNA = EllCopEst(dataU = U_NA, grid, Sigma_m1 = diag(3),
+                     h = 0.1, a = 0.5)
+lines(grid, resultNA$g_d_norm, col = "blue", xlim = c(0,2))
 
 }
 \references{

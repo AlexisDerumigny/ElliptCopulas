@@ -118,6 +118,7 @@ Convert_g1_To_f1 <- function(grid , g_1)
 #' @rdname conv_funct
 #' @export
 Convert_gd_To_fR2 <- function(g_d, d){
+
   fR2 <- function(x){
     return (as.numeric(x>=0) * abs(x)^(d/2-1) * g_d(x))
   }

@@ -4,7 +4,14 @@
 \alias{EllDistrSim}
 \title{Simulation of elliptically symmetric random vectors}
 \usage{
-EllDistrSim(n, d, A = diag(d), mu = 0, density_R2)
+EllDistrSim(
+  n,
+  d,
+  A = diag(d),
+  mu = 0,
+  density_R2,
+  genR = list(method = "pinv")
+)
 }
 \arguments{
 \item{n}{number of observations.}
@@ -19,6 +26,18 @@ EllDistrSim(n, d, A = diag(d), mu = 0, density_R2)
 i.e. the density of the \eqn{||X||_2^2} if \eqn{\mu=0}
 and \eqn{A} is the identity matrix.
 Note that this function must return \eqn{0} for negative inputs.}
+
+\item{genR}{additional arguments for the generation of the squared radius.
+It must be a list with a component method: \itemize{
+\item If \code{genR$method == "pinv"}, the radius is generated
+using the function \code{\link[Runuran:pinv.new]{Runuran::pinv.new()}}.
+\item If \code{genR$method == "MH"},
+the generation is done using the Metropolis-Hasting algorithm,
+with a N(0,1) move at each step.
+}}
+}
+\value{
+a matrix of size (n,d) of simulated observations.
 }
 \description{
 This function uses the decomposition \eqn{X = \mu + R * A * U}
@@ -31,7 +50,9 @@ Note that R is generated using the Metropolis-Hasting algorithm.
 # Sample from a 3-dimensional normal distribution
 X = EllDistrSim(n = 200, d = 3, density_R2 = function(x){stats::dchisq(x=x,df=3)})
 plot(X[,1], X[,2])
-
+X = EllDistrSim(n = 200, d = 3, density_R2 = function(x){stats::dchisq(x=x,df=3)},
+                genR = list(method = "MH", niter = 500))
+plot(X[,1], X[,2])
 # Sample from an Elliptical distribution for which the squared radius
 # follows an exponential distribution
 cov1 = rbind(c(1,0.5), c(0.5,1))
@@ -42,5 +63,7 @@ X = EllDistrSim(n = 1000, d = 2,
 }
 \seealso{
 \code{\link{EllCopSim}} for the simulation of elliptical copula samples,
-\code{\link{EllCopEst}} for the estimation of elliptical distributions.
+\code{\link{EllCopEst}} for the estimation of elliptical distributions,
+\code{\link{EllDistrSimCond}} for the conditional simulation of
+elliptically distributed random vectors given some observe components.
 }

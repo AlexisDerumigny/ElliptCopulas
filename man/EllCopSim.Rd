@@ -16,8 +16,6 @@ EllCopSim(n, d, grid, g_d, A = diag(d))
 \item{g_d}{vector of values of the density generator on the \code{grid}.}
 
 \item{A}{square-root of the correlation matrix of X.}
-
-\item{niter}{number of iterations of the Metropolis-Hasting algorithm.}
 }
 \value{
 a matrix of size \verb{(n,d)} with \code{n} observations

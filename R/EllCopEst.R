@@ -37,11 +37,22 @@
 #' # Simulation from a Gaussian copula
 #' grid = seq(0,10,by = 0.01)
 #' g_d = DensityGenerator.normalize(grid, grid_g = exp(-grid), d = 3)
-#' U = EllCopSim(n = 100, d = 3, grid = grid, g_d = g_d)
+#' n = 100
+#' U = EllCopSim(n = n, d = 3, grid = grid, g_d = g_d)
 #' result = EllCopEst(dataU = U, grid, Sigma_m1 = diag(3),
-#' h = 0.1, a = 0.5)
+#'                    h = 0.1, a = 0.5)
 #' plot(grid, g_d, type = "l", xlim = c(0,2))
 #' lines(grid, result$g_d_norm, col = "red", xlim = c(0,2))
+#'
+#' # Adding missing observations
+#' n_NA = 10
+#' U_NA = U
+#' for (i in 1:n_NA){
+#'   U_NA[sample.int(n,1), sample.int(3,1)] = NA
+#' }
+#' resultNA = EllCopEst(dataU = U_NA, grid, Sigma_m1 = diag(3),
+#'                      h = 0.1, a = 0.5)
+#' lines(grid, resultNA$g_d_norm, col = "blue", xlim = c(0,2))
 #'
 #' @export
 #'
@@ -52,10 +63,14 @@ EllCopEst <- function(
 {
   whichNA = which(is.na(dataU))
   stopifnot(all(c(dataU[!whichNA] >= 0, dataU[!whichNA] <= 1)))
+  whichRowsHasNA = which(apply(X = dataU, MARGIN = 1, anyNA))
+  if (length(whichRowsHasNA) > 0){
+    Sigma = solve(Sigma_m1)
+  }
 
-  stepSize = unique(diff(grid))
-  stopifnot(max(diff(stepSize)) < 1e-15)
-  stepSize = stepSize[1]
+  # stepSize = unique(diff(grid))
+  # stopifnot(max(diff(stepSize)) < 1e-15)
+  # stepSize = stepSize[1]
 
   d = length(dataU[1,])
   list_path_gdh = list()
@@ -110,16 +125,28 @@ initializationStandard <- function(env)
 
   } else if (env$startPoint == "identity"){
     env$Qg1 <- function(u){return(u)}
-    env$dataZ <- apply(X = env$dataU, FUN = env$Qg1, MARGIN = c(1,2))
+    dataZ <- apply(X = env$dataU, FUN = env$Qg1, MARGIN = c(1,2))
+    if (length(env$whichRowsHasNA) > 0){
+      dataZ = simulateEllDistrForNA(
+        dataZ = dataZ, grid = env$grid, d = env$d,
+        Sigma = env$Sigma, whichRowsHasNA = env$whichRowsHasNA, g_d = exp( - env$grid/2),
+        genR = env$genR)
+    }
     env$g_d <- EllDistrEst(
-      X = env$dataZ, mu = 0, Sigma_m1 = env$Sigma_m1,
+      X = dataZ, mu = 0, Sigma_m1 = env$Sigma_m1,
       grid = env$grid, h = env$h, Kernel = env$Kernel, a = env$a)
 
   } else if (env$startPoint =="A~Phi^{-1}") {
     env$Qg1 <- function(u){return(stats::qnorm(u))}
-    env$dataZ <- apply(X = env$dataU, FUN = env$Qg1, MARGIN = c(1,2))
+    dataZ <- apply(X = env$dataU, FUN = env$Qg1, MARGIN = c(1,2))
+    if (length(env$whichRowsHasNA) > 0){
+      dataZ = simulateEllDistrForNA(
+        dataZ = dataZ, grid = env$grid, d = env$d,
+        Sigma = env$Sigma, whichRowsHasNA = env$whichRowsHasNA, g_d = exp( - env$grid/2),
+        genR = env$genR)
+    }
     env$g_d <- EllDistrEst(
-      X = env$dataZ, mu = 0, Sigma_m1 = env$Sigma_m1,
+      X = dataZ, mu = 0, Sigma_m1 = env$Sigma_m1,
       grid = env$grid, h = env$h, Kernel = env$Kernel, a = env$a)
 
   } else {stop("Wrong startPoint. Possible choices are 'gaussian', 'identity' and 'A~Phi^{-1}' .")}
@@ -138,6 +165,12 @@ iterationStandard <- function(env)
   Qg1 <- Convert_g1_To_Qg1(grid = env$grid , g_1 = g_1)
   # Computation of the observations on the Z-scale
   dataZ <- apply(X = env$dataU, FUN = Qg1, MARGIN = c(1,2))
+  if (length(env$whichRowsHasNA) > 0){
+    dataZ = simulateEllDistrForNA(
+      dataZ = dataZ, grid = env$grid, d = env$d,
+      Sigma = env$Sigma, whichRowsHasNA = env$whichRowsHasNA, g_d = env$g_d_norm,
+      genR = env$genR)
+  }
 
   # If prenormalization is TRUE, we compute the Y using the estimator of the variance of Z
   if (env$prenormalization)
@@ -157,4 +190,31 @@ iterationStandard <- function(env)
 
 }
 
+
+#' Repairs a data frame with missing values
+#' by conditional sampling from an elliptical distribution
+#'
+#' @param dataZ the matrix with missing observations
+#' @param g_d the generator
+#' @param Sigma_m1 the inverse of the covariance matrix
+#'
+#' @return the matrix dataZ with NA replaced by simulated values
+#'
+#' @noRd
+simulateEllDistrForNA <- function(dataZ, grid, g_d, Sigma, whichRowsHasNA, d, genR)
+{
+  density_R2_ =  Convert_gd_To_fR2(d = d, g_d = function(t){
+    ifelse(t > max(grid), 0, stats::approxfun(x = grid, y = g_d)(t))} )
+
+  for (irow in whichRowsHasNA){
+    dataZ[irow, which(is.na(dataZ[irow,]))] =
+      EllDistrSimCond(n = 1, xobs = dataZ[irow,], d = d,
+                      Sigma = Sigma, mu = rep(0,d),
+                      density_R2_ = density_R2_,
+                      genR = list(method = "MH", niter = 500))
+    # Does not work with genR = list(method = "inv") after a few iterations.
+  }
+
+  return (dataZ)
+}
 
