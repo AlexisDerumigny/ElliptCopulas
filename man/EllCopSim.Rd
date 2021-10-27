@@ -4,7 +4,7 @@
 \alias{EllCopSim}
 \title{Simulation from an elliptical copula model}
 \usage{
-EllCopSim(n, d, grid, g_d, A = diag(d))
+EllCopSim(n, d, grid, g_d, A = diag(d), genR = list(method = "pinv"))
 }
 \arguments{
 \item{n}{number of observations.}
@@ -16,6 +16,15 @@ EllCopSim(n, d, grid, g_d, A = diag(d))
 \item{g_d}{vector of values of the density generator on the \code{grid}.}
 
 \item{A}{square-root of the correlation matrix of X.}
+
+\item{genR}{additional arguments for the generation of the squared radius.
+It must be a list with a component method: \itemize{
+\item If \code{genR$method == "pinv"}, the radius is generated
+using the function \code{\link[Runuran:pinv.new]{Runuran::pinv.new()}}.
+\item If \code{genR$method == "MH"},
+the generation is done using the Metropolis-Hasting algorithm,
+with a N(0,1) move at each step.
+}}
 }
 \value{
 a matrix of size \verb{(n,d)} with \code{n} observations
@@ -28,6 +37,8 @@ Simulation from an elliptical copula model
 # Simulation from a Gaussian copula
 grid = seq(0,5,by = 0.01)
 X = EllCopSim(n = 100, d = 2, grid = grid, g_d = exp(-grid/2))
+X = EllCopSim(n = 100, d = 2, grid = grid, g_d = exp(-grid/2),
+              genR = list(method = "MH", niter = 500) )
 plot(X)
 
 }
