@@ -13,6 +13,8 @@
 #' to be applied on the data.
 #' In this case, it is required that the length of the list should be the same
 #' as the number of columns of `X`.
+#' It is required that the functions returned by `estimatorCDF`
+#' should have values in the *open* interval \eqn{(0,1)}.
 #'
 #' @param h bandwidth for the non-parametric estimation of the density generator.
 #'
@@ -58,7 +60,9 @@
 #'
 #' @export
 #'
-TEllDistrEst <- function(X, estimatorCDF = stats::ecdf, h, verbose = 1, ...)
+TEllDistrEst <- function(
+  X, estimatorCDF = function(x){force(x); function(y){stats::ecdf(x)(y) - 1/(2*nrow(X)) }},
+  h, verbose = 1, ...)
 {
   # 1- Estimation of the marginal distributions
   listEstCDF = list()
@@ -71,12 +75,19 @@ TEllDistrEst <- function(X, estimatorCDF = stats::ecdf, h, verbose = 1, ...)
     }
     for (j in 1:d){
       listEstCDF[[j]] <- estimatorCDF[[j]](X[,j])
+
     }
   } else {
 
     for (j in 1:d){
-      listEstCDF[[j]] <- estimatorCDF(X[,j])
+      listEstCDF[[as.character(j)]] <- estimatorCDF(X[,j])
     }
+  }
+
+  gridX = seq(min(X, na.rm = TRUE),
+              max(X, na.rm = TRUE), length.out = 100)
+  if ( isTRUE(all.equal(listEstCDF[[1]](gridX) , listEstCDF[[2]](gridX))) ){
+    warning("Identical estimated CDF for all variables. Did you forget to use 'force()'? ")
   }
 
   # 2- Computation of the pseudo-observations

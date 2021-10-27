@@ -4,7 +4,14 @@
 \alias{TEllDistrEst}
 \title{Estimation of trans-elliptical distributions}
 \usage{
-TEllDistrEst(X, estimatorCDF = stats::ecdf, h, verbose = 1, ...)
+TEllDistrEst(
+  X,
+  estimatorCDF = function(x) {     force(x)     function(y) {        
+    (stats::ecdf(x))(y) - 1/(2 * nrow(X))     } },
+  h,
+  verbose = 1,
+  ...
+)
 }
 \arguments{
 \item{X}{the matrix of observations of the variables}
@@ -14,7 +21,9 @@ It should be either a function that takes in parameter a vector of observations
 and returns an estimated cdf (i.e. a function) or a list of such functions
 to be applied on the data.
 In this case, it is required that the length of the list should be the same
-as the number of columns of \code{X}.}
+as the number of columns of \code{X}.
+It is required that the functions returned by \code{estimatorCDF}
+should have values in the \emph{open} interval \eqn{(0,1)}.}
 
 \item{h}{bandwidth for the non-parametric estimation of the density generator.}
 
