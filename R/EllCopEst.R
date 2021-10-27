@@ -61,11 +61,13 @@ EllCopEst <- function(
   niter = 10, a = 1, Kernel = "epanechnikov",
   verbose = 1, startPoint = "identity", prenormalization = FALSE)
 {
-  whichNA = which(is.na(dataU))
-  stopifnot(all(c(dataU[!whichNA] >= 0, dataU[!whichNA] <= 1)))
+  dataUisNA = is.na(dataU)
+  if(any(c(dataU[!dataUisNA] <= 0, dataU[!dataUisNA] >= 1))){
+    stop("Values of dataU should be strictly between 0 and 1.")
+  }
   whichRowsHasNA = which(apply(X = dataU, MARGIN = 1, anyNA))
   if (length(whichRowsHasNA) > 0){
-    Sigma = solve(Sigma_m1)
+    Sigma = solve(Sigma_m1) # Needed for simulation of missing values
   }
 
   # stepSize = unique(diff(grid))
@@ -145,6 +147,7 @@ initializationStandard <- function(env)
         Sigma = env$Sigma, whichRowsHasNA = env$whichRowsHasNA, g_d = exp( - env$grid/2),
         genR = env$genR)
     }
+
     env$g_d <- EllDistrEst(
       X = dataZ, mu = 0, Sigma_m1 = env$Sigma_m1,
       grid = env$grid, h = env$h, Kernel = env$Kernel, a = env$a)
