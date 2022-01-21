@@ -36,6 +36,7 @@ a trans-elliptical distribution which is a distribution
 whose copula is (meta-)elliptical, with arbitrary margins.
 }
 \examples{
+\donttest{
 cor = matrix(c(1, 0.5, 0.2,
                0.5, 1, 0.8,
                0.2, 0.8, 1), byrow = TRUE, nrow = 3)
@@ -64,7 +65,7 @@ for (i in 1:n_NA){
 }
 resultNA = TEllDistrEst(X_NA, h = 0.1, grid = grid, verbose = 1)
 lines(grid, resultNA$estiEllCop$g_d_norm, col = "blue")
-
+}
 
 }
 \references{

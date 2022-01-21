@@ -34,6 +34,7 @@
 #' \code{\link{DensityGenerator.normalize}} to compute the normalized version of a given generator.
 #'
 #' @examples
+#' \donttest{
 #' # Simulation from a Gaussian copula
 #' grid = seq(0,10,by = 0.01)
 #' g_d = DensityGenerator.normalize(grid, grid_g = exp(-grid), d = 3)
@@ -55,6 +56,7 @@
 #' resultNA = EllCopEst(dataU = U_NA, grid, Sigma_m1 = diag(3),
 #'                      h = 0.1, a = 0.5)
 #' lines(grid, resultNA$g_d_norm, col = "blue", xlim = c(0,2))
+#' }
 #'
 #' @export
 #'

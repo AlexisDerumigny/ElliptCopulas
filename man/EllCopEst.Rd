@@ -52,6 +52,7 @@ at each iteration so that the variance is \eqn{1}.}
 Estimate the density generator of a d-dimensional (meta-)elliptical copula
 }
 \examples{
+\donttest{
 # Simulation from a Gaussian copula
 grid = seq(0,10,by = 0.01)
 g_d = DensityGenerator.normalize(grid, grid_g = exp(-grid), d = 3)
@@ -73,6 +74,7 @@ for (i in 1:n_NA){
 resultNA = EllCopEst(dataU = U_NA, grid, Sigma_m1 = diag(3),
                      h = 0.1, a = 0.5)
 lines(grid, resultNA$g_d_norm, col = "blue", xlim = c(0,2))
+}
 
 }
 \references{
