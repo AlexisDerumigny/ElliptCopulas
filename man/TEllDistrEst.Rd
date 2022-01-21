@@ -42,7 +42,9 @@ cor = matrix(c(1, 0.5, 0.2,
 
 grid = seq(0,10,by = 0.01)
 g_d = DensityGenerator.normalize(grid, grid_g = exp(-grid), d = 3)
-n = 200
+n = 10
+# To have a nice estimation, we suggest to use rather n=200
+# (around 20s of computation time)
 U = EllCopSim(n = n, d = 3, grid = grid, g_d = g_d, A = chol(cor))
 X = matrix(nrow = n, ncol = 3)
 X[,1] = stats::qnorm(U[,1], mean = 2)
@@ -55,7 +57,7 @@ lines(grid, result$estiEllCop$g_d_norm, col = "red")
 print(result$corMatrix)
 
 # Adding missing observations
-n_NA = 10
+n_NA = 2
 X_NA = X
 for (i in 1:n_NA){
   X_NA[sample.int(n,1), sample.int(3,1)] = NA
