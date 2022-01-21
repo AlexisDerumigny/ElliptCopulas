@@ -5,13 +5,10 @@
 \title{Estimation of trans-elliptical distributions}
 \usage{
 TEllDistrEst(
-  X,
-  estimatorCDF = function(x) {     force(x)     function(y) {        
-    (stats::ecdf(x))(y) - 1/(2 * nrow(X))     } },
-  h,
-  verbose = 1,
-  ...
-)
+  X, estimatorCDF = function(x){
+    force(x)
+    return( function(y){(stats::ecdf(x)(y) - 1/(2*length(x))) }) },
+  h, verbose = 1, ...)
 }
 \arguments{
 \item{X}{the matrix of observations of the variables}

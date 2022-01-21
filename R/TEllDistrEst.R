@@ -29,6 +29,12 @@
 #' Identifiability and estimation of meta-elliptical copula generators.
 #' ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
 #'
+#' @usage TEllDistrEst(
+#'   X, estimatorCDF = function(x){
+#'     force(x)
+#'     return( function(y){(stats::ecdf(x)(y) - 1/(2*length(x))) }) },
+#'   h, verbose = 1, ...)
+#'
 #' @examples
 #' cor = matrix(c(1, 0.5, 0.2,
 #'                0.5, 1, 0.8,
@@ -61,7 +67,7 @@
 #' @export
 #'
 TEllDistrEst <- function(
-  X, estimatorCDF = function(x){force(x); function(y){stats::ecdf(x)(y) - 1/(2*nrow(X)) }},
+  X, estimatorCDF = function(x){force(x); return( function(y){(stats::ecdf(x)(y) - 1/(2*length(x))) }) },
   h, verbose = 1, ...)
 {
   # 1- Estimation of the marginal distributions
