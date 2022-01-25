@@ -33,7 +33,7 @@ One of the following \itemize{
 \item g_1 the \eqn{1}-dimensional density generator.
 \item Fg1 the \eqn{1}-dimensional marginal cumulative distribution function.
 \item Qg1 the \eqn{1}-dimensional marginal quantile function
-(approximatively equal to the inverse function of Fg1).
+(approximatly equal to the inverse function of Fg1).
 \item f1 the density of a \eqn{1}-dimensional margin if \eqn{\mu = 0}
 and \eqn{A} is the identity matrix.
 \item fR2 the density function of \eqn{R^2}.

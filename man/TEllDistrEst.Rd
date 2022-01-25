@@ -8,7 +8,7 @@ TEllDistrEst(
   X, estimatorCDF = function(x){
     force(x)
     return( function(y){(stats::ecdf(x)(y) - 1/(2*length(x))) }) },
-  h, verbose = 1, ...)
+  h, verbose = 1, grid, ...)
 }
 \arguments{
 \item{X}{the matrix of observations of the variables}
@@ -28,7 +28,17 @@ should have values in the \emph{open} interval \eqn{(0,1)}.}
 If 2, prints the normalizations constants used at each iteration,
 as computed by \code{\link{DensityGenerator.normalize}}.}
 
+\item{grid}{grid of values on which to estimate the density generator}
+
 \item{...}{other parameters to be passed to \code{\link{EllCopEst}}.}
+}
+\value{
+This function returns a list with three components:
+\itemize{
+\item \code{listEstCDF}: a list of estimated marginal CDF given by \code{estimatorCDF};
+\item \code{corMatrix}: the estimated correlation matrix:
+\item \code{estEllCopGen}: the estimated generator of the meta-elliptical copula.
+}
 }
 \description{
 This function estimates the parameters of
@@ -64,7 +74,7 @@ for (i in 1:n_NA){
   X_NA[sample.int(n,1), sample.int(3,1)] = NA
 }
 resultNA = TEllDistrEst(X_NA, h = 0.1, grid = grid, verbose = 1)
-lines(grid, resultNA$estiEllCop$g_d_norm, col = "blue")
+lines(grid, resultNA$estiEllCopGen, col = "blue")
 }
 
 }

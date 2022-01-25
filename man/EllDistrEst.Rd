@@ -30,8 +30,13 @@ EllDistrEst(
 \item{a}{tuning parameter to improve the performance at 0.
 See Liebscher (2005), Example p.210}
 }
+\value{
+the values of the density generator of the elliptical copula,
+estimated at each point of the \code{grid}.
+}
 \description{
-Nonparametric estimation of the density generator of an elliptical distribution
+This function uses Liebscher's algorithm to estimate the density generator
+of an elliptical distribution by kernel smoothing.
 }
 \examples{
 # Comparison between the estimated and true generator of the Gaussian distribution

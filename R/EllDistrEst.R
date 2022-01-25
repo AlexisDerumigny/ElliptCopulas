@@ -1,6 +1,9 @@
 
 #' Nonparametric estimation of the density generator of an elliptical distribution
 #'
+#' This function uses Liebscher's algorithm to estimate the density generator
+#' of an elliptical distribution by kernel smoothing.
+#'
 #' @param X matrix of observations.
 #' @param mu (estimated) mean of X.
 #' @param Sigma_m1 (estimated) inverse of the covariance matrix of X.
@@ -10,6 +13,9 @@
 #' @param Kernel kernel used for the smoothing
 #' @param a tuning parameter to improve the performance at 0.
 #' See Liebscher (2005), Example p.210
+#'
+#' @return the values of the density generator of the elliptical copula,
+#' estimated at each point of the `grid`.
 #'
 #' @references Liebscher, E. (2005).
 #' A semiparametric density estimator based on elliptical distributions.

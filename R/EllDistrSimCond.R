@@ -20,7 +20,7 @@
 #' It must be a list with a component method: \itemize{
 #'   \item If `genR$method == "pinv"`, the radius is generated
 #'   using the function [Runuran::pinv.new()].
-# Not developped yet, maybe later:
+# Not developed yet, maybe later:
 #   \item If `genR$method == "invgrid"`, the user needs also to supply a `grid`
 #   as an additional component of `genR` and the generation of the squared radius
 #   will be done by inverting the approximation of the CDF on this grid.

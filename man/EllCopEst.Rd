@@ -2,7 +2,7 @@
 % Please edit documentation in R/EllCopEst.R
 \name{EllCopEst}
 \alias{EllCopEst}
-\title{Estimate the density generator of a d-dimensional (meta-)elliptical copula}
+\title{Estimate the density generator of a (meta-)elliptical copula}
 \usage{
 EllCopEst(
   dataU,
@@ -22,7 +22,7 @@ EllCopEst(
 
 \item{Sigma_m1}{the inverse of the correlation matrix of the components of data}
 
-\item{h}{bandwidth of the kernel}
+\item{h}{bandwidth of the kernel for Liebscher's procedure}
 
 \item{grid}{the grid at which the density generator is estimated.}
 
@@ -48,8 +48,19 @@ the Gaussian quantile function.
 \item{prenormalization}{if \code{TRUE}, the procedure will normalize the variables
 at each iteration so that the variance is \eqn{1}.}
 }
+\value{
+a list of two elements:
+\itemize{
+\item \code{g_d_norm}: the estimated elliptical copula generator at each point of the grid;
+\item \code{list_path_gdh}: the list of estimated elliptical copula generator at each iteration.
+}
+}
 \description{
-Estimate the density generator of a d-dimensional (meta-)elliptical copula
+This function estimated the density generator of a (meta-)elliptical copula
+using the iterative procedure described in (Derumigny and Fermanian, 2021).
+This iterative procedure consists in alternating a step of estimating the data
+via Liebscher's procedure \code{\link[=EllDistrEst]{EllDistrEst()}} and estimating the quantile function
+of the underlying elliptical distribution to transform the data back to the unit cube.
 }
 \examples{
 \donttest{
@@ -81,6 +92,11 @@ lines(grid, resultNA$g_d_norm, col = "blue", xlim = c(0,2))
 Derumigny, A., & Fermanian, J. D. (2021).
 Identifiability and estimation of meta-elliptical copula generators.
 ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
+
+Liebscher, E. (2005).
+A semiparametric density estimator based on elliptical distributions.
+Journal of Multivariate Analysis, 92(1), 205.
+\doi{10.1016/j.jmva.2003.09.007}
 }
 \seealso{
 \code{\link{EllDistrEst}} for the estimation of elliptical distributions,

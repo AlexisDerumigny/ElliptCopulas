@@ -1,4 +1,7 @@
 
+We fixed the documentation concerning the return values of all exported functions.
+The typo with the colon in the Description was fixed too.
+
 ## Test environments
 
 * Windows 10 (release)

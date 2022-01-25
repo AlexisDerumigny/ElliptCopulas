@@ -17,6 +17,7 @@
 #' should have values in the *open* interval \eqn{(0,1)}.
 #'
 #' @param h bandwidth for the non-parametric estimation of the density generator.
+#' @param grid grid of values on which to estimate the density generator
 #'
 #' @param verbose if 1, prints the progress of the iterations.
 #' If 2, prints the normalizations constants used at each iteration,
@@ -24,6 +25,10 @@
 #'
 #' @param ... other parameters to be passed to \code{\link{EllCopEst}}.
 #'
+#' @return This function returns a list with three components:
+#'  * `listEstCDF`: a list of estimated marginal CDF given by `estimatorCDF`;
+#'  * `corMatrix`: the estimated correlation matrix:
+#'  * `estEllCopGen`: the estimated generator of the meta-elliptical copula.
 #'
 #' @references Derumigny, A., & Fermanian, J. D. (2021).
 #' Identifiability and estimation of meta-elliptical copula generators.
@@ -33,7 +38,7 @@
 #'   X, estimatorCDF = function(x){
 #'     force(x)
 #'     return( function(y){(stats::ecdf(x)(y) - 1/(2*length(x))) }) },
-#'   h, verbose = 1, ...)
+#'   h, verbose = 1, grid, ...)
 #'
 #' @examples
 #' \donttest{
@@ -64,14 +69,14 @@
 #'   X_NA[sample.int(n,1), sample.int(3,1)] = NA
 #' }
 #' resultNA = TEllDistrEst(X_NA, h = 0.1, grid = grid, verbose = 1)
-#' lines(grid, resultNA$estiEllCop$g_d_norm, col = "blue")
+#' lines(grid, resultNA$estiEllCopGen, col = "blue")
 #' }
 #'
 #' @export
 #'
 TEllDistrEst <- function(
   X, estimatorCDF = function(x){force(x); return( function(y){(stats::ecdf(x)(y) - 1/(2*length(x))) }) },
-  h, verbose = 1, ...)
+  h, verbose = 1, grid, ...)
 {
   # 1- Estimation of the marginal distributions
   listEstCDF = list()
@@ -114,14 +119,15 @@ TEllDistrEst <- function(
     }
   }
   corMatrix = sin(pi * tauMatrix / 2)
+
   # 4- Projection
   corMatrixPD = Matrix::nearPD(corMatrix)$mat
 
   # 5- Estimation of the generator
-  estiEllCop = EllCopEst(dataU = dataU, Sigma_m1 = solve(corMatrixPD),
-                         h = h, verbose = verbose, ...)
+  estEllCop = EllCopEst(dataU = dataU, Sigma_m1 = solve(corMatrixPD),
+                         h = h, verbose = verbose, grid = grid, ...)
 
   return (list(listEstCDF = listEstCDF, corMatrix = corMatrixPD,
-               estiEllCop = estiEllCop))
+               estEllCopGen = estEllCop$g_d_norm))
 }
 

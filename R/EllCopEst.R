@@ -1,13 +1,18 @@
 
 
-#' Estimate the density generator of a d-dimensional (meta-)elliptical copula
+#' Estimate the density generator of a (meta-)elliptical copula
 #'
+#' This function estimated the density generator of a (meta-)elliptical copula
+#' using the iterative procedure described in (Derumigny and Fermanian, 2021).
+#' This iterative procedure consists in alternating a step of estimating the data
+#' via Liebscher's procedure [EllDistrEst()] and estimating the quantile function
+#' of the underlying elliptical distribution to transform the data back to the unit cube.
 #'
 #' @param dataU the data matrix on the \eqn{[0,1]} scale.
 #' @param grid the grid at which the density generator is estimated.
 #' @param Sigma_m1 the inverse of the correlation matrix of the components of data
 #' @param niter the number of iterations
-#' @param h bandwidth of the kernel
+#' @param h bandwidth of the kernel for Liebscher's procedure
 #' @param a tuning parameter to improve the performance at 0.
 #' See Liebscher (2005), Example p.210
 #' @param Kernel kernel used for the smoothing.
@@ -24,9 +29,18 @@
 #' @param prenormalization if `TRUE`, the procedure will normalize the variables
 #' at each iteration so that the variance is \eqn{1}.
 #'
+#' @return a list of two elements:
+#'   * `g_d_norm`: the estimated elliptical copula generator at each point of the grid;
+#'   * `list_path_gdh`: the list of estimated elliptical copula generator at each iteration.
+#'
 #' @references Derumigny, A., & Fermanian, J. D. (2021).
 #' Identifiability and estimation of meta-elliptical copula generators.
 #' ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
+#'
+#' Liebscher, E. (2005).
+#' A semiparametric density estimator based on elliptical distributions.
+#' Journal of Multivariate Analysis, 92(1), 205.
+#' \doi{10.1016/j.jmva.2003.09.007}
 #'
 #' @seealso \code{\link{EllDistrEst}} for the estimation of elliptical distributions,
 #' \code{\link{EllCopSim}} for the simulation of elliptical copula samples,
@@ -81,8 +95,8 @@ EllCopEst <- function(
   d = length(dataU[1,])
   list_path_gdh = list()
 
-  # This is the vector storing the distance between each successive iteration of g
-  vecDist_gNnext = rep(NA, niter)
+  # # This is the vector storing the distance between each successive iteration of g
+  # vecDist_gNnext = rep(NA, niter)
 
   # Initialization and choice of a starting point
   initializationStandard(env = environment())
@@ -93,8 +107,8 @@ EllCopEst <- function(
   if (verbose > 0) {cat("iteration: ") ; cat(i_iter) ; cat("\n") }
   iterationStandard(env = environment())
   list_path_gdh[[2]] = environment()[["g_d_norm"]]
-  vecDist_gNnext[i_iter] =
-    sum(stats::na.exclude(list_path_gdh[[i_iter+1]] - list_path_gdh[[i_iter]])^2)
+  # vecDist_gNnext[i_iter] =
+  #   sum(stats::na.exclude(list_path_gdh[[i_iter+1]] - list_path_gdh[[i_iter]])^2)
 
   # Beginning of the loop
   i_iter = 2
@@ -106,16 +120,17 @@ EllCopEst <- function(
     iterationStandard(env = environment())
     list_path_gdh[[i_iter+1]] <- environment()[["g_d_norm"]]
 
-    vecDist_gNnext[i_iter] =
-      sum(stats::na.exclude(list_path_gdh[[i_iter+1]] - list_path_gdh[[i_iter]])^2)
+    # vecDist_gNnext[i_iter] =
+    #   sum(stats::na.exclude(list_path_gdh[[i_iter+1]] - list_path_gdh[[i_iter]])^2)
 
     doContinueIter = (i_iter < niter)
     # & (vecDist_gNnext[i_iter] >= stopCrit * min(vecDist_gNnext[1:(i_iter-1)]))
     i_iter = i_iter + 1
   }
 
-  return(list(g_d_norm = environment()[["g_d_norm"]], list_path_gdh = list_path_gdh,
-              vecDist_gNnext = vecDist_gNnext))
+  return(list(g_d_norm = environment()[["g_d_norm"]], list_path_gdh = list_path_gdh
+              # , vecDist_gNnext = vecDist_gNnext
+              ))
 }
 
 
