@@ -2,18 +2,41 @@
 
 #' Normalization of an elliptical copula generator
 #'
+#' The function `DensityGenerator.normalize` transforms an elliptical copula generator
+#' into an elliptical copula generator,generating the same distribution
+#' and which is normalized to follow the normalization constraint
+#' \deqn{\frac{\pi^{d/2}}{\Gamma(d/2)}
+#' \int_0^{+\infty} g_k(t) t^{(d-2)/2} dt = 1.}{%
+#' \int_0^{+\infty} g_k(t) t^{(d-2)/2} dt * \pi^{d} / \Gamma(d) = 1.}
+#' as well as the identification constraint
+#' \deqn{\frac{\pi^{(d-1)/2}}{\Gamma((d-1)/2)}
+#' \int_0^{+\infty} g_k(t) t^{(d-3)/2} dt = b.}{%
+#' \int_0^{+\infty} g_k(t) t^{(d-3)/2} dt * \pi^{(d-1)/2} / \Gamma((d-1)/2) = b.}
+#' The function `DensityGenerator.check` checks, for a given generator,
+#' whether these two constraints are satisfied.
 #'
 #' @param grid the regularly spaced grid on which the values of the generator are given.
 #' @param grid_g the values of the \eqn{d}-dimensional generator at points of the grid.
 #' @param d the dimension of the space.
 #' @param verbose if 1, prints the estimated (alpha, beta) such that
 #' `new_g(t) = alpha * old_g(beta*t)`.
-#' @param b the target value for the second identification constraint.
+#' @param b the target value for the identification constraint.
 #'
-#' @seealso \code{\link{EllCopSim}} for the simulation of elliptical copula samples,
-#' \code{\link{EllCopEst}} for the estimation of elliptical copula,
-#' \code{\link{conv_funct}} for the conversion between different representation
+#' @return `DensityGenerator.normalize` returns
+#' the normalized generator, as a list of values on the same \code{grid}.
+#'
+#' `DensityGenerator.check` returns (invisibly) a vector of two booleans
+#' where the first element is `TRUE` if the normalization constraint is satisfied
+#' and the second element is `TRUE` if the identification constraint is satisfied.
+#'
+#' @seealso [EllCopSim()] for the simulation of elliptical copula samples,
+#' [EllCopEst()] for the estimation of elliptical copula,
+#' [conversion functions][conv_funct()] for the conversion between different representation
 #' of the generator of an elliptical copula.
+#'
+#' @references Derumigny, A., & Fermanian, J. D. (2021).
+#' Identifiability and estimation of meta-elliptical copula generators.
+#' ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
 #'
 #' @export
 DensityGenerator.normalize <- function (grid, grid_g, d, verbose = 0, b = 1)
@@ -67,10 +90,7 @@ dilatation <- function(grid, grid_g, alpha_dilatation, beta_dilatation)
 #' Tests the normalization of an elliptical copula generator
 #'
 #'
-#' @param grid the regularly spaced grid on which the values of the generator are given.
-#' @param grid_g the values of the generator at points of the grid.
-#' @param d the dimension of the space.
-#' @param b the target value for the second identification constraint.
+#' @rdname DensityGenerator.normalize
 #'
 #' @export
 #'
@@ -87,21 +107,31 @@ DensityGenerator.check <- function (grid, grid_g, d, b = 1)
   integral_I1 = sum(grid[isFinite]^(d/2-1) * grid_g[isFinite]) * stepSize
   integral_I2 = sum(grid[isFinite]^(d/2-3/2) * grid_g[isFinite]) * stepSize
 
-  if( s_d * integral_I1 == 2){
-    cat("Integral I1: ok")
+  result = c(NA,NA)
+  cat("1- Normalization to be a density: ")
+  if( s_d * integral_I1 / 2 == 1){
+    cat("ok")
+    result[1] = TRUE
   } else {
-    cat("Integral I1: not normalized. True value should be 2, but is estimated as ")
+    cat("fail. True value of the first integral should be 1, but is estimated as ")
     cat(s_d * integral_I1)
     cat("\n")
+    result[1] = FALSE
   }
 
-  if( s_d_1 * integral_I2 == 2*b){
-    cat("Integral I2: ok")
+  cat("2- Normalization for the identifiability: ")
+  if( s_d_1 * integral_I2 / 2 == b){
+    cat("ok")
+    result[2] = TRUE
   } else {
-    cat("Integral I2: not normalized. True value should be ")
-    cat(2*b) ; cat(", but is estimated as ")
-    cat( s_d_1 * integral_I2)
+    cat("fail. True value of the second integral should be ")
+    cat(b) ; cat(" , but is estimated as ")
+    cat(s_d_1 * integral_I2 / 2)
     cat("\n")
+    result[2] = FALSE
   }
+  names(result) <- c("Normalization", "Identification")
+
+  return(invisible(result))
 }
 

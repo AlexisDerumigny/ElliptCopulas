@@ -2,9 +2,12 @@
 % Please edit documentation in R/EllCopNormalization.R
 \name{DensityGenerator.normalize}
 \alias{DensityGenerator.normalize}
+\alias{DensityGenerator.check}
 \title{Normalization of an elliptical copula generator}
 \usage{
 DensityGenerator.normalize(grid, grid_g, d, verbose = 0, b = 1)
+
+DensityGenerator.check(grid, grid_g, d, b = 1)
 }
 \arguments{
 \item{grid}{the regularly spaced grid on which the values of the generator are given.}
@@ -16,14 +19,38 @@ DensityGenerator.normalize(grid, grid_g, d, verbose = 0, b = 1)
 \item{verbose}{if 1, prints the estimated (alpha, beta) such that
 \code{new_g(t) = alpha * old_g(beta*t)}.}
 
-\item{b}{the target value for the second identification constraint.}
+\item{b}{the target value for the identification constraint.}
+}
+\value{
+\code{DensityGenerator.normalize} returns
+the normalized generator, as a list of values on the same \code{grid}.
+
+\code{DensityGenerator.check} returns (invisibly) a vector of two booleans
+where the first element is \code{TRUE} if the normalization constraint is satisfied
+and the second element is \code{TRUE} if the identification constraint is satisfied.
 }
 \description{
-Normalization of an elliptical copula generator
+The function \code{DensityGenerator.normalize} transforms an elliptical copula generator
+into an elliptical copula generator,generating the same distribution
+and which is normalized to follow the normalization constraint
+\deqn{\frac{\pi^{d/2}}{\Gamma(d/2)}
+\int_0^{+\infty} g_k(t) t^{(d-2)/2} dt = 1.}{%
+\int_0^{+\infty} g_k(t) t^{(d-2)/2} dt * \pi^{d} / \Gamma(d) = 1.}
+as well as the identification constraint
+\deqn{\frac{\pi^{(d-1)/2}}{\Gamma((d-1)/2)}
+\int_0^{+\infty} g_k(t) t^{(d-3)/2} dt = b.}{%
+\int_0^{+\infty} g_k(t) t^{(d-3)/2} dt * \pi^{(d-1)/2} / \Gamma((d-1)/2) = b.}
+The function \code{DensityGenerator.check} checks, for a given generator,
+whether these two constraints are satisfied.
+}
+\references{
+Derumigny, A., & Fermanian, J. D. (2021).
+Identifiability and estimation of meta-elliptical copula generators.
+ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
 }
 \seealso{
-\code{\link{EllCopSim}} for the simulation of elliptical copula samples,
-\code{\link{EllCopEst}} for the estimation of elliptical copula,
-\code{\link{conv_funct}} for the conversion between different representation
+\code{\link[=EllCopSim]{EllCopSim()}} for the simulation of elliptical copula samples,
+\code{\link[=EllCopEst]{EllCopEst()}} for the estimation of elliptical copula,
+\link[=conv_funct]{conversion functions} for the conversion between different representation
 of the generator of an elliptical copula.
 }
