@@ -17,7 +17,7 @@ Convert_g1_To_Qg1(grid, g_1)
 
 Convert_g1_To_f1(grid, g_1)
 
-Convert_gd_To_fR2(g_d, d)
+Convert_gd_To_fR2(grid, g_d, d)
 }
 \arguments{
 \item{grid}{the grid on which the values of the functions in parameter are given.}
@@ -45,6 +45,22 @@ can always be written as \eqn{X = \mu + R * A * U} for some positive random vari
 and a random vector \eqn{U} on the \eqn{d}-dimensional sphere.
 Furthermore, there is a one-to-one mapping between g_d
 and its one-dimensional marginal g_1.
+}
+\examples{
+grid = seq(0,100,by = 0.01)
+g_d = DensityGenerator.normalize(grid = grid, grid_g = 1/(1+grid^3), d = 3)
+g_1 = Convert_gd_To_g1(grid = grid, g_d = g_d, d = 3)
+Fg_1 = Convert_g1_To_Fg1(grid = grid, g_1 = g_1)
+Qg_1 = Convert_g1_To_Qg1(grid = grid, g_1 = g_1)
+f1 = Convert_g1_To_f1(grid = grid, g_1 = g_1)
+fR2 = Convert_gd_To_fR2(grid = grid, g_d = g_d, d = 3)
+plot(grid, g_d, type = "l", xlim = c(0,10))
+plot(grid, g_1, type = "l", xlim = c(0,10))
+plot(Fg_1, xlim = c(-3,3))
+plot(Qg_1, xlim = c(0.01,0.99))
+plot(f1, xlim = c(-3,3))
+plot(fR2, xlim = c(0,3))
+
 }
 \seealso{
 \code{\link{DensityGenerator.normalize}}

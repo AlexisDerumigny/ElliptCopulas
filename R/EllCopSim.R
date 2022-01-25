@@ -32,8 +32,8 @@
 #' @examples
 #' # Simulation from a Gaussian copula
 #' grid = seq(0,5,by = 0.01)
-#' X = EllCopSim(n = 100, d = 2, grid = grid, g_d = exp(-grid/2))
-#' X = EllCopSim(n = 100, d = 2, grid = grid, g_d = exp(-grid/2),
+#' X = EllCopSim(n = 20, d = 2, grid = grid, g_d = exp(-grid/2))
+#' X = EllCopSim(n = 20, d = 2, grid = grid, g_d = exp(-grid/2),
 #'               genR = list(method = "MH", niter = 500) )
 #' plot(X)
 #'
@@ -42,7 +42,7 @@
 EllCopSim <- function(n, d, grid, g_d, A = diag(d), genR = list(method = "pinv"))
 {
   # Probability density function of R^2
-  fR2 <- Convert_gd_To_fR2(g_d = stats::approxfun(grid, g_d, yleft = 0, yright = 0), d = d)
+  fR2 <- Convert_gd_To_fR2(grid = grid, g_d = g_d, d = d)
 
   # Computation of the 1-dimensional generator
   g_1 = Convert_gd_To_g1(grid = grid , g_d = g_d, d = d)

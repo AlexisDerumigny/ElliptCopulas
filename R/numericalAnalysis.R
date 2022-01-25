@@ -26,6 +26,21 @@
 #' @seealso \code{\link{DensityGenerator.normalize}}
 #' to compute the normalized version of a given \eqn{d}-dimensional generator.
 #'
+#' @examples
+#' grid = seq(0,100,by = 0.01)
+#' g_d = DensityGenerator.normalize(grid = grid, grid_g = 1/(1+grid^3), d = 3)
+#' g_1 = Convert_gd_To_g1(grid = grid, g_d = g_d, d = 3)
+#' Fg_1 = Convert_g1_To_Fg1(grid = grid, g_1 = g_1)
+#' Qg_1 = Convert_g1_To_Qg1(grid = grid, g_1 = g_1)
+#' f1 = Convert_g1_To_f1(grid = grid, g_1 = g_1)
+#' fR2 = Convert_gd_To_fR2(grid = grid, g_d = g_d, d = 3)
+#' plot(grid, g_d, type = "l", xlim = c(0,10))
+#' plot(grid, g_1, type = "l", xlim = c(0,10))
+#' plot(Fg_1, xlim = c(-3,3))
+#' plot(Qg_1, xlim = c(0.01,0.99))
+#' plot(f1, xlim = c(-3,3))
+#' plot(fR2, xlim = c(0,3))
+#'
 #' @name conv_funct
 NULL
 
@@ -117,10 +132,10 @@ Convert_g1_To_f1 <- function(grid , g_1)
 #'
 #' @rdname conv_funct
 #' @export
-Convert_gd_To_fR2 <- function(g_d, d){
-
+Convert_gd_To_fR2 <- function(grid, g_d, d){
+  g_d_FUN = stats::approxfun(grid, g_d, yleft = 0, yright = 0)
   fR2 <- function(x){
-    return (as.numeric(x>=0) * abs(x)^(d/2-1) * g_d(x))
+    return (as.numeric(x >= 0) * abs(x)^(d/2-1) * g_d_FUN(x))
   }
 
   return (fR2)

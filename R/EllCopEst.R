@@ -225,8 +225,7 @@ iterationStandard <- function(env)
 #' @noRd
 simulateEllDistrForNA <- function(dataZ, grid, g_d, Sigma, whichRowsHasNA, d, genR)
 {
-  density_R2_ =  Convert_gd_To_fR2(d = d, g_d = function(t){
-    ifelse(t > max(grid), 0, stats::approxfun(x = grid, y = g_d)(t))} )
+  density_R2_ =  Convert_gd_To_fR2(grid = grid, g_d = g_d, d = d)
 
   for (irow in whichRowsHasNA){
     dataZ[irow, which(is.na(dataZ[irow,]))] =

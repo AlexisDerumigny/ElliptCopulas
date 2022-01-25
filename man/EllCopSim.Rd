@@ -36,8 +36,8 @@ Simulation from an elliptical copula model
 \examples{
 # Simulation from a Gaussian copula
 grid = seq(0,5,by = 0.01)
-X = EllCopSim(n = 100, d = 2, grid = grid, g_d = exp(-grid/2))
-X = EllCopSim(n = 100, d = 2, grid = grid, g_d = exp(-grid/2),
+X = EllCopSim(n = 20, d = 2, grid = grid, g_d = exp(-grid/2))
+X = EllCopSim(n = 20, d = 2, grid = grid, g_d = exp(-grid/2),
               genR = list(method = "MH", niter = 500) )
 plot(X)
 

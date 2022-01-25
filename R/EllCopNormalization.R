@@ -42,7 +42,9 @@
 DensityGenerator.normalize <- function (grid, grid_g, d, verbose = 0, b = 1)
 {
   stepSize = unique(diff(grid))
-  stopifnot(max(diff(stepSize)) < 1e-15)
+  if(isTRUE(all.equal(target = 0, current = diff(stepSize) ) ) ){
+    warning("The grid should be equally spaced.")
+  }
   stepSize = stepSize[1]
 
   s_d = 2*pi^(d/2) / gamma(d/2)
