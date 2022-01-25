@@ -33,6 +33,18 @@ are respectively \eqn{f_g} and \eqn{Q_g}.
 This is to the likelihood of the copula associated with the elliptical distribution
 having density \eqn{|det(\Sigma)|^{-1/2} g(x \Sigma^{-1} x)}.
 }
+\examples{
+grid = seq(0,50,by = 0.01)
+gdnorm = DensityGenerator.normalize(grid = grid, grid_g = exp(-grid/2), d = 3)
+gdnorm2 = DensityGenerator.normalize(grid = grid, grid_g = 1/(1+grid^2), d = 3)
+X = EllCopSim(n = 30, d = 3, grid = grid, g_d = gdnorm)
+logLik = EllCopLikelihood(grid , g_d = gdnorm , X,
+                          Sigma_m1 = diag(3), log = TRUE)
+logLik2 = EllCopLikelihood(grid , g_d = gdnorm2 , X,
+                           Sigma_m1 = diag(3), log = TRUE)
+print(c(sum(logLik), sum(logLik2)))
+
+}
 \seealso{
 \code{\link{EllCopEst}} for the estimation of elliptical copula,
 \code{\link{EllCopEst}} for the estimation of elliptical copula.

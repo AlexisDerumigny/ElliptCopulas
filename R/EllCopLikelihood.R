@@ -25,6 +25,17 @@
 #' @seealso \code{\link{EllCopEst}} for the estimation of elliptical copula,
 #' \code{\link{EllCopEst}} for the estimation of elliptical copula.
 #'
+#' @examples
+#' grid = seq(0,50,by = 0.01)
+#' gdnorm = DensityGenerator.normalize(grid = grid, grid_g = exp(-grid/2), d = 3)
+#' gdnorm2 = DensityGenerator.normalize(grid = grid, grid_g = 1/(1+grid^2), d = 3)
+#' X = EllCopSim(n = 30, d = 3, grid = grid, g_d = gdnorm)
+#' logLik = EllCopLikelihood(grid , g_d = gdnorm , X,
+#'                           Sigma_m1 = diag(3), log = TRUE)
+#' logLik2 = EllCopLikelihood(grid , g_d = gdnorm2 , X,
+#'                            Sigma_m1 = diag(3), log = TRUE)
+#' print(c(sum(logLik), sum(logLik2)))
+#'
 #' @export
 #'
 EllCopLikelihood <- function(grid , g_d , pointsToCompute, Sigma_m1, log = TRUE)
