@@ -46,7 +46,8 @@ EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
   vector_Y = rep(NA , n)
 
   for (i in 1:n) {
-    vector_Y[i] = -a + (a ^ (d/2) + (X[i,] %*% Sigma_m1 %*% X[i,])^(d/2)) ^ (2/d)
+    vector_Y[i] = -a + (a ^ (d/2) +
+            ( (X[i,] - mu) %*% Sigma_m1 %*% (X[i,] - mu) ) ^ (d/2) ) ^ (2/d)
   }
 
   n1 = length(grid)
