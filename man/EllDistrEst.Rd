@@ -11,7 +11,9 @@ EllDistrEst(
   grid,
   h,
   Kernel = "epanechnikov",
-  a = 1
+  a = 1,
+  mpfr = FALSE,
+  bits = 100
 )
 }
 \arguments{
@@ -29,6 +31,11 @@ EllDistrEst(
 
 \item{a}{tuning parameter to improve the performance at 0.
 See Liebscher (2005), Example p.210}
+
+\item{mpfr}{sets multiple precision floating point.
+For high dimensions a higher accuracy is needed.}
+
+\item{bits}{bits used for floating point precision if \code{mpfr == TRUE}}
 }
 \value{
 the values of the density generator of the elliptical copula,
