@@ -20,6 +20,9 @@ Roxygen: list(markdown = TRUE)
 Imports: 
   Runuran,
   pcaPP,
-  Matrix
+  Matrix,
+  mvtnorm,
+  Rmpfr,
+  gmp
 BugReports: https://github.com/AlexisDerumigny/ElliptCopulas/issues
 URL: https://github.com/AlexisDerumigny/ElliptCopulas
