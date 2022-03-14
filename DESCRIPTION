@@ -1,14 +1,15 @@
 Package: ElliptCopulas
 Type: Package
 Title: Inference of Elliptical Distributions and Copulas
-Version: 0.1.1
+Version: 0.1.2
 Description: Provides functions for the simulation and
   the nonparametric estimation of elliptical distributions,
   meta-elliptical copulas and trans-elliptical distributions,
   following the article Derumigny and Fermanian (2021) <arXiv:2106.12367>.
 Authors@R: c(
   person("Alexis", "Derumigny",, email = "a.f.f.derumigny@tudelft.nl", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6163-8097")),
-  person("Jean-David", "Fermanian",, email = "Jean-David.Fermanian@ensae.fr", role = "aut", comment = c(ORCID = "0000-0001-5960-5555"))
+  person("Jean-David", "Fermanian",, email = "Jean-David.Fermanian@ensae.fr", role = "aut", comment = c(ORCID = "0000-0001-5960-5555")),
+  person("Rutger", "van der Spek",, role = "ctb")
   )
 License: GPL-3
 Encoding: UTF-8
@@ -21,8 +22,10 @@ Imports:
   Runuran,
   pcaPP,
   Matrix,
-  mvtnorm,
   Rmpfr,
-  gmp
+  gmp,
+  pbapply
+Suggests:
+  mvtnorm
 BugReports: https://github.com/AlexisDerumigny/ElliptCopulas/issues
 URL: https://github.com/AlexisDerumigny/ElliptCopulas
