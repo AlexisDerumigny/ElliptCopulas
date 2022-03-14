@@ -62,14 +62,14 @@ lines(grid, exp(-grid/2)/(2*pi)^{3/2}, col = "red")
 
 # In higher dimensions
 \donttest{
-d = 100
+d = 250
 X = matrix(rnorm(500*d), ncol = d)
-grid = seq(0, 200, by = 15)
+grid = seq(0, 400, by = 25)
 true_g = exp(-grid/2) / (2*pi)^{d/2}
 
-g_d = EllDistrEst(X = X, grid = grid, a = 13, h=14)
+g_d = EllDistrEst(X = X, grid = grid, a = 100, h=40)
 
-g_dmpfr = EllDistrEst(X = X, grid = grid, a = 0, h=20,
+g_dmpfr = EllDistrEst(X = X, grid = grid, a = 100, h=40,
                       mpfr = TRUE, precBits = 10000)
 ylim = c(min(c(true_g, as.numeric(g_dmpfr[which(g_dmpfr>0)]))),
          max(c(true_g, as.numeric(g_dmpfr)), na.rm=TRUE) )

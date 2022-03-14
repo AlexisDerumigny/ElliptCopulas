@@ -2,46 +2,54 @@
 % Please edit documentation in R/KTMatrixEst.R
 \name{KTMatrixEst}
 \alias{KTMatrixEst}
-\title{Estimate the (averaging) Kendall's tau matrix}
+\title{Fast estimation of Kendall's tau matrix}
 \usage{
-KTMatrixEst(dataMatrix, blockStructure = NULL, typeMatrixKT = "all")
+KTMatrixEst(dataMatrix, blockStructure = NULL, averaging = "no")
 }
 \arguments{
-\item{dataMatrix}{n x d matrix of d-dimensional multivariate random variable
-of n timepoints.}
+\item{dataMatrix}{matrix of size \code{(n,d)} containing \code{n} observations
+of a \code{d}-dimensional random vector.}
 
-\item{blockStructure}{list of groups. A group is a vector with
-variable numbers. \code{blockStructure} must be a partition of 1:d, where d is
-the amount of columns in \code{dataMatrix}.}
+\item{blockStructure}{list of vectors.
+Each vector corresponds to one group of variables
+and contains the indexes of the variables that belongs to this group.
+\code{blockStructure} must be a partition of \code{1:d},
+where \code{d} is the number of columns in \code{dataMatrix}.}
 
-\item{typeMatrixKT}{name of the matrix estimator used. Possible choices are
-"all" (no averaging),
-"aveDiag" (averaging along diagonal block elements),
-"aveAll" (averaging all KT's within blocks),
-"aveRow" (averaging elements on the first row along the smallest block side)}
+\item{averaging}{type of averaging used for fast estimation.
+Possible choices are \itemize{
+\item \code{no}: no averaging;
+\item \code{all}: averaging all Kendall's taus in each block;
+\item \code{diag}: averaging along diagonal blocks elements;
+\item \code{row}: averaging Kendall's tau along the smallest block side.
+}}
 }
 \value{
-matrix with dimensions depending on \code{typeMatrixKT}.
-If \code{typeMatrixKT} = "all", the function returns a matrix of dimension
-n x n, giving the Kendall's tau matrix.
-Here, n is the number of rows in \code{dataMatrix}.
-If \code{typeMatrixKT} = "aveDiag" or "aveAll" the function returns a matrix
-of dimension \code{length(blockStructure)} x \code{length(blockStructure)},
-giving the block estimates of the Kendall's tau with ones on the diagonal.
+matrix with dimensions depending on \code{averaging}.
+\itemize{
+\item If \code{averaging = no},
+the function returns a matrix of dimension \code{(n,n)}
+which estimates the Kendall's tau matrix.
+
+\item Else, the function returns a matrix of dimension
+\code{(length(blockStructure) , length(blockStructure))}
+giving the estimates of the Kendall's tau for each block with ones on the diagonal.
+
+}
 }
 \description{
-Estimate the (averaging) Kendall's tau matrix
+Fast estimation of Kendall's tau matrix
 }
 \examples{
 # Estimating off-diagonal block Kendall's taus
-covMatrix = matrix(c(1, 0.5, 0.3 ,0.3,
-                     0.5, 1, 0.3, 0.3,
-                     0.3, 0.3, 1, 0.5,
-                     0.3, 0.3, 0.5, 1), ncol = 4 , nrow = 4)
+matrixCov = matrix(c(1  , 0.5, 0.3 ,0.3,
+                     0.5,   1, 0.3, 0.3,
+                     0.3, 0.3,   1, 0.5,
+                     0.3, 0.3, 0.5,   1), ncol = 4 , nrow = 4)
 dataMatrix = mvtnorm::rmvnorm(n = 100, mean = rep(0, times = 4), sigma = matrixCov)
 blockStructure = list(1:2, 3:4)
 KTMatrixEst(dataMatrix = dataMatrix, blockStructure = blockStructure,
-            typeMatrixKT = "block")
+            averaging = "all")
 
 
 }

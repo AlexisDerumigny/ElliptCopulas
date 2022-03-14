@@ -1,189 +1,152 @@
-#' Estimate the (averaging) Kendall's tau matrix
-#'
-#' @param dataMatrix n x d matrix of d-dimensional multivariate random variable
-#' of n timepoints.
+#' Fast estimation of Kendall's tau matrix
 #'
 #'
-#' @param typeMatrixKT name of the matrix estimator used. Possible choices are
-#' "all" (no averaging),
-#' "aveDiag" (averaging along diagonal block elements),
-#' "aveAll" (averaging all KT's within blocks),
-#' "aveRow" (averaging elements on the first row along the smallest block side)
-#' @param blockStructure list of groups. A group is a vector with
-#' variable numbers. \code{blockStructure} must be a partition of 1:d, where d is
-#' the amount of columns in \code{dataMatrix}.
+#' @param dataMatrix matrix of size \code{(n,d)} containing \code{n} observations
+#' of a \code{d}-dimensional random vector.
+#'
+#' @param averaging type of averaging used for fast estimation.
+#' Possible choices are \itemize{
+#'   \item \code{no}: no averaging;
+#'   \item \code{all}: averaging all Kendall's taus in each block;
+#'   \item \code{diag}: averaging along diagonal blocks elements;
+#'   \item \code{row}: averaging Kendall's tau along the smallest block side.
+#' }
+#'
+#' @param blockStructure list of vectors.
+#' Each vector corresponds to one group of variables
+#' and contains the indexes of the variables that belongs to this group.
+#' \code{blockStructure} must be a partition of \code{1:d},
+#' where \code{d} is the number of columns in \code{dataMatrix}.
 #'
 #'
-#' @return matrix with dimensions depending on \code{typeMatrixKT}.
-#' If \code{typeMatrixKT} = "all", the function returns a matrix of dimension
-#' n x n, giving the Kendall's tau matrix.
-#' Here, n is the number of rows in \code{dataMatrix}.
-#' If \code{typeMatrixKT} = "aveDiag" or "aveAll" the function returns a matrix
-#' of dimension \code{length(blockStructure)} x \code{length(blockStructure)},
-#' giving the block estimates of the Kendall's tau with ones on the diagonal.
+#' @return matrix with dimensions depending on \code{averaging}.
+#' \itemize{
+#'   \item If \code{averaging = no},
+#'   the function returns a matrix of dimension \code{(n,n)}
+#'   which estimates the Kendall's tau matrix.
+#'
+#'   \item Else, the function returns a matrix of dimension
+#'   \code{(length(blockStructure) , length(blockStructure))}
+#'   giving the estimates of the Kendall's tau for each block with ones on the diagonal.
+#'
+#' }
 #'
 #' @author Rutger van der Spek, Alexis Derumigny
 #'
 #' @examples
 #' # Estimating off-diagonal block Kendall's taus
-#' matrixCov = matrix(c(1, 0.5, 0.3 ,0.3,
-#'                      0.5, 1, 0.3, 0.3,
-#'                      0.3, 0.3, 1, 0.5,
-#'                      0.3, 0.3, 0.5, 1), ncol = 4 , nrow = 4)
+#' matrixCov = matrix(c(1  , 0.5, 0.3 ,0.3,
+#'                      0.5,   1, 0.3, 0.3,
+#'                      0.3, 0.3,   1, 0.5,
+#'                      0.3, 0.3, 0.5,   1), ncol = 4 , nrow = 4)
 #' dataMatrix = mvtnorm::rmvnorm(n = 100, mean = rep(0, times = 4), sigma = matrixCov)
 #' blockStructure = list(1:2, 3:4)
 #' KTMatrixEst(dataMatrix = dataMatrix, blockStructure = blockStructure,
-#'             typeMatrixKT = "aveAll")
+#'             averaging = "all")
 #'
 #'
 #' @export
 #'
-KTMatrixEst <- function(dataMatrix, blockStructure = NULL, typeMatrixKT = "all")
+KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
 {
-  d = length( dataMatrix[1,] )
-  n = length( dataMatrix[,1] )
+  d = ncol(dataMatrix)
+  n = nrow(dataMatrix)
 
-
-  if(typeMatrixKT == "all")
-  {
-    estimate = matrix(data = 1 , nrow = d , ncol = d)
-    for(j1 in 2:d)
-    {
-      for(j2 in 1:(j1-1))
-      {
-        vectorX1 = dataMatrix[ , j1]
-        vectorX2 = dataMatrix[ , j2]
-        estimate[j1,j2] = pcaPP::cor.fk(vectorX1 , vectorX2)
-        estimate[j2,j1] = estimate[j1,j2]
-      }
-    }
+  if (averaging == "no"){
+    estimate <- pcaPP::cor.fk(dataMatrix)
+    return(estimate)
   }
 
+  # We now assume that one of the averaging method is used.
 
-  if(typeMatrixKT == "aveDiag")
+  if(is.null(blockStructure))
   {
-    if(is.null(blockStructure))
-    {
-      stop(paste0("block structure not specified, when typeMatrixKT = ", typeMatrixKT))
-    }
+    stop("To use averaging estimators, a block structure must be specified.")
+  }
+  if (length(blockStructure) == 1){
+    stop("To use averaging estimators, there must be more than one block.")
+  }
+  if( sum(1:d %in% unlist(blockStructure)) == d & length(blockStructure) == d)
+  {
+    stop(paste0("The block structure is not a partition of 1:", d ))
+  }
 
-    if( sum(1:d %in% unlist(blockStructure)) == d & length(blockStructure) == d)
-    {
-      stop(paste0("block structure not a partition of 1:", d ))
-    }
+  totalGroups = length(blockStructure)
+  estimate = matrix(data = 1 , nrow = totalGroups , ncol = totalGroups)
 
-    totalGroups = length(blockStructure)
-    estimate = matrix(data = 1 , nrow = totalGroups , ncol = totalGroups)
-    for (g1 in 1:totalGroups)
-    {
-      for (g2 in 1:totalGroups)
-      {
-        if(g1 != g2)
-        {
-          diagSize = min(length(blockStructure[[g1]]),
+  switch(
+    averaging,
+
+    "diag" = {
+
+      for (g1 in 2:totalGroups) {
+        for (g2 in 1:g1) {
+          diagSize = min(length(blockStructure[[g1]]) ,
                          length(blockStructure[[g2]]) )
+
           vectorBlockKT = rep(NA, times = diagSize)
           for (j in 1:diagSize)
           {
-            vectorX1 = dataMatrix[ , blockStructure[[g1]][j] ]
-            vectorX2 = dataMatrix[ , blockStructure[[g2]][j] ]
-            vectorBlockKT[j] = pcaPP::cor.fk(vectorX1 , vectorX2)
+            vectorBlockKT[j] = pcaPP::cor.fk(
+              x = dataMatrix[ , blockStructure[[g1]][j] ] ,
+              y = dataMatrix[ , blockStructure[[g2]][j] ])
           }
           blockKT = mean(vectorBlockKT)
           estimate[g1,g2] = blockKT
-          estimate[g2,g1] = estimate[g1,g2]
+          estimate[g2,g1] = blockKT
         }
       }
-    }
-  }
+    } ,
 
-
-  if(typeMatrixKT == "aveAll")
-  {
-    if(is.null(blockStructure))
-    {
-      stop(paste0("block structure not specified, when typeMatrixKT = ", typeMatrixKT))
-    }
-
-    if( sum(1:d %in% unlist(blockStructure)) == d & length(blockStructure) == d)
-    {
-      stop(paste0("block structure not a partition of 1:", d ))
-    }
-
-    totalGroups = length(blockStructure)
-    print(totalGroups)
-    estimate = matrix(data = 1 , nrow = totalGroups , ncol = totalGroups)
-    for (g1 in 1:totalGroups)
-    {
-      for (g2 in 1:totalGroups)
-      {
-        if(g1 != g2)
-        {
-          matrixBlockKT = matrix(NA, nrow = length(blockStructure[[g1]]),
-                                      ncol = length(blockStructure[[g2]]))
+    "all" = {
+      for (g1 in 2:totalGroups) {
+        for (g2 in 1:g1) {
+          matrixBlockKT = matrix(nrow = length(blockStructure[[g1]]) ,
+                                 ncol = length(blockStructure[[g2]]) )
           for (j1 in 1:length(blockStructure[[g1]]) )
           {
             for (j2 in 1:length(blockStructure[[g2]]) )
             {
-              vectorX1 = dataMatrix[ , blockStructure[[g1]][j1] ]
-              vectorX2 = dataMatrix[ , blockStructure[[g2]][j2] ]
-              matrixBlockKT[j1,j2] = pcaPP::cor.fk(vectorX1 , vectorX2)
+              matrixBlockKT[j1,j2] = pcaPP::cor.fk(
+                x = dataMatrix[ , blockStructure[[g1]][j1] ] ,
+                y = dataMatrix[ , blockStructure[[g2]][j2] ] )
             }
           }
           blockKT = mean(matrixBlockKT)
           estimate[g1,g2] = blockKT
-          estimate[g2,g1] = estimate[g1,g2]
+          estimate[g2,g1] = blockKT
         }
       }
-    }
-  }
+    } ,
 
+    "row" = {
 
-  if(typeMatrixKT == "aveRow")
-  {
-    if(is.null(blockStructure))
-    {
-      stop(paste0("block structure not specified, when typeMatrixKT = ", typeMatrixKT))
-    }
-
-    if( sum(1:d %in% unlist(blockStructure)) == d & length(blockStructure) == d)
-    {
-      stop(paste0("block structure not a partition of 1:", d ))
-    }
-
-    totalGroups = length(blockStructure)
-    estimate = matrix(data = 1 , nrow = totalGroups , ncol = totalGroups)
-    for (g1 in 1:totalGroups)
-    {
-      for (g2 in 1:totalGroups)
-      {
-        if(g1 != g2)
-        {
+      for (g1 in 2:totalGroups) {
+        for (g2 in 1:g1) {
           g1Size = length(blockStructure[[g1]])
           g2Size = length(blockStructure[[g2]])
+
           rowSize = min(g1Size, g2Size)
-          gSmall = (g1Size <= g2Size) * g1 + (g1Size > g2Size) * g2
-          gLarge = (g1Size <= g2Size) * g2 + (g1Size > g2Size) * g1
+
+          gSmall = ifelse(g1Size <= g2Size, g1, g2)
+          gLarge = ifelse(g1Size <= g2Size, g2, g1)
+
           vectorBlockKT = rep(NA, times = rowSize)
+
           for (j in 1:diagSize)
           {
-            vectorX1 = dataMatrix[ , blockStructure[[gSmall]][j] ]
-            vectorX2 = dataMatrix[ , blockStructure[[gLarge]][1] ]
-            vectorBlockKT[j] = pcaPP::cor.fk(vectorX1 , vectorX2)
+            vectorBlockKT[j] = pcaPP::cor.fk(
+              x = dataMatrix[ , blockStructure[[gSmall]][j] ] ,
+              y = dataMatrix[ , blockStructure[[gLarge]][1] ] )
           }
           blockKT = mean(vectorBlockKT)
           estimate[g1,g2] = blockKT
-          estimate[g2,g1] = estimate[g1,g2]
+          estimate[g2,g1] = blockKT
         }
       }
     }
-  }
 
+  )
 
   return(estimate)
 }
-
-
-
-
-
