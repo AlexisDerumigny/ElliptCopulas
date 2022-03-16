@@ -2,8 +2,8 @@
 
 #' Estimate the density generator of a (meta-)elliptical copula
 #'
-#' This function estimated the density generator of a (meta-)elliptical copula
-#' using the iterative procedure described in (Derumigny and Fermanian, 2021).
+#' This function estimates the density generator of a (meta-)elliptical copula
+#' using the iterative procedure described in (Derumigny and Fermanian, 2022).
 #' This iterative procedure consists in alternating a step of estimating the data
 #' via Liebscher's procedure [EllDistrEst()] and estimating the quantile function
 #' of the underlying elliptical distribution to transform the data back to the unit cube.
@@ -24,7 +24,7 @@
 #'    the Gaussian quantile function.
 #' }
 #' @param verbose if 1, prints the progress of the iterations.
-#' If 2, prints the normalizations constants used at each iteration,
+#' If 2, prints the normalization constants used at each iteration,
 #' as computed by \code{\link{DensityGenerator.normalize}}.
 #' @param prenormalization if `TRUE`, the procedure will normalize the variables
 #' at each iteration so that the variance is \eqn{1}.
@@ -33,9 +33,11 @@
 #'   * `g_d_norm`: the estimated elliptical copula generator at each point of the grid;
 #'   * `list_path_gdh`: the list of estimated elliptical copula generator at each iteration.
 #'
-#' @references Derumigny, A., & Fermanian, J. D. (2021).
+#' @references
+#' Derumigny, A., & Fermanian, J. D. (2022).
 #' Identifiability and estimation of meta-elliptical copula generators.
-#' ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
+#' Journal of Multivariate Analysis, article 104962.
+#' \href{https://doi.org/doi:10.1016/j.jmva.2022.104962}{doi:10.1016/j.jmva.2022.104962}.
 #'
 #' Liebscher, E. (2005).
 #' A semiparametric density estimator based on elliptical distributions.

@@ -34,9 +34,12 @@
 #' [conversion functions][conv_funct()] for the conversion between different representation
 #' of the generator of an elliptical copula.
 #'
-#' @references Derumigny, A., & Fermanian, J. D. (2021).
+#' @references
+#' Derumigny, A., & Fermanian, J. D. (2022).
 #' Identifiability and estimation of meta-elliptical copula generators.
-#' ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
+#' Journal of Multivariate Analysis, article 104962.
+#' \href{https://doi.org/doi:10.1016/j.jmva.2022.104962}{doi:10.1016/j.jmva.2022.104962}.
+#'
 #'
 #' @export
 DensityGenerator.normalize <- function (grid, grid_g, d, verbose = 0, b = 1)
