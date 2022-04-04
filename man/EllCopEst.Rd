@@ -35,7 +35,7 @@ See Liebscher (2005), Example p.210}
 Possible choices are \code{gaussian}, \code{epanechnikov} and \code{triangular}.}
 
 \item{verbose}{if 1, prints the progress of the iterations.
-If 2, prints the normalizations constants used at each iteration,
+If 2, prints the normalization constants used at each iteration,
 as computed by \code{\link{DensityGenerator.normalize}}.}
 
 \item{startPoint}{is the given starting point of the procedure \itemize{
@@ -56,8 +56,8 @@ a list of two elements:
 }
 }
 \description{
-This function estimated the density generator of a (meta-)elliptical copula
-using the iterative procedure described in (Derumigny and Fermanian, 2021).
+This function estimates the density generator of a (meta-)elliptical copula
+using the iterative procedure described in (Derumigny and Fermanian, 2022).
 This iterative procedure consists in alternating a step of estimating the data
 via Liebscher's procedure \code{\link[=EllDistrEst]{EllDistrEst()}} and estimating the quantile function
 of the underlying elliptical distribution to transform the data back to the unit cube.
@@ -89,9 +89,8 @@ lines(grid, resultNA$g_d_norm, col = "blue", xlim = c(0,2))
 
 }
 \references{
-Derumigny, A., & Fermanian, J. D. (2021).
+Derumigny, A., & Fermanian, J. D. (2022).
 Identifiability and estimation of meta-elliptical copula generators.
-Derumigny, A., & Fermanian, J. D. (2021). Identifiability and estimation of meta-elliptical copula.
 Journal of Multivariate Analysis, article 104962.
 \href{https://doi.org/doi:10.1016/j.jmva.2022.104962}{doi:10.1016/j.jmva.2022.104962}.
 

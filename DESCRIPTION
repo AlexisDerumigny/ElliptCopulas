@@ -23,7 +23,6 @@ Imports:
   pcaPP,
   Matrix,
   Rmpfr,
-  gmp,
   pbapply
 Suggests:
   mvtnorm
