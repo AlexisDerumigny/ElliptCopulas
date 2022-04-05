@@ -16,11 +16,11 @@ EllDistrSim(
 \arguments{
 \item{n}{number of observations.}
 
-\item{d}{dimension of X.}
+\item{d}{dimension of \eqn{X}.}
 
-\item{A}{square-root of the covariance matrix of X.}
+\item{A}{square-root of the covariance matrix of \eqn{X}.}
 
-\item{mu}{mean of X. It should be a vector of size d.}
+\item{mu}{mean of \eqn{X}. It should be a vector of size \code{d}.}
 
 \item{density_R2}{density of the random variable \eqn{R^2},
 i.e. the density of the \eqn{||X||_2^2} if \eqn{\mu=0}
@@ -33,18 +33,18 @@ It must be a list with a component method: \itemize{
 using the function \code{\link[Runuran:pinv.new]{Runuran::pinv.new()}}.
 \item If \code{genR$method == "MH"},
 the generation is done using the Metropolis-Hasting algorithm,
-with a N(0,1) move at each step.
+with a \eqn{N(0,1)} move at each step.
 }}
 }
 \value{
-a matrix of size (n,d) of simulated observations.
+a matrix of dimensions \code{(n,d)} of simulated observations.
 }
 \description{
 This function uses the decomposition \eqn{X = \mu + R * A * U}
-where \eqn{\mu} is the mean of X, R is the random radius,
-A is the square-root of the covariance matrix of X,
-and U is a uniform random variable of the d-dimensional unit sphere.
-Note that R is generated using the Metropolis-Hasting algorithm.
+where \eqn{\mu} is the mean of \eqn{X}, \eqn{R} is the random radius,
+\eqn{A} is the square-root of the covariance matrix of \eqn{X},
+and \eqn{U} is a uniform random variable of the d-dimensional unit sphere.
+Note that \eqn{R} is generated using the Metropolis-Hasting algorithm.
 }
 \examples{
 # Sample from a 3-dimensional normal distribution

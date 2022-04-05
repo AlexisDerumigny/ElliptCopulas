@@ -1,5 +1,11 @@
 #' Fast estimation of Kendall's tau matrix
 #'
+#' Estimate Kendall's tau matrix using averaging estimators. Under
+#' the structural assumption that Kendall's tau matrix is block-structured
+#' with constant values in each off-diagonal block, this function estimates
+#' Kendall's tau matrix ``fast'', i.e. in time \code{N n log(n)},
+#' where \code{N} is the amount of pairs that are averaged.
+#'
 #'
 #' @param dataMatrix matrix of size \code{(n,d)} containing \code{n} observations
 #' of a \code{d}-dimensional random vector.
@@ -7,9 +13,13 @@
 #' @param averaging type of averaging used for fast estimation.
 #' Possible choices are \itemize{
 #'   \item \code{no}: no averaging;
-#'   \item \code{all}: averaging all Kendall's taus in each block;
-#'   \item \code{diag}: averaging along diagonal blocks elements;
+#'   \item \code{all}: averaging all Kendall's taus in each block.
+#'   \code{N} is then the number of entries in the block, i.e. the
+#'   products of both dimensions.
+#'   \item \code{diag}: averaging along diagonal blocks elements.
+#'   \code{N} is then the minimum of the block's dimensions.
 #'   \item \code{row}: averaging Kendall's tau along the smallest block side.
+#'   \code{N} is then the minimum of the block's dimensions.
 #' }
 #'
 #' @param blockStructure list of vectors.

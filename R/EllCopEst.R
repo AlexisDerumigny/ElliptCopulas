@@ -37,7 +37,7 @@
 #' Derumigny, A., & Fermanian, J. D. (2022).
 #' Identifiability and estimation of meta-elliptical copula generators.
 #' Journal of Multivariate Analysis, article 104962.
-#' \href{https://doi.org/doi:10.1016/j.jmva.2022.104962}{doi:10.1016/j.jmva.2022.104962}.
+#' \doi{10.1016/j.jmva.2022.104962}.
 #'
 #' Liebscher, E. (2005).
 #' A semiparametric density estimator based on elliptical distributions.

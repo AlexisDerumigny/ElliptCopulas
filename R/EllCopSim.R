@@ -29,6 +29,12 @@
 #' \code{\link{EllCopLikelihood}} for the computation of the likelihood of a given generator,
 #' \code{\link{DensityGenerator.normalize}} to compute the normalized version of a given generator.
 #'
+#' @references
+#' Derumigny, A., & Fermanian, J. D. (2022).
+#' Identifiability and estimation of meta-elliptical copula generators.
+#' Journal of Multivariate Analysis, article 104962.
+#' \doi{10.1016/j.jmva.2022.104962}.
+#'
 #' @examples
 #' # Simulation from a Gaussian copula
 #' grid = seq(0,5,by = 0.01)

@@ -42,6 +42,12 @@ X = EllCopSim(n = 20, d = 2, grid = grid, g_d = exp(-grid/2),
 plot(X)
 
 }
+\references{
+Derumigny, A., & Fermanian, J. D. (2022).
+Identifiability and estimation of meta-elliptical copula generators.
+Journal of Multivariate Analysis, article 104962.
+\doi{10.1016/j.jmva.2022.104962}.
+}
 \seealso{
 \code{\link{EllDistrSim}} for the simulation of elliptical distributions samples,
 \code{\link{EllCopEst}} for the estimation of elliptical copula,

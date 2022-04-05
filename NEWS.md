@@ -12,7 +12,7 @@ that allows to use the package `Rmpfr` for multiple floating point precision
 potentially under structural assumptions.
 (#2, thanks to Rutger van der Spek)
 
-* New dependencies: Import: `Rmpfr`, `gmp`, `pbapply`. Suggest: `mvtnorm`.
+* New dependencies: Import: `Rmpfr`, `pbapply`. Suggest: `mvtnorm`.
 
 
 

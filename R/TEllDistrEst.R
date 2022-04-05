@@ -1,9 +1,10 @@
 
 #' Estimation of trans-elliptical distributions
 #'
-#' This function estimates the parameters of
-#' a trans-elliptical distribution which is a distribution
-#' whose copula is (meta-)elliptical, with arbitrary margins.
+#' This function estimates the parameters of a trans-elliptical
+#' distribution which is a distribution whose copula is
+#' (meta-)elliptical, with arbitrary margins, using the procedure
+#' proposed in (Derumigny & Fermanian, 2022).
 #'
 #' @param X the matrix of observations of the variables
 #'
@@ -30,9 +31,11 @@
 #'  * `corMatrix`: the estimated correlation matrix:
 #'  * `estEllCopGen`: the estimated generator of the meta-elliptical copula.
 #'
-#' @references Derumigny, A., & Fermanian, J. D. (2021).
+#' @references
+#' Derumigny, A., & Fermanian, J. D. (2022).
 #' Identifiability and estimation of meta-elliptical copula generators.
-#' ArXiv preprint \href{https://arxiv.org/abs/2106.12367}{arxiv:2106.12367}.
+#' Journal of Multivariate Analysis, article 104962.
+#' \doi{10.1016/j.jmva.2022.104962}.
 #'
 #' @usage TEllDistrEst(
 #'   X, estimatorCDF = function(x){

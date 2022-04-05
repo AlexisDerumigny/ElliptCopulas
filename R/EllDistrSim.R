@@ -2,15 +2,15 @@
 #' Simulation of elliptically symmetric random vectors
 #'
 #' This function uses the decomposition \eqn{X = \mu + R * A * U}
-#' where \eqn{\mu} is the mean of X, R is the random radius,
-#' A is the square-root of the covariance matrix of X,
-#' and U is a uniform random variable of the d-dimensional unit sphere.
-#' Note that R is generated using the Metropolis-Hasting algorithm.
+#' where \eqn{\mu} is the mean of \eqn{X}, \eqn{R} is the random radius,
+#' \eqn{A} is the square-root of the covariance matrix of \eqn{X},
+#' and \eqn{U} is a uniform random variable of the d-dimensional unit sphere.
+#' Note that \eqn{R} is generated using the Metropolis-Hasting algorithm.
 #'
 #' @param n number of observations.
-#' @param d dimension of X.
-#' @param A square-root of the covariance matrix of X.
-#' @param mu mean of X. It should be a vector of size d.
+#' @param d dimension of \eqn{X}.
+#' @param A square-root of the covariance matrix of \eqn{X}.
+#' @param mu mean of \eqn{X}. It should be a vector of size \code{d}.
 #' @param density_R2 density of the random variable \eqn{R^2},
 #' i.e. the density of the \eqn{||X||_2^2} if \eqn{\mu=0}
 #' and \eqn{A} is the identity matrix.
@@ -25,7 +25,7 @@
 #   will be done by inverting the approximation of the CDF on this grid.
 #'   \item If `genR$method == "MH"`,
 #'   the generation is done using the Metropolis-Hasting algorithm,
-#'   with a N(0,1) move at each step.
+#'   with a \eqn{N(0,1)} move at each step.
 #' }
 #'
 #'
@@ -35,7 +35,7 @@
 #' \code{\link{EllDistrSimCond}} for the conditional simulation of
 #' elliptically distributed random vectors given some observe components.
 #'
-#' @return a matrix of size (n,d) of simulated observations.
+#' @return a matrix of dimensions \code{(n,d)} of simulated observations.
 #'
 #' @examples
 #' # Sample from a 3-dimensional normal distribution
