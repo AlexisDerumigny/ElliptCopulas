@@ -63,7 +63,7 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
   n = nrow(dataMatrix)
 
   if (averaging == "no"){
-    estimate <- pcaPP::cor.fk(dataMatrix)
+    estimate <- wdm::wdm(dataMatrix, method = "kendall")
     return(estimate)
   }
 
@@ -97,9 +97,10 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
           vectorBlockKT = rep(NA, times = diagSize)
           for (j in 1:diagSize)
           {
-            vectorBlockKT[j] = pcaPP::cor.fk(
+            vectorBlockKT[j] = wdm::wdm(
               x = dataMatrix[ , blockStructure[[g1]][j] ] ,
-              y = dataMatrix[ , blockStructure[[g2]][j] ])
+              y = dataMatrix[ , blockStructure[[g2]][j] ] ,
+              method = "kendall")
           }
           blockKT = mean(vectorBlockKT)
           estimate[g1,g2] = blockKT
@@ -117,9 +118,10 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
           {
             for (j2 in 1:length(blockStructure[[g2]]) )
             {
-              matrixBlockKT[j1,j2] = pcaPP::cor.fk(
+              matrixBlockKT[j1,j2] = wdm::wdm(
                 x = dataMatrix[ , blockStructure[[g1]][j1] ] ,
-                y = dataMatrix[ , blockStructure[[g2]][j2] ] )
+                y = dataMatrix[ , blockStructure[[g2]][j2] ] ,
+                method = "kendall")
             }
           }
           blockKT = mean(matrixBlockKT)
@@ -145,9 +147,10 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
 
           for (j in 1:diagSize)
           {
-            vectorBlockKT[j] = pcaPP::cor.fk(
+            vectorBlockKT[j] = wdm::wdm(
               x = dataMatrix[ , blockStructure[[gSmall]][j] ] ,
-              y = dataMatrix[ , blockStructure[[gLarge]][1] ] )
+              y = dataMatrix[ , blockStructure[[gLarge]][1] ] ,
+              method = "kendall")
           }
           blockKT = mean(vectorBlockKT)
           estimate[g1,g2] = blockKT

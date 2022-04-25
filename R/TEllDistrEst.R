@@ -118,7 +118,7 @@ TEllDistrEst <- function(
   for (i in 1:(d-1)){
     for (j in (i+1):d){
       whichNotNA = which( !is.na(dataU[,i]) & !is.na(dataU[,j]) )
-      tauMatrix[i,j] <- tauMatrix[j,i] <- pcaPP::cor.fk(dataU[whichNotNA , c(i,j)])[1,2]
+      tauMatrix[i,j] <- tauMatrix[j,i] <- wdm::wdm(dataU[whichNotNA , c(i,j)], method = "kendall")[1,2]
     }
   }
   corMatrix = sin(pi * tauMatrix / 2)

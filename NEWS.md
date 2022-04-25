@@ -1,4 +1,9 @@
 
+# ElliptCopulas 0.1.3
+
+* New dependence `wdm` instead of `pcaPP` for fast computation of Kendall's tau.
+
+
 # ElliptCopulas 0.1.2
 
 * Fixed a bug in `EllDistrEst` when `mu` is not zero. (#1, thanks to Rutger van der Spek)
