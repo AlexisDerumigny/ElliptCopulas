@@ -1,4 +1,7 @@
 
+* Fixed a bug in `KTMatrixEst`
+(whose output did not have ones on the diagonal, contrary to the documentation).
+
 * Fixed a bug in `EllDistrEst` when the variance matrix is not the identity.
 
 # ElliptCopulas 0.1.3

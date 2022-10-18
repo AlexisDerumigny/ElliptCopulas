@@ -111,7 +111,7 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
 
     "all" = {
       for (g1 in 2:totalGroups) {
-        for (g2 in 1:g1) {
+        for (g2 in 1:(g1-1)) {
           matrixBlockKT = matrix(nrow = length(blockStructure[[g1]]) ,
                                  ncol = length(blockStructure[[g2]]) )
           for (j1 in 1:length(blockStructure[[g1]]) )
@@ -134,7 +134,7 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
     "row" = {
 
       for (g1 in 2:totalGroups) {
-        for (g2 in 1:g1) {
+        for (g2 in 1:(g1-1)) {
           g1Size = length(blockStructure[[g1]])
           g2Size = length(blockStructure[[g2]])
 
