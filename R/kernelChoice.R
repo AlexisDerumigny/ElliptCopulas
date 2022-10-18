@@ -2,7 +2,7 @@
 
 getKernel <- function(Kernel){
 
-  if (class(Kernel) != "character"){
+  if (!is.character(Kernel)){
     return (Kernel)
   }
 
