@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 require("ElliptCopulas")
+
+set.seed(1) # for reproducibility
 ```
 
 
@@ -48,14 +50,70 @@ remotes::install_github("AlexisDerumigny/ElliptCopulas")
 
 # Main functions of the package
 
-**Inference of Elliptical Distributions**
 
-* `EllDistrEst`: nonparametric estimation of the generator of an elliptical distribution.
+## 1. Inference of Elliptical Distributions
+
 
 * `EllDistrSim`: simulate data from an elliptical distribution with a given arbitrary generator.
 
+```{r}
+# Sample from an Elliptical distribution for which the
+# squared radius follows an exponential distribution
+mu = c(2,6,-5)
+cov1 = rbind(c(1  , 0.3, 0.3),
+             c(0.3, 1  , 0.3),
+             c(0.3, 0.3, 1  ))
+# cov1 = diag(3)
+grid = seq(0,10, by = 0.1)
+generator = exp(- grid/2) / (2*pi)^(3/2)
+density_R2 = Convert_gd_To_fR2(grid = grid, g_d = generator, d = 3)
+X = EllDistrSim(n = 1000, d = 3, A = chol(cov1), mu = mu,
+                density_R2 = density_R2)
+plot(X[, 1], X[, 2])
+```
 
-**Inference of (Meta-)Elliptical Copulas**
+* `EllDistrEst`: nonparametric estimation of the generator of an elliptical distribution.
+
+
+```{r}
+estDensityGenerator = EllDistrEst(X = X, mu = mu, Sigma_m1 = solve(cov1),
+                                  grid = grid, a = 10, h = 0.02, dopb = FALSE)
+
+plot(grid, estDensityGenerator, type = "l", ylab = "Estimated & true density generators")
+lines(grid, generator, col = "red")
+```
+
+## 2. Estimation of correlation matrix
+
+* `KTMatrixEst`: fast estimation of Kendall's tau correlation matrix
+assuming that it has a block structure.
+This procedure works even if the distribution is not elliptical.
+
+However, in the elliptical case,
+it can be used to recover the (usual) Pearson's correlation matrix
+for elliptical distribution, as both are then linked by the relationship
+$\tau = 2 Arcsin(\rho) / \pi$.
+
+```{r}
+matrixCor = matrix(c(1  , 0.5, 0.3 ,0.3,
+                     0.5,   1, 0.3, 0.3,
+                     0.3, 0.3,   1, 0.5,
+                     0.3, 0.3, 0.5,   1), ncol = 4 , nrow = 4)
+dataMatrix = mvtnorm::rmvnorm(n = 100, mean = rep(0, times = 4), sigma = matrixCor)
+blockStructure = list(1:2, 3:4)
+estKTMatrix = KTMatrixEst(dataMatrix = dataMatrix, blockStructure = blockStructure,
+                           averaging = "all")
+InterBlockCor = sin(estKTMatrix[1,2] * pi / 2)
+
+# Estimation of the correlation between variables of the first group
+# and of the second group
+print(InterBlockCor) 
+# to be compared with the true value: 0.3.
+```
+
+
+## 3. Inference of (Meta-)Elliptical Copulas
+
 
 * `EllCopEst`: nonparametric estimation of the generator of an elliptical copula.
 
@@ -64,12 +122,12 @@ remotes::install_github("AlexisDerumigny/ElliptCopulas")
 * `EllCopLikelihood`: compute the likelihood of a given elliptical copula generator.
 
 
-**Inference of Trans-Elliptical Distributions**
+## 4. Inference of Trans-Elliptical Distributions
 
 * `TEllDistrEst`: estimation of the marginal cdfs, estimation of the correlation matrix by inversion of Kendall's tau and nonparametric estimation of the generator.
 
 
-**Numerical analysis**
+## 5. Numerical analysis
 
 * `DensityGenerator.normalize`: normalize an elliptical copula density generator in order to satisfy the identifiability constraints.
 

@@ -50,15 +50,21 @@ where \code{N} is the amount of pairs that are averaged.
 }
 \examples{
 # Estimating off-diagonal block Kendall's taus
-matrixCov = matrix(c(1  , 0.5, 0.3 ,0.3,
+matrixCor = matrix(c(1  , 0.5, 0.3 ,0.3,
                      0.5,   1, 0.3, 0.3,
                      0.3, 0.3,   1, 0.5,
                      0.3, 0.3, 0.5,   1), ncol = 4 , nrow = 4)
-dataMatrix = mvtnorm::rmvnorm(n = 100, mean = rep(0, times = 4), sigma = matrixCov)
+dataMatrix = mvtnorm::rmvnorm(n = 100, mean = rep(0, times = 4), sigma = matrixCor)
 blockStructure = list(1:2, 3:4)
-KTMatrixEst(dataMatrix = dataMatrix, blockStructure = blockStructure,
-            averaging = "all")
+estKTMatrix = KTMatrixEst(dataMatrix = dataMatrix,
+                          blockStructure = blockStructure,
+                          averaging = "all")
+InterBlockCor = sin(estKTMatrix[1,2] * pi / 2)
 
+# Estimation of the correlation between variables of the first group
+# and of the second group
+print(InterBlockCor)
+# to be compared with the true value: 0.3.
 
 }
 \author{
