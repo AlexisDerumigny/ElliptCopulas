@@ -118,6 +118,8 @@ EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
 
   if (dopb){ pbapply::closepb(pb) }
 
+  # We normalize by 1/sqrt(det(Sigma))
+  grid_g = grid_g * sqrt(det(Sigma_m1))
 
   return (grid_g)
 }

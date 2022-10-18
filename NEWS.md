@@ -1,4 +1,6 @@
 
+* Fixed a bug in `EllDistrEst` when the variance matrix is not the identity.
+
 # ElliptCopulas 0.1.3
 
 * New dependence `wdm` instead of `pcaPP` for fast computation of Kendall's tau.
