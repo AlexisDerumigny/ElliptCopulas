@@ -25,6 +25,8 @@ Imports:
   Rmpfr,
   pbapply
 Suggests:
-  mvtnorm
+    mvtnorm,
+    testthat (>= 3.0.0)
 BugReports: https://github.com/AlexisDerumigny/ElliptCopulas/issues
 URL: https://github.com/AlexisDerumigny/ElliptCopulas
+Config/testthat/edition: 3

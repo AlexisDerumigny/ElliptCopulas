@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^cran-comments\.md
+^cran-comments\.md$
 ^README\.Rmd$
-^man\figures$
+^man/figures$
+^tests/testthat/test-kernelChoice\.R$
