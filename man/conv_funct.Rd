@@ -30,14 +30,17 @@ Convert_gd_To_fR2(grid, g_d, d)
 }
 \value{
 One of the following \itemize{
-\item g_1 the \eqn{1}-dimensional density generator.
-\item Fg1 the \eqn{1}-dimensional marginal cumulative distribution function.
-\item Qg1 the \eqn{1}-dimensional marginal quantile function
-(approximatly equal to the inverse function of Fg1).
-\item f1 the density of a \eqn{1}-dimensional margin if \eqn{\mu = 0}
+\item \code{g_1} the \eqn{1}-dimensional density generator.
+\item \code{Fg1} the \eqn{1}-dimensional marginal cumulative distribution function.
+\item \code{Qg1} the \eqn{1}-dimensional marginal quantile function
+(approximately equal to the inverse function of Fg1).
+\item \code{f1} the density of a \eqn{1}-dimensional margin if \eqn{\mu = 0}
 and \eqn{A} is the identity matrix.
-\item fR2 the density function of \eqn{R^2}.
+\item \code{fR2} the density function of \eqn{R^2}.
 }
+The function \code{Convert_gd_To_g1} returns a numerical vector of (approximated) values
+of \code{g_1} on the same grid as \code{gd}.
+In all other cases, a function is returned (see the examples section).
 }
 \description{
 An elliptical random vector X of density \eqn{|det(\Sigma)|^{-1/2} g_d(x' \Sigma^{-1} x)}

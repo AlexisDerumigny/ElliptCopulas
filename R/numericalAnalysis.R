@@ -14,14 +14,17 @@
 #' @param d the dimension of the random vector.
 #'
 #' @return One of the following \itemize{
-#'   \item g_1 the \eqn{1}-dimensional density generator.
-#'   \item Fg1 the \eqn{1}-dimensional marginal cumulative distribution function.
-#'   \item Qg1 the \eqn{1}-dimensional marginal quantile function
-#'   (approximatly equal to the inverse function of Fg1).
-#'   \item f1 the density of a \eqn{1}-dimensional margin if \eqn{\mu = 0}
+#'   \item \code{g_1} the \eqn{1}-dimensional density generator.
+#'   \item \code{Fg1} the \eqn{1}-dimensional marginal cumulative distribution function.
+#'   \item \code{Qg1} the \eqn{1}-dimensional marginal quantile function
+#'   (approximately equal to the inverse function of Fg1).
+#'   \item \code{f1} the density of a \eqn{1}-dimensional margin if \eqn{\mu = 0}
 #'   and \eqn{A} is the identity matrix.
-#'   \item fR2 the density function of \eqn{R^2}.
+#'   \item \code{fR2} the density function of \eqn{R^2}.
 #' }
+#' The function \code{Convert_gd_To_g1} returns a numerical vector of (approximated) values
+#' of \code{g_1} on the same grid as \code{gd}.
+#' In all other cases, a function is returned (see the examples section).
 #'
 #' @seealso \code{\link{DensityGenerator.normalize}}
 #' to compute the normalized version of a given \eqn{d}-dimensional generator.

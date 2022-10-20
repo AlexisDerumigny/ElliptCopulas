@@ -70,3 +70,4 @@ print(InterBlockCor)
 \author{
 Rutger van der Spek, Alexis Derumigny
 }
+\concept{Kendall correlation coefficient}

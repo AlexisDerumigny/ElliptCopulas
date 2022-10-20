@@ -3,7 +3,8 @@
 #' Estimate Kendall's tau matrix using averaging estimators. Under
 #' the structural assumption that Kendall's tau matrix is block-structured
 #' with constant values in each off-diagonal block, this function estimates
-#' Kendall's tau matrix ``fast'', i.e. in time \code{N n log(n)},
+#' Kendall's tau matrix ``fast'', in the sense that each interblock
+#' coefficient is estimated in time \eqn{N \cdot n \cdot log(n)},
 #' where \code{N} is the amount of pairs that are averaged.
 #'
 #'
@@ -42,6 +43,7 @@
 #' }
 #'
 #' @author Rutger van der Spek, Alexis Derumigny
+#' @concept Kendall correlation coefficient
 #'
 #' @examples
 #' # Estimating off-diagonal block Kendall's taus
