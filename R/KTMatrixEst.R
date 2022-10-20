@@ -169,5 +169,9 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
 
   )
 
+  if (!is.null(names(blockStructure))){
+    colnames(estimate) <- rownames(estimate) <- names(blockStructure)
+  }
+
   return(estimate)
 }
