@@ -1,4 +1,7 @@
 
+* The output of `KTMatrixEst` now has colnames and rownames set to the names
+if available in `blockStructure`.
+
 * Fixed a bug in `KTMatrixEst`
 (whose output did not have ones on the diagonal, contrary to the documentation).
 
