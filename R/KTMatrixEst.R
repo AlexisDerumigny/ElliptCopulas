@@ -77,14 +77,14 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
 
   # We now assume that one of the averaging method is used.
 
-  if(is.null(blockStructure))
+  if (is.null(blockStructure))
   {
     stop("To use averaging estimators, a block structure must be specified.")
   }
   if (length(blockStructure) == 1){
     stop("To use averaging estimators, there must be more than one block.")
   }
-  if( sum(1:d %in% unlist(blockStructure)) == d & length(blockStructure) == d)
+  if ( sum(1:d %in% unlist(blockStructure)) != d | length(unlist(blockStructure)) != d)
   {
     stop(paste0("The block structure is not a partition of 1:", d ))
   }
@@ -98,7 +98,7 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
     "diag" = {
 
       for (g1 in 2:totalGroups) {
-        for (g2 in 1:g1) {
+        for (g2 in 1:(g1-1)) {
           diagSize = min(length(blockStructure[[g1]]) ,
                          length(blockStructure[[g2]]) )
 
@@ -153,7 +153,7 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
 
           vectorBlockKT = rep(NA, times = rowSize)
 
-          for (j in 1:diagSize)
+          for (j in 1:rowSize)
           {
             vectorBlockKT[j] = wdm::wdm(
               x = dataMatrix[ , blockStructure[[gSmall]][j] ] ,
