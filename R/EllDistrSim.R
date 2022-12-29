@@ -11,10 +11,16 @@
 #' @param d dimension of \eqn{X}.
 #' @param A square-root of the covariance matrix of \eqn{X}.
 #' @param mu mean of \eqn{X}. It should be a vector of size \code{d}.
+#'
 #' @param density_R2 density of the random variable \eqn{R^2},
 #' i.e. the density of the \eqn{||X||_2^2} if \eqn{\mu=0}
 #' and \eqn{A} is the identity matrix.
-#' Note that this function must return \eqn{0} for negative inputs.
+#'
+#' Note that this function \strong{must} return \eqn{0} for negative inputs,
+#' otherwise negative values of \eqn{R^2} may be generated.
+#' The simplest way to do this is to add ` * (x > 0)` at the end of the
+#' return value of the provided `density_R2` function (see example below).
+#'
 #' @param genR additional arguments for the generation of the squared radius.
 #' It must be a list with a component method: \itemize{
 #'   \item If `genR$method == "pinv"`, the radius is generated
@@ -44,6 +50,7 @@
 #' X = EllDistrSim(n = 200, d = 3, density_R2 = function(x){stats::dchisq(x=x,df=3)},
 #'                 genR = list(method = "MH", niter = 500))
 #' plot(X[,1], X[,2])
+#'
 #' # Sample from an Elliptical distribution for which the squared radius
 #' # follows an exponential distribution
 #' cov1 = rbind(c(1,0.5), c(0.5,1))
@@ -97,7 +104,7 @@ EllDistrSim <- function(
 #' @return a vector of size n of simulated observations.
 #'
 #' @examples
-#' simulation_MH(n = 10, densityFUN = function(x){exp(-x^2)})
+#' simulation_MH(n = 10, densityFUN = function(x){exp(-x^2) * (x > 0)})
 #'
 #' @noRd
 #'
