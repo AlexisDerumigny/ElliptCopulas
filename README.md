@@ -153,3 +153,7 @@ article 104962.
 Liebscher, E. (2005). A semiparametric density estimator based on
 elliptical distributions. Journal of Multivariate Analysis, 92, 205–225.
 [doi:10.1016/j.jmva.2003.09.007](https://doi.org/10.1016/j.jmva.2003.09.007)
+
+van der Spek, R., & Derumigny, A. (2022). Fast estimation of Kendall’s
+Tau and conditional Kendall’s Tau matrices under structural assumptions.
+[arXiv:2204.03285](https://arxiv.org/pdf/2204.03285.pdf).

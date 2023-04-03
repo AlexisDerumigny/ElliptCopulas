@@ -1,4 +1,7 @@
 
+* New option `averaging = "random"` for the function `KTMatrixEst`
+corresponding to the averaging of a random set of entries in the off-diagonal blocks.
+
 * The output of `KTMatrixEst` now has colnames and rownames set to the names
 if available in `blockStructure`.
 

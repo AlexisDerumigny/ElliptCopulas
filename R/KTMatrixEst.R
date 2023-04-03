@@ -21,6 +21,8 @@
 #'   \code{N} is then the minimum of the block's dimensions.
 #'   \item \code{row}: averaging Kendall's tau along the smallest block side.
 #'   \code{N} is then the minimum of the block's dimensions.
+#'   \item \code{random}: averaging Kendall's taus along a random sample of \code{N} entries
+#'   of the given block. These entries are chosen uniformly without replacement.
 #' }
 #'
 #' @param blockStructure list of vectors.
@@ -28,6 +30,9 @@
 #' and contains the indexes of the variables that belongs to this group.
 #' \code{blockStructure} must be a partition of \code{1:d},
 #' where \code{d} is the number of columns in \code{dataMatrix}.
+#'
+#' @param N number of entries to average (n the random case.
+#' By default, \code{N} is then the minimum of the block's dimensions.
 #'
 #'
 #' @return matrix with dimensions depending on \code{averaging}.
@@ -51,25 +56,36 @@
 #'
 #' @examples
 #' # Estimating off-diagonal block Kendall's taus
-#' matrixCor = matrix(c(1  , 0.5, 0.3 ,0.3,
-#'                      0.5,   1, 0.3, 0.3,
-#'                      0.3, 0.3,   1, 0.5,
-#'                      0.3, 0.3, 0.5,   1), ncol = 4 , nrow = 4)
-#' dataMatrix = mvtnorm::rmvnorm(n = 100, mean = rep(0, times = 4), sigma = matrixCor)
-#' blockStructure = list(1:2, 3:4)
-#' estKTMatrix = KTMatrixEst(dataMatrix = dataMatrix,
-#'                           blockStructure = blockStructure,
-#'                           averaging = "all")
-#' InterBlockCor = sin(estKTMatrix[1,2] * pi / 2)
+#' matrixCor = matrix(c(1  , 0.5, 0.3 ,0.3, 0.3,
+#'                      0.5,   1, 0.3, 0.3, 0.3,
+#'                      0.3, 0.3,   1, 0.5, 0.5,
+#'                      0.3, 0.3, 0.5,   1, 0.5,
+#'                      0.3, 0.3, 0.5, 0.5,   1), ncol = 5 , nrow = 5)
+#' dataMatrix = mvtnorm::rmvnorm(n = 100, mean = rep(0, times = 5), sigma = matrixCor)
+#' blockStructure = list(1:2, 3:5)
+#' estKTMatrix = list()
+#' estKTMatrix$all = KTMatrixEst(dataMatrix = dataMatrix,
+#'                               blockStructure = blockStructure,
+#'                               averaging = "all")
+#' estKTMatrix$row = KTMatrixEst(dataMatrix = dataMatrix,
+#'                               blockStructure = blockStructure,
+#'                               averaging = "row")
+#' estKTMatrix$diag = KTMatrixEst(dataMatrix = dataMatrix,
+#'                                blockStructure = blockStructure,
+#'                                averaging = "diag")
+#' estKTMatrix$random = KTMatrixEst(dataMatrix = dataMatrix,
+#'                                  blockStructure = blockStructure,
+#'                                  averaging = "random", N = 2)
+#' InterBlockCor = lapply(estKTMatrix, FUN = function(x) {sin(x[1,2] * pi / 2)})
 #'
 #' # Estimation of the correlation between variables of the first group
 #' # and of the second group
-#' print(InterBlockCor)
+#' print(unlist(InterBlockCor))
 #' # to be compared with the true value: 0.3.
 #'
 #' @export
 #'
-KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
+KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no", N = NULL)
 {
   d = ncol(dataMatrix)
   n = nrow(dataMatrix)
@@ -165,6 +181,34 @@ KTMatrixEst <- function(dataMatrix, blockStructure = NULL, averaging = "no")
               method = "kendall")
           }
           blockKT = mean(vectorBlockKT)
+          estimate[g1,g2] = blockKT
+          estimate[g2,g1] = blockKT
+        }
+      }
+    } ,
+
+    "random" = {
+      for (g1 in 2:totalGroups) {
+        for (g2 in 1:(g1-1)) {
+          matrixBlockKT = matrix(nrow = length(blockStructure[[g1]]) ,
+                                 ncol = length(blockStructure[[g2]]) )
+          numberEntries = length(matrixBlockKT)
+          if (is.null(N)){
+            size = min(length(blockStructure[[g1]]) , length(blockStructure[[g2]]))
+          } else {
+            size = N
+          }
+          selectedEntries = sample.int(n = numberEntries, size = size, replace = FALSE)
+          for (j in 1:size)
+          {
+            j1 = (selectedEntries[j] - 1) %% length(blockStructure[[g1]]) + 1
+            j2 = (selectedEntries[j] - 1) %/% length(blockStructure[[g1]]) + 1
+            matrixBlockKT[j1,j2] = wdm::wdm(
+              x = dataMatrix[ , blockStructure[[g1]][j1] ] ,
+              y = dataMatrix[ , blockStructure[[g2]][j2] ] ,
+              method = "kendall")
+          }
+          blockKT = mean(matrixBlockKT, na.rm = TRUE)
           estimate[g1,g2] = blockKT
           estimate[g2,g1] = blockKT
         }
