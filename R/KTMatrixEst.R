@@ -45,6 +45,10 @@
 #' @author Rutger van der Spek, Alexis Derumigny
 #' @concept Kendall correlation coefficient
 #'
+#' @references van der Spek, R., & Derumigny, A. (2022).
+#' Fast estimation of Kendall's Tau and conditional Kendall's Tau matrices under structural assumptions.
+#' \href{https://arxiv.org/abs/2204.03285}{arxiv:2204.03285}.
+#'
 #' @examples
 #' # Estimating off-diagonal block Kendall's taus
 #' matrixCor = matrix(c(1  , 0.5, 0.3 ,0.3,
