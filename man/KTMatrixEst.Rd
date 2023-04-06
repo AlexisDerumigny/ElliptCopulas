@@ -84,6 +84,11 @@ print(unlist(InterBlockCor))
 # to be compared with the true value: 0.3.
 
 }
+\references{
+van der Spek, R., & Derumigny, A. (2022).
+Fast estimation of Kendall's Tau and conditional Kendall's Tau matrices under structural assumptions.
+\href{https://arxiv.org/abs/2204.03285}{arxiv:2204.03285}.
+}
 \author{
 Rutger van der Spek, Alexis Derumigny
 }
