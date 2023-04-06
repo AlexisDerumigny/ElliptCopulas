@@ -62,8 +62,6 @@
 #' @author Alexis Derumigny, Rutger van der Spek
 #'
 #' @export
-#' @importClassesFrom Rmpfr mpfr mpfrMatrix
-#' @importFrom Rmpfr mean
 #'
 EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
                         grid, h, Kernel = "epanechnikov", a = 1,
@@ -83,10 +81,13 @@ EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
     # h = Rmpfr::mpfr(h, precBits = precBits)
     # s_d = Rmpfr::Const("pi")^(d/2) / Rmpfr::igamma(d/2,0)
 
+    if (!requireNamespace("Rmpfr")){
+      stop("`Rmpfr` package should be installed to use the option `mpfr = TRUE`.")
+    }
+
     a = Rmpfr::mpfr(a, precBits = precBits)
     d = Rmpfr::mpfr(d, precBits = precBits)
     grid = Rmpfr::mpfr(grid, precBits = precBits)
-
   }
   s_d = pi^(d/2) / gamma(d/2)
   vector_Y = rep(NA , n)
@@ -109,7 +110,7 @@ EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
     psiZ = as.numeric( -a + (a ^ (d/2) + z^(d/2)) ^ (2/d) )
     psiPZ = z^(d/2 - 1) * (a ^ (d/2) + z^(d/2)) ^ (2/d - 1)
     # This should use mean.default() (not the mpfr version) to save computation time.
-    h_ny = (1/h) * mean( kernelFun((psiZ - vector_Y)/h) + kernelFun((psiZ + vector_Y)/h) )
+    h_ny = (1/h) * base::mean( kernelFun((psiZ - vector_Y)/h) + kernelFun((psiZ + vector_Y)/h) )
     gn_z = 1/s_d * z^(-d/2 + 1) * psiPZ * h_ny
     grid_g[i1] = as.numeric(gn_z)
 

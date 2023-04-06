@@ -10,6 +10,8 @@ if available in `blockStructure`.
 
 * Fixed a bug in `EllDistrEst` when the variance matrix is not the identity.
 
+* Moving dependence `Rmpfr` from Import to Suggest.
+
 * New dependence: Suggest: `testthat`.
 
 # ElliptCopulas 0.1.3
