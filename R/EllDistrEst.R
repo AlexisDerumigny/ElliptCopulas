@@ -9,10 +9,16 @@
 #' @param Sigma_m1 (estimated) inverse of the covariance matrix of X.
 #'
 #' @param grid grid of values on which to estimate the density generator
-#' @param h bandwidth of the kernel
+#' @param h bandwidth of the kernel. Can be either a number or a vector of the
+#' size \code{length(grid)}.
 #' @param Kernel kernel used for the smoothing
+#'
 #' @param a tuning parameter to improve the performance at 0.
-#' See Liebscher (2005), Example p.210.
+#' See Liebscher (2005), Example p.210. Can be either a number or a vector of the
+#' size \code{length(grid)}. If this is a vector, the code will need to allocate
+#' a matrix of size \code{nrow(X) * length(grid)} which can be prohibitive in
+#' some cases.
+#'
 #' @param mpfr if \code{mpfr = TRUE}, multiple precision floating point is set.
 #' This allows for a higher accuracy, at the expense of computing times.
 #' It is recommended to use this option for higher dimensions.
@@ -90,31 +96,72 @@ EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
     grid = Rmpfr::mpfr(grid, precBits = precBits)
   }
   s_d = pi^(d/2) / gamma(d/2)
-  vector_Y = rep(NA , n)
   grid_g = rep(NA, n1)
 
   if (dopb){ pb = pbapply::startpb(max = n + n1) }
 
-  for (i in 1:n) {
-    # The matrix product is the expensive part (in high dimensions)
-    # and should not use the mpfr library.
-    # (mpfr is only used in the exponentiation, after)
-    vector_Y[i] = as.numeric(
-      -a + (a ^ (d/2) + ( (X[i,] - mu) %*% Sigma_m1 %*% (X[i,] - mu) )
-            ^ (d/2) ) ^ (2/d) )
-    if (dopb){ pbapply::setpb(pb, i) }
+  # `h` is always converted to a vector of size `n1`
+  if (length(h) == 1){
+    h = rep(h, length(grid))
+  } else if (length(h) != length(grid)){
+    stop("The length of `h` should be 1 or the length of the grid.")
   }
 
-  for (i1 in 1:n1){
-    z = grid[i1]
-    psiZ = as.numeric( -a + (a ^ (d/2) + z^(d/2)) ^ (2/d) )
-    psiPZ = z^(d/2 - 1) * (a ^ (d/2) + z^(d/2)) ^ (2/d - 1)
-    # This should use mean.default() (not the mpfr version) to save computation time.
-    h_ny = (1/h) * base::mean( kernelFun((psiZ - vector_Y)/h) + kernelFun((psiZ + vector_Y)/h) )
-    gn_z = 1/s_d * z^(-d/2 + 1) * psiPZ * h_ny
-    grid_g[i1] = as.numeric(gn_z)
+  if (length(a) == 1){
+    vector_Y = rep(NA , n)
 
-    if (dopb){ pbapply::setpb(pb, n + i1) }
+    for (i in 1:n) {
+      # The matrix product is the expensive part (in high dimensions)
+      # and should not use the mpfr library.
+      # (mpfr is only used in the exponentiation, after)
+      vector_Y[i] = as.numeric(
+        -a + (a ^ (d/2) + ( (X[i,] - mu) %*% Sigma_m1 %*% (X[i,] - mu) )
+              ^ (d/2) ) ^ (2/d) )
+      if (dopb){ pbapply::setpb(pb, i) }
+    }
+
+    for (i1 in 1:n1){
+      z = grid[i1]
+      psiZ = as.numeric( -a + (a ^ (d/2) + z^(d/2)) ^ (2/d) )
+      psiPZ = z^(d/2 - 1) * (a ^ (d/2) + z^(d/2)) ^ (2/d - 1)
+      # This should use mean.default() (not the mpfr version) to save computation time.
+      h_ny = (1/h[i1]) * base::mean( kernelFun((psiZ - vector_Y)/h[i1]) +
+                                      kernelFun((psiZ + vector_Y)/h[i1]) )
+      gn_z = 1/s_d * z^(-d/2 + 1) * psiPZ * h_ny
+      grid_g[i1] = as.numeric(gn_z)
+
+      if (dopb){ pbapply::setpb(pb, n + i1) }
+    }
+
+  } else if (length(a) == length(grid)) {
+
+    matrix_Y = matrix(nrow = n1, ncol = n)
+
+    for (i in 1:n) {
+      # The matrix product is the expensive part (in high dimensions)
+      # and should not use the mpfr library.
+      # (mpfr is only used in the exponentiation, after)
+      matrix_Y[, i] = as.numeric(
+        -a + (a ^ (d/2) + c( (X[i,] - mu) %*% Sigma_m1 %*% (X[i,] - mu) )
+              ^ (d/2) ) ^ (2/d) )
+      if (dopb){ pbapply::setpb(pb, i) }
+    }
+
+    for (i1 in 1:n1){
+      z = grid[i1]
+      psiZ = as.numeric( -a[i1] + (a[i1] ^ (d/2) + z^(d/2)) ^ (2/d) )
+      psiPZ = z^(d/2 - 1) * (a[i1] ^ (d/2) + z^(d/2)) ^ (2/d - 1)
+      # This should use mean.default() (not the mpfr version) to save computation time.
+      h_ny = (1/h[i1]) * base::mean( kernelFun((psiZ - matrix_Y[i1, ])/h[i1]) +
+                                      kernelFun((psiZ + matrix_Y[i1, ])/h[i1]) )
+      gn_z = 1/s_d * z^(-d/2 + 1) * psiPZ * h_ny
+      grid_g[i1] = as.numeric(gn_z)
+
+      if (dopb){ pbapply::setpb(pb, n + i1) }
+    }
+
+  } else {
+    stop("The length of `a` should be 1 or the length of the grid.")
   }
 
   if (dopb){ pbapply::closepb(pb) }

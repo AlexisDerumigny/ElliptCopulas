@@ -26,12 +26,16 @@ EllDistrEst(
 
 \item{grid}{grid of values on which to estimate the density generator}
 
-\item{h}{bandwidth of the kernel}
+\item{h}{bandwidth of the kernel. Can be either a number or a vector of the
+size \code{length(grid)}.}
 
 \item{Kernel}{kernel used for the smoothing}
 
 \item{a}{tuning parameter to improve the performance at 0.
-See Liebscher (2005), Example p.210.}
+See Liebscher (2005), Example p.210. Can be either a number or a vector of the
+size \code{length(grid)}. If this is a vector, the code will need to allocate
+a matrix of size \code{nrow(X) * length(grid)} which can be prohibitive in
+some cases.}
 
 \item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is set.
 This allows for a higher accuracy, at the expense of computing times.

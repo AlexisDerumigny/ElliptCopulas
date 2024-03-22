@@ -1,7 +1,7 @@
 Package: ElliptCopulas
 Type: Package
 Title: Inference of Elliptical Distributions and Copulas
-Version: 0.1.3.1
+Version: 0.1.3.2
 Description: Provides functions for the simulation and
   the nonparametric estimation of elliptical distributions,
   meta-elliptical copulas and trans-elliptical distributions,
@@ -14,7 +14,7 @@ Authors@R: c(
 License: GPL-3
 Encoding: UTF-8
 LazyLoad: yes
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Depends: 
   R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)

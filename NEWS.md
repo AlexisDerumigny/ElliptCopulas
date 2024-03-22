@@ -1,4 +1,9 @@
 
+* `EllDistrEst` now works in a vectorized way, where `a` and/or `h` are vectors
+of the same length as the `grid` on which the estimator is computed. Each value
+of the grid is then estimated with the corresponding tuning parameters
+(corresponding element of `a` and of `h`).
+
 * New option `averaging = "random"` for the function `KTMatrixEst`
 corresponding to the averaging of a random set of entries in the off-diagonal blocks.
 
