@@ -48,6 +48,8 @@
 #' # which explicit expression is:
 #' 2 * exp(x) * ( exp(x) + 2 )
 #'
+#' @export
+#'
 vectorized_Faa_di_Bruno <- function(f, g, x, k, args_f, args_g)
 {
   if (k < 1){
@@ -126,7 +128,7 @@ vectorized_Faa_di_Bruno <- function(f, g, x, k, args_f, args_g)
 #' pol.string <- examp.list[[2]][1]
 #' pol.string
 #'
-#' @export
+#' @noRd
 #'
 get.list.BellPol <- function(k){
   lst = lapply(1:k, kStatistics::eBellPol, n = k)
