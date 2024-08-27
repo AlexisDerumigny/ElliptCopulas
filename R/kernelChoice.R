@@ -22,6 +22,8 @@
 #' takes as input a numeric vector \code{x} of length \eqn{n},
 #' and returns the vector \eqn{K_k(x[i])}, \eqn{i=1, \dots, n}.
 #'
+#' @author Alexis Derumigny, Victor Ryan
+#'
 #' @examples
 #'
 #' gaussK = getKernel(Kernel = "gaussian", k = 0)
@@ -85,6 +87,11 @@ getKernel <- function(Kernel, k = 0){
   return (kernelFun)
 }
 
+#'
+#' @author Alexis Derumigny, Victor Ryan
+#'
+#' @noRd
+#'
 getKernelintegrals <- function(Kernel){
 
   switch(

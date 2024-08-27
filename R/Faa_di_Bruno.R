@@ -16,9 +16,11 @@
 #' @param args_f,args_g the list of additional parameters to be passed on
 #' to \code{f} and \code{g}. This must be the same for all values of \code{x}.
 #'
-#' @returns A vector of size \code{length(x)} for which
+#' @returns a vector of size \code{length(x)} for which
 #' the \code{i}-th component is
 #' \code{(f ∘ g)^(k) (x[i])}
+#'
+#' @author Alexis Derumigny, Victor Ryan
 #'
 #' @examples
 #' g <- function(x, k, a){
@@ -119,6 +121,8 @@ vectorized_Faa_di_Bruno <- function(f, g, x, k, args_f, args_g)
 #'
 #' @return the list of size \code{k} of the Bell polynomials,
 #' ready to be parsed.
+#'
+#' @author Alexis Derumigny, Victor Ryan
 #'
 #' @examples
 #' k = 3

@@ -23,7 +23,7 @@ at which the \code{k}-th order derivatives is to be evaluated.}
 to \code{f} and \code{g}. This must be the same for all values of \code{x}.}
 }
 \value{
-A vector of size \code{length(x)} for which
+a vector of size \code{length(x)} for which
 the \code{i}-th component is
 \code{(f ∘ g)^(k) (x[i])}
 }
@@ -58,4 +58,7 @@ vectorized_Faa_di_Bruno(f = f, g = g, x = x, k = 1,
 # which explicit expression is:
 2 * exp(x) * ( exp(x) + 2 )
 
+}
+\author{
+Alexis Derumigny, Victor Ryan
 }
