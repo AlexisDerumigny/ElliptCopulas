@@ -87,6 +87,12 @@ getKernel <- function(Kernel, k = 0){
   return (kernelFun)
 }
 
+
+#' Obtain values of integrals
+#' \deqn{ ( \int_{- \infty}^{+ \infty} K(x)^2 dx )^2}
+#' and
+#' \deqn{\int_{- \infty}^{+ \infty} x^2 K(x) dx}
+#' for different kernels \code{K}.
 #'
 #' @author Alexis Derumigny, Victor Ryan
 #'
