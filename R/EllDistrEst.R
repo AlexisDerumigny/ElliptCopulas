@@ -19,12 +19,7 @@
 #' a matrix of size \code{nrow(X) * length(grid)} which can be prohibitive in
 #' some cases.
 #'
-#' @param mpfr if \code{mpfr = TRUE}, multiple precision floating point is set.
-#' This allows for a higher accuracy, at the expense of computing times.
-#' It is recommended to use this option for higher dimensions.
-#' @param precBits number of precBits used for floating point precision
-#' (only used if \code{mpfr = TRUE}).
-#'
+#' @template param-mpfr
 #' @template param-dopb
 #'
 #' @return the values of the density generator of the elliptical copula,

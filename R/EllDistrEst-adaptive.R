@@ -26,10 +26,7 @@
 #' @param Kernel name of the kernel. Possible choices are
 #' \code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.
 #'
-#' @param mpfr,precBits \code{mpfr} is a Boolean value indicating whether to use
-#' the package \link[Rmpfr]{Rmpfr} for more precise computations. If so,
-#' then \code{precBits} indicates how many bits of precision are used.
-#'
+#' @template param-mpfr
 #' @template param-dopb
 #'
 #' @return a list with the following elements: \itemize{
