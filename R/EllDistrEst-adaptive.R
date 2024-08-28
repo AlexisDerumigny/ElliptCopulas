@@ -22,9 +22,7 @@
 #' @param grid_a the grid of possible values of \code{a} to be used.
 #' If missing, a default sequence is used.
 #'
-#' @param Kernel name of the kernel. Possible choices are
-#' \code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.
-#'
+#' @template param-Kernel
 #' @template param-mpfr
 #' @template param-dopb
 #'
