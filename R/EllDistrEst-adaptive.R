@@ -4,8 +4,8 @@
 #' with adaptive choice of the bandwidth
 #'
 #' @template param-X-elliptical
-#' @param mu (estimated) mean of X.
-#' @param Sigma_m1 (estimated) inverse of the covariance matrix of X.
+#' @template param-mu
+#' @template param-Sigma_m1
 #'
 #' @param grid vector containing the values at which we want the generator to be
 #' estimated.

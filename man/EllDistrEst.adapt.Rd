@@ -19,12 +19,15 @@ EllDistrEst.adapt(
 )
 }
 \arguments{
-\item{X}{dataset, assumed to be i.i.d. observations (rows) of an elliptical
-distribution.}
+\item{X}{a matrix of size \eqn{n \times d}, assumed to be \eqn{n} i.i.d. observations
+(rows) of a \eqn{d}-dimensional elliptical distribution.}
 
-\item{mu}{(estimated) mean of X.}
+\item{mu}{mean of X. This can be the true value or an estimate. It must be
+a vector of dimension \eqn{d}.}
 
-\item{Sigma_m1}{(estimated) inverse of the covariance matrix of X.}
+\item{Sigma_m1}{inverse of the covariance matrix of X.
+This can be the true value or an estimate. It must be
+a matrix of dimension \eqn{d \times d}.}
 
 \item{grid}{vector containing the values at which we want the generator to be
 estimated.}
