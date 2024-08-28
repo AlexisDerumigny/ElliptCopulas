@@ -4,3 +4,5 @@
 ^README\.Rmd$
 ^man\/figures$
 ^tests\/testthat\/test-kernelChoice\.R$
+man-roxygen
+

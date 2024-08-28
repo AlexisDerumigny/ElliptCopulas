@@ -19,8 +19,15 @@ EllDistrEst.adapt(
 )
 }
 \arguments{
-\item{X}{dataset, assumed to be i.i.d. observations (rows) of an elliptical
-distribution.}
+\item{X}{a matrix of size \eqn{n \times d}, assumed to be \eqn{n} i.i.d. observations
+(rows) of a \eqn{d}-dimensional elliptical distribution.}
+
+\item{mu}{mean of X. This can be the true value or an estimate. It must be
+a vector of dimension \eqn{d}.}
+
+\item{Sigma_m1}{inverse of the covariance matrix of X.
+This can be the true value or an estimate. It must be
+a matrix of dimension \eqn{d \times d}.}
 
 \item{grid}{vector containing the values at which we want the generator to be
 estimated.}
@@ -40,11 +47,16 @@ If missing, a default sequence is used.}
 \item{Kernel}{name of the kernel. Possible choices are
 \code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.}
 
-\item{mpfr, precBits}{\code{mpfr} is a Boolean value indicating whether to use
-the package \link[Rmpfr]{Rmpfr} for more precise computations. If so, then \code{precBits}
-indicates how many bits of precision are used.}
+\item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is used
+via the package \link[Rmpfr]{Rmpfr}.
+This allows for a higher (numerical) accuracy, at the expense of computing time.
+It is recommended to use this option for higher dimensions.}
 
-\item{dopb}{a Boolean value indicating whether to print a progress bar.}
+\item{precBits}{number of precBits used for floating point precision
+(only used if \code{mpfr = TRUE}).}
+
+\item{dopb}{a Boolean value.
+If \code{dopb = TRUE}, a progress bar is displayed.}
 }
 \value{
 a list with the following elements: \itemize{

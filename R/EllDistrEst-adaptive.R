@@ -3,10 +3,9 @@
 #' Estimation of the generator of the elliptical distribution by kernel smoothing
 #' with adaptive choice of the bandwidth
 #'
-#' @param X dataset, assumed to be i.i.d. observations (rows) of an elliptical
-#' distribution.
-#' @param mu (estimated) mean of X.
-#' @param Sigma_m1 (estimated) inverse of the covariance matrix of X.
+#' @template param-X-elliptical
+#' @template param-mu
+#' @template param-Sigma_m1
 #'
 #' @param grid vector containing the values at which we want the generator to be
 #' estimated.
@@ -23,14 +22,9 @@
 #' @param grid_a the grid of possible values of \code{a} to be used.
 #' If missing, a default sequence is used.
 #'
-#' @param Kernel name of the kernel. Possible choices are
-#' \code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.
-#'
-#' @param mpfr,precBits \code{mpfr} is a Boolean value indicating whether to use
-#' the package \link[Rmpfr]{Rmpfr} for more precise computations. If so,
-#' then \code{precBits} indicates how many bits of precision are used.
-#'
-#' @param dopb a Boolean value indicating whether to print a progress bar.
+#' @template param-Kernel
+#' @template param-mpfr
+#' @template param-dopb
 #'
 #' @return a list with the following elements: \itemize{
 #'   \item \code{g} a vector of size \code{n1 = length(grid)}.
@@ -148,6 +142,8 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #' Estimate the AMSE
 #'
 #' @author Alexis Derumigny, Victor Ryan
+#'
+#' @template param-dopb
 #'
 #' @examples
 #' # Comparison between the estimated and true generator of the Gaussian distribution

@@ -4,14 +4,16 @@
 #' This function uses Liebscher's algorithm to estimate the density generator
 #' of an elliptical distribution by kernel smoothing.
 #'
-#' @param X matrix of observations.
-#' @param mu (estimated) mean of X.
-#' @param Sigma_m1 (estimated) inverse of the covariance matrix of X.
+#' @template param-X-elliptical
+#' @template param-mu
+#' @template param-Sigma_m1
 #'
-#' @param grid grid of values on which to estimate the density generator
+#' @param grid grid of values on which to estimate the density generator.
+#'
 #' @param h bandwidth of the kernel. Can be either a number or a vector of the
 #' size \code{length(grid)}.
-#' @param Kernel kernel used for the smoothing
+#'
+#' @template param-Kernel
 #'
 #' @param a tuning parameter to improve the performance at 0.
 #' See Liebscher (2005), Example p.210. Can be either a number or a vector of the
@@ -19,12 +21,8 @@
 #' a matrix of size \code{nrow(X) * length(grid)} which can be prohibitive in
 #' some cases.
 #'
-#' @param mpfr if \code{mpfr = TRUE}, multiple precision floating point is set.
-#' This allows for a higher accuracy, at the expense of computing times.
-#' It is recommended to use this option for higher dimensions.
-#' @param precBits number of precBits used for floating point precision
-#' (only used if \code{mpfr = TRUE}).
-#' @param dopb if \code{dopb = TRUE}, a progressbar is displayed.
+#' @template param-mpfr
+#' @template param-dopb
 #'
 #' @return the values of the density generator of the elliptical copula,
 #' estimated at each point of the `grid`.
