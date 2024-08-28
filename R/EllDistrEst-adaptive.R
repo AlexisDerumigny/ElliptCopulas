@@ -30,7 +30,7 @@
 #' the package \link[Rmpfr]{Rmpfr} for more precise computations. If so,
 #' then \code{precBits} indicates how many bits of precision are used.
 #'
-#' @param dopb a Boolean value indicating whether to print a progress bar.
+#' @template param-dopb
 #'
 #' @return a list with the following elements: \itemize{
 #'   \item \code{g} a vector of size \code{n1 = length(grid)}.
@@ -148,6 +148,8 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #' Estimate the AMSE
 #'
 #' @author Alexis Derumigny, Victor Ryan
+#'
+#' @template param-dopb
 #'
 #' @examples
 #' # Comparison between the estimated and true generator of the Gaussian distribution

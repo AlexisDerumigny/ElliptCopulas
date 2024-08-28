@@ -22,6 +22,10 @@ EllDistrEst.adapt(
 \item{X}{dataset, assumed to be i.i.d. observations (rows) of an elliptical
 distribution.}
 
+\item{mu}{(estimated) mean of X.}
+
+\item{Sigma_m1}{(estimated) inverse of the covariance matrix of X.}
+
 \item{grid}{vector containing the values at which we want the generator to be
 estimated.}
 
@@ -41,8 +45,8 @@ If missing, a default sequence is used.}
 \code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.}
 
 \item{mpfr, precBits}{\code{mpfr} is a Boolean value indicating whether to use
-the package \link[Rmpfr]{Rmpfr} for more precise computations. If so, then \code{precBits}
-indicates how many bits of precision are used.}
+the package \link[Rmpfr]{Rmpfr} for more precise computations. If so,
+then \code{precBits} indicates how many bits of precision are used.}
 
 \item{dopb}{a Boolean value indicating whether to print a progress bar.}
 }

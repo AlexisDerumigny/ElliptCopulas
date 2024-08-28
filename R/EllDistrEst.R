@@ -24,7 +24,8 @@
 #' It is recommended to use this option for higher dimensions.
 #' @param precBits number of precBits used for floating point precision
 #' (only used if \code{mpfr = TRUE}).
-#' @param dopb if \code{dopb = TRUE}, a progressbar is displayed.
+#'
+#' @template param-dopb
 #'
 #' @return the values of the density generator of the elliptical copula,
 #' estimated at each point of the `grid`.

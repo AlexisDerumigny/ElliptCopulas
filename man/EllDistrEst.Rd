@@ -44,7 +44,8 @@ It is recommended to use this option for higher dimensions.}
 \item{precBits}{number of precBits used for floating point precision
 (only used if \code{mpfr = TRUE}).}
 
-\item{dopb}{if \code{dopb = TRUE}, a progressbar is displayed.}
+\item{dopb}{a Boolean value.
+If \code{dopb = TRUE}, a progressbar is displayed.}
 }
 \value{
 the values of the density generator of the elliptical copula,
