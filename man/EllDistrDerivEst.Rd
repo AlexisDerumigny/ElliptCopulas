@@ -18,6 +18,48 @@ EllDistrDerivEst(
   dopb = TRUE
 )
 }
+\arguments{
+\item{X}{a matrix of size \eqn{n \times d}, assumed to be \eqn{n} i.i.d. observations
+(rows) of a \eqn{d}-dimensional elliptical distribution.}
+
+\item{mu}{mean of X. This can be the true value or an estimate. It must be
+a vector of dimension \eqn{d}.}
+
+\item{Sigma_m1}{inverse of the covariance matrix of X.
+This can be the true value or an estimate. It must be
+a matrix of dimension \eqn{d \times d}.}
+
+\item{grid}{grid of values on which to estimate the density generator.}
+
+\item{h}{bandwidth of the kernel. Can be either a number or a vector of the
+size \code{length(grid)}.}
+
+\item{Kernel}{name of the kernel. Possible choices are
+\code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.}
+
+\item{a}{tuning parameter to improve the performance at 0.}
+
+\item{k}{highest order of the derivative of the generator that is to be
+estimated. For example, \code{k = 1} corresponds to the estimation of the
+generator and of its derivative. \code{k = 2} corresponds to the estimation
+of the generator as well as its first and second derivatives.}
+
+\item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is used
+via the package \link[Rmpfr]{Rmpfr}.
+This allows for a higher (numerical) accuracy, at the expense of computing time.
+It is recommended to use this option for higher dimensions.}
+
+\item{precBits}{number of precBits used for floating point precision
+(only used if \code{mpfr = TRUE}).}
+
+\item{dopb}{a Boolean value.
+If \code{dopb = TRUE}, a progress bar is displayed.}
+}
+\value{
+a matrix of size \code{length(grid) * (kmax + 1)}
+with the estimated value of the generator and all its derivatives
+at all orders until and including \code{kmax}, at all points of the grid.
+}
 \description{
 Estimate the derivatives of a generator
 }
@@ -30,12 +72,12 @@ X = matrix(rnorm(n * d), ncol = d)
 grid = seq(0, 5, by = 0.1)
 a = 1.5
 
-gprimeEst = EllDistrDerivEst(X = X, grid = grid, a = a, h = 0.09, k = 1)
+gprimeEst = EllDistrDerivEst(X = X, grid = grid, a = a, h = 0.09, k = 1)[,2]
 plot(grid, gprimeEst, type = "l")
 
 # Computation of true values
 g = exp(-grid/2)/(2*pi)^{3/2}
-gprime = (-1/2) *exp(-grid/2)/(2*pi)^{3/2}
+gprime = (-1/2) * exp(-grid/2)/(2*pi)^{3/2}
 
 lines(grid, gprime, col = "red")
 

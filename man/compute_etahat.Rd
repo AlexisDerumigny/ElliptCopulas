@@ -19,7 +19,38 @@ compute_etahat(
 )
 }
 \arguments{
+\item{X}{a matrix of size \eqn{n \times d}, assumed to be \eqn{n} i.i.d. observations
+(rows) of a \eqn{d}-dimensional elliptical distribution.}
+
+\item{mu}{mean of X. This can be the true value or an estimate. It must be
+a vector of dimension \eqn{d}.}
+
+\item{Sigma_m1}{inverse of the covariance matrix of X.
+This can be the true value or an estimate. It must be
+a matrix of dimension \eqn{d \times d}.}
+
+\item{grid}{grid of values on which to estimate the density generator.}
+
+\item{h}{bandwidth of the kernel. Can be either a number or a vector of the
+size \code{length(grid)}.}
+
+\item{Kernel}{name of the kernel. Possible choices are
+\code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.}
+
+\item{a}{tuning parameter to improve the performance at 0.}
+
 \item{k}{order of the derivative}
+
+\item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is used
+via the package \link[Rmpfr]{Rmpfr}.
+This allows for a higher (numerical) accuracy, at the expense of computing time.
+It is recommended to use this option for higher dimensions.}
+
+\item{precBits}{number of precBits used for floating point precision
+(only used if \code{mpfr = TRUE}).}
+
+\item{dopb}{a Boolean value.
+If \code{dopb = TRUE}, a progress bar is displayed.}
 }
 \value{
 a vector of size \code{n1 = length(grid)}.
@@ -33,6 +64,7 @@ of an elliptical distribution.
 }
 \examples{
 
+if (FALSE){
 # Comparison between the estimated and true generator of the Gaussian distribution
 n = 500000
 d = 3
@@ -57,8 +89,10 @@ rhoprimexi = ((d-2) * grid^((d-4)/2) * psiaprime
 grid^((d-2)/2) / (psiaprime^2) * gprime
 
 lines(grid, rhoprimexi, col = "red")
+}
 
 }
 \author{
 Victor Ryan, Alexis Derumigny
 }
+\keyword{internal}

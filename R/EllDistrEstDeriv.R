@@ -5,7 +5,23 @@
 #' for estimating the \eqn{k}-th derivative of the generator
 #' of an elliptical distribution.
 #'
+#' @template param-X-elliptical
+#' @template param-mu
+#' @template param-Sigma_m1
+#'
+#' @param grid grid of values on which to estimate the density generator.
+#'
+#' @param h bandwidth of the kernel. Can be either a number or a vector of the
+#' size \code{length(grid)}.
+#'
+#' @template param-Kernel
+#'
+#' @param a tuning parameter to improve the performance at 0.
 #' @param k order of the derivative
+#'
+#' @template param-mpfr
+#' @template param-dopb
+#'
 #'
 #' @return a vector of size \code{n1 = length(grid)}.
 #' Each component of this vector is \eqn{\hat{\eta}_k(x[i])}
@@ -15,6 +31,7 @@
 #'
 #' @examples
 #'
+#' if (FALSE){
 #' # Comparison between the estimated and true generator of the Gaussian distribution
 #' n = 500000
 #' d = 3
@@ -39,8 +56,10 @@
 #' grid^((d-2)/2) / (psiaprime^2) * gprime
 #'
 #' lines(grid, rhoprimexi, col = "red")
+#' }
 #'
 #' @export
+#' @keywords internal
 #'
 compute_etahat <- function(X, mu = 0, Sigma_m1 = diag(d),
                            grid, h, Kernel = "gaussian", a = 1,
@@ -108,6 +127,30 @@ compute_etahat <- function(X, mu = 0, Sigma_m1 = diag(d),
 
 #' Estimate the derivatives of a generator
 #'
+#' @template param-X-elliptical
+#' @template param-mu
+#' @template param-Sigma_m1
+#'
+#' @param grid grid of values on which to estimate the density generator.
+#'
+#' @param h bandwidth of the kernel. Can be either a number or a vector of the
+#' size \code{length(grid)}.
+#'
+#' @template param-Kernel
+#'
+#' @param a tuning parameter to improve the performance at 0.
+#' @param k highest order of the derivative of the generator that is to be
+#' estimated. For example, \code{k = 1} corresponds to the estimation of the
+#' generator and of its derivative. \code{k = 2} corresponds to the estimation
+#' of the generator as well as its first and second derivatives.
+#'
+#' @template param-mpfr
+#' @template param-dopb
+#'
+#' @returns a matrix of size \code{length(grid) * (kmax + 1)}
+#' with the estimated value of the generator and all its derivatives
+#' at all orders until and including \code{kmax}, at all points of the grid.
+#'
 #' @examples
 #'
 #' # Comparison between the estimated and true generator of the Gaussian distribution
@@ -117,12 +160,12 @@ compute_etahat <- function(X, mu = 0, Sigma_m1 = diag(d),
 #' grid = seq(0, 5, by = 0.1)
 #' a = 1.5
 #'
-#' gprimeEst = EllDistrDerivEst(X = X, grid = grid, a = a, h = 0.09, k = 1)
+#' gprimeEst = EllDistrDerivEst(X = X, grid = grid, a = a, h = 0.09, k = 1)[,2]
 #' plot(grid, gprimeEst, type = "l")
 #'
 #' # Computation of true values
 #' g = exp(-grid/2)/(2*pi)^{3/2}
-#' gprime = (-1/2) *exp(-grid/2)/(2*pi)^{3/2}
+#' gprime = (-1/2) * exp(-grid/2)/(2*pi)^{3/2}
 #'
 #' lines(grid, gprime, col = "red")
 #'
@@ -157,14 +200,15 @@ EllDistrDerivEst <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
                          - 2 * grid^((d-2)/2) * psiaxsecond) / (psiaxprime^3)
               * ghat) * psiaxprime^2 / grid^((d-2)/2)
 
-    return (result)
-
-  } else if (k == 2){
+    return (cbind(ghat, result))
 
   } else {
 
-
-    stop("k > 2 not implemented yet")
+    result = estimate.derivatives.generator(
+      X = X, mu = mu, Sigma_m1 = Sigma_m1,
+      grid = grid, h = h, Kernel = Kernel, a = a,
+      kmax = k,
+      mpfr = mpfr, precBits = precBits, dopb = dopb)
   }
 
 }
@@ -173,6 +217,23 @@ EllDistrDerivEst <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 
 #' Estimate a generator and its derivatives
 #'
+#' @template param-X-elliptical
+#' @template param-mu
+#' @template param-Sigma_m1
+#'
+#' @param grid grid of values on which to estimate the density generator.
+#'
+#' @param h bandwidth of the kernel. Can be either a number or a vector of the
+#' size \code{length(grid)}.
+#'
+#' @template param-Kernel
+#'
+#' @param a tuning parameter to improve the performance at 0.
+#' @param kmax highest order of the derivative of the generator.
+#'
+#' @template param-mpfr
+#' @template param-dopb
+#'
 #' @returns a matrix of size \code{length(grid) * (kmax + 1)}
 #' with the estimated value of the generator and all its derivatives
 #' at all orders until and including \code{kmax}, at all points of the grid.
@@ -180,6 +241,8 @@ EllDistrDerivEst <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #' @author Victor Ryan, Alexis Derumigny
 #'
 #' @examples
+#'
+#' if (FALSE){
 #' n = 800000
 #' d = 3
 #' X = matrix(rnorm(n * d), ncol = d)
@@ -198,22 +261,30 @@ EllDistrDerivEst <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #'
 #' plot(grid, gprime, col = "blue", type = "l")
 #' lines(grid, estim_g_derivs[,2])
+#' }
 #'
+#' @noRd
 #'
-#' @export
-estimate.derivatives.generator <- function(X, grid, d, a, h, kmax)
+estimate.derivatives.generator <- function(X, mu = 0, Sigma_m1 = diag(d),
+                                           grid, h, Kernel = "gaussian", a = 1,
+                                           kmax,
+                                           mpfr = FALSE, precBits = 100, dopb = TRUE)
 {
   if (kmax < 1){
     stop("kmax has to be an integer, at least 1. Here kmax = ", kmax)
   }
+  d = NCOL(X)
 
   # mat_etahat[i, 1+k] represents etahat^k computed
   # at the i-th point of the grid
   mat_etahat = matrix(data = NA_real_, nrow = length(grid), ncol = kmax + 1)
 
   for(k in 0:kmax){
-    mat_etahat[, 1+k] = compute_etahat(X = X, grid = grid,
-                                       a = a, h = h, k = k)
+    mat_etahat[, 1+k] = compute_etahat(
+      X = X, mu = mu, Sigma_m1 = Sigma_m1,
+      grid = grid, h = h, Kernel = Kernel, a = a,
+      k = k,
+      mpfr = mpfr, precBits = precBits, dopb = dopb)
   }
 
   arr.mat.alpha = compute_matrix_alpha(kmax = kmax, grid = grid,
