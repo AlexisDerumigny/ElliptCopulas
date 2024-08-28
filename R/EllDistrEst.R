@@ -11,7 +11,8 @@
 #' @param grid grid of values on which to estimate the density generator
 #' @param h bandwidth of the kernel. Can be either a number or a vector of the
 #' size \code{length(grid)}.
-#' @param Kernel kernel used for the smoothing
+#'
+#' @template param-Kernel
 #'
 #' @param a tuning parameter to improve the performance at 0.
 #' See Liebscher (2005), Example p.210. Can be either a number or a vector of the
