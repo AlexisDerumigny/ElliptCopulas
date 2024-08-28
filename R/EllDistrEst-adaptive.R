@@ -143,7 +143,10 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #'
 #' @author Alexis Derumigny, Victor Ryan
 #'
-#' @template param-dopb
+#' @inheritParams EllDistrEst
+#'
+#' @returns a vector of the same size as the grid, with the corresponding value
+#' for the AMSE.
 #'
 #' @examples
 #' # Comparison between the estimated and true generator of the Gaussian distribution
