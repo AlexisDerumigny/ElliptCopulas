@@ -17,6 +17,10 @@ estimAMSE(
   dopb = TRUE
 )
 }
+\arguments{
+\item{dopb}{a Boolean value.
+If \code{dopb = TRUE}, a progress bar is displayed.}
+}
 \description{
 Estimate the AMSE
 }

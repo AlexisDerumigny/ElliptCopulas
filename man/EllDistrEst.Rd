@@ -18,7 +18,8 @@ EllDistrEst(
 )
 }
 \arguments{
-\item{X}{matrix of observations.}
+\item{X}{a matrix of size \eqn{n \times d}, assumed to be \eqn{n} i.i.d. observations
+(rows) of a \eqn{d}-dimensional elliptical distribution.}
 
 \item{mu}{(estimated) mean of X.}
 
@@ -37,15 +38,16 @@ size \code{length(grid)}. If this is a vector, the code will need to allocate
 a matrix of size \code{nrow(X) * length(grid)} which can be prohibitive in
 some cases.}
 
-\item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is set.
-This allows for a higher accuracy, at the expense of computing times.
+\item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is used
+via the package \link[Rmpfr]{Rmpfr}.
+This allows for a higher (numerical) accuracy, at the expense of computing time.
 It is recommended to use this option for higher dimensions.}
 
 \item{precBits}{number of precBits used for floating point precision
 (only used if \code{mpfr = TRUE}).}
 
 \item{dopb}{a Boolean value.
-If \code{dopb = TRUE}, a progressbar is displayed.}
+If \code{dopb = TRUE}, a progress bar is displayed.}
 }
 \value{
 the values of the density generator of the elliptical copula,

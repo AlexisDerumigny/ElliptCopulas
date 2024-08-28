@@ -4,7 +4,7 @@
 #' This function uses Liebscher's algorithm to estimate the density generator
 #' of an elliptical distribution by kernel smoothing.
 #'
-#' @param X matrix of observations.
+#' @template param-X-elliptical
 #' @param mu (estimated) mean of X.
 #' @param Sigma_m1 (estimated) inverse of the covariance matrix of X.
 #'

@@ -44,11 +44,16 @@ If missing, a default sequence is used.}
 \item{Kernel}{name of the kernel. Possible choices are
 \code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.}
 
-\item{mpfr, precBits}{\code{mpfr} is a Boolean value indicating whether to use
-the package \link[Rmpfr]{Rmpfr} for more precise computations. If so,
-then \code{precBits} indicates how many bits of precision are used.}
+\item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is used
+via the package \link[Rmpfr]{Rmpfr}.
+This allows for a higher (numerical) accuracy, at the expense of computing time.
+It is recommended to use this option for higher dimensions.}
 
-\item{dopb}{a Boolean value indicating whether to print a progress bar.}
+\item{precBits}{number of precBits used for floating point precision
+(only used if \code{mpfr = TRUE}).}
+
+\item{dopb}{a Boolean value.
+If \code{dopb = TRUE}, a progress bar is displayed.}
 }
 \value{
 a list with the following elements: \itemize{

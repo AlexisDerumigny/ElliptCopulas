@@ -3,8 +3,7 @@
 #' Estimation of the generator of the elliptical distribution by kernel smoothing
 #' with adaptive choice of the bandwidth
 #'
-#' @param X dataset, assumed to be i.i.d. observations (rows) of an elliptical
-#' distribution.
+#' @template param-X-elliptical
 #' @param mu (estimated) mean of X.
 #' @param Sigma_m1 (estimated) inverse of the covariance matrix of X.
 #'
