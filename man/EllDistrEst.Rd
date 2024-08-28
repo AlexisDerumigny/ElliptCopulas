@@ -21,16 +21,20 @@ EllDistrEst(
 \item{X}{a matrix of size \eqn{n \times d}, assumed to be \eqn{n} i.i.d. observations
 (rows) of a \eqn{d}-dimensional elliptical distribution.}
 
-\item{mu}{(estimated) mean of X.}
+\item{mu}{mean of X. This can be the true value or an estimate. It must be
+a vector of dimension \eqn{d}.}
 
-\item{Sigma_m1}{(estimated) inverse of the covariance matrix of X.}
+\item{Sigma_m1}{inverse of the covariance matrix of X.
+This can be the true value or an estimate. It must be
+a matrix of dimension \eqn{d \times d}.}
 
-\item{grid}{grid of values on which to estimate the density generator}
+\item{grid}{grid of values on which to estimate the density generator.}
 
 \item{h}{bandwidth of the kernel. Can be either a number or a vector of the
 size \code{length(grid)}.}
 
-\item{Kernel}{kernel used for the smoothing}
+\item{Kernel}{name of the kernel. Possible choices are
+\code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.}
 
 \item{a}{tuning parameter to improve the performance at 0.
 See Liebscher (2005), Example p.210. Can be either a number or a vector of the

@@ -5,10 +5,11 @@
 #' of an elliptical distribution by kernel smoothing.
 #'
 #' @template param-X-elliptical
-#' @param mu (estimated) mean of X.
-#' @param Sigma_m1 (estimated) inverse of the covariance matrix of X.
+#' @template param-mu
+#' @template param-Sigma_m1
 #'
-#' @param grid grid of values on which to estimate the density generator
+#' @param grid grid of values on which to estimate the density generator.
+#'
 #' @param h bandwidth of the kernel. Can be either a number or a vector of the
 #' size \code{length(grid)}.
 #'
