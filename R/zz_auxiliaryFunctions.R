@@ -376,7 +376,8 @@ compute_matrix_alpha <- function(kmax, grid, a, d)
 #' @param derivatives.g a matrix of size \code{length(x) * (k + 1)}
 #' whose entry of position \code{[i,j]} is \eqn{g^{(j - 1)} (x[i])}
 #'
-#' @return A numeric value \eqn{\rho(x)^{(k)}}
+#' @return a numeric vector \eqn{\rho(grid[1])^{(k)}, \dots, \rho(grid[N])^{(k)}},
+#' where \eqn{N} is the length of the grid
 #'
 #' @author Victor Ryan, Alexis Derumigny
 #'
@@ -384,23 +385,25 @@ compute_matrix_alpha <- function(kmax, grid, a, d)
 #'
 #' # Return the 5-th derivative of tau at x = 1
 #'
-#' x = 1; a = 1; d = 3; k = 3; der.g = seq(1, 3, length.out = 4)
-#' derivative.rho(x = x, a = a, d = d, k = k, derivatives.g = der.g)
+#' grid = c(1)
+#' a = 1; d = 3; k = 3
+#' der.g = matrix(seq(1, 3, length.out = 4), nrow = 1)
+#' derivative.rho(grid = grid, a = a, d = d, k = k, derivatives.g = der.g)
 #'
 #' @export
 #' @keywords internal
 #'
 derivative.rho <- function(grid, a, d, k, derivatives.g)
 {
-  if (length(x) != nrow(derivatives.g)){
-    stop("The length of 'x' should be equal to ",
+  if (length(grid) != nrow(derivatives.g)){
+    stop("The length of 'grid' should be equal to ",
          "the number of rows of 'derivatives.g'.")
   }
 
-  arr.mat.alpha = compute_matrix_alpha(kmax = kmax, grid = grid,
+  arr.mat.alpha = compute_matrix_alpha(kmax = k, grid = grid,
                                        a = a, d = d)
 
-  result = matrix(nrow = length(grid), ncol = kmax + 1)
+  result = matrix(nrow = length(grid), ncol = k + 1)
   for (iGrid in 1:length(grid)){
     result[iGrid, ] = arr.mat.alpha[, , iGrid] %*% derivatives.g[iGrid, ]
   }

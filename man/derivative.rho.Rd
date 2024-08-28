@@ -21,7 +21,8 @@ If \code{k > 0}, the value of its derivative is returned}
 whose entry of position \code{[i,j]} is \eqn{g^{(j - 1)} (x[i])}}
 }
 \value{
-A numeric value \eqn{\rho(x)^{(k)}}
+a numeric vector \eqn{\rho(grid[1])^{(k)}, \dots, \rho(grid[N])^{(k)}},
+where \eqn{N} is the length of the grid
 }
 \description{
 The function \eqn{\rho} is used to compute \eqn{\widetilde{AMSE}}.
@@ -32,8 +33,10 @@ because we can use it to find the optimal \eqn{a}.
 
 # Return the 5-th derivative of tau at x = 1
 
-x = 1; a = 1; d = 3; k = 3; der.g = seq(1, 3, length.out = 4)
-derivative.rho(x = x, a = a, d = d, k = k, derivatives.g = der.g)
+grid = c(1)
+a = 1; d = 3; k = 3
+der.g = matrix(seq(1, 3, length.out = 4), nrow = 1)
+derivative.rho(grid = grid, a = a, d = d, k = k, derivatives.g = der.g)
 
 }
 \author{
