@@ -28,7 +28,7 @@ X = matrix(rnorm(n * d), ncol = d)
 grid = seq(0, 5, by = 0.1)
 a = 1.5
 
-AMSE_est = estimAMSE(X = X, grid = grid, a = a, h = 0.09, k = 1)
+AMSE_est = estimAMSE(X = X, grid = grid, a = a, h = 0.09)
 plot(grid, abs(AMSE_est), type = "l")
 
 # Computation of true values
@@ -41,10 +41,10 @@ psiasecond = psiaprime * ( (d-2)/2 ) * grid^{-1} * A *
   ( grid^(d/2) + A )^(-1)
 
 rhoprimexi = ((d-2) * grid^((d-4)/2) * psiaprime
-- 2 * grid^((d-2)/2) * psiasecond) / (2 * psiaprime^3) * g +
-grid^((d-2)/2) / (psiaprime^2) * gprime
+  - 2 * grid^((d-2)/2) * psiasecond) / (2 * psiaprime^3) * g +
+  grid^((d-2)/2) / (psiaprime^2) * gprime
 
-AMSE = rhoprimexi / psi_a1(a = a, grid = grid, d = d)
+AMSE = rhoprimexi / psiaprime
 
 lines(grid, abs(AMSE), col = "red")
 
@@ -59,7 +59,7 @@ vec_a = c(0.001, 0.002, 0.005,
 
 AMSE_est = rep(NA, length = length(vec_a))
 for (i in 1:length(vec_a)){
-  AMSE_est[i] = estimAMSE(X = X, grid = grid, a = vec_a[i], h = 0.09, k = 1,
+  AMSE_est[i] = estimAMSE(X = X, grid = grid, a = vec_a[i], h = 0.09,
                           dopb = FALSE)
 }
 
@@ -77,16 +77,16 @@ psiasecond = psiaprime * ( (d-2)/2 ) * grid^{-1} * A *
   ( grid^(d/2) + A )^(-1)
 
 rhoprimexi = ((d-2) * grid^((d-4)/2) * psiaprime
-- 2 * grid^((d-2)/2) * psiasecond) / (2 * psiaprime^3) * g +
-grid^((d-2)/2) / (psiaprime^2) * gprime
+  - 2 * grid^((d-2)/2) * psiasecond) / (2 * psiaprime^3) * g +
+  grid^((d-2)/2) / (psiaprime^2) * gprime
 
-AMSE = rhoprimexi / psi_a1(a = a, grid = grid, d = d)
+AMSE = rhoprimexi / psiaprime
 
 yliminf = min(c(abs(AMSE_est), abs(AMSE)))
 ylimsup = max(c(abs(AMSE_est), abs(AMSE)))
 
 plot(vec_a, abs(AMSE_est), type = "l", log = "xy",
- ylim = c(yliminf, ylimsup))
+     ylim = c(yliminf, ylimsup))
 lines(vec_a, abs(AMSE), col = "red")
 
 }
