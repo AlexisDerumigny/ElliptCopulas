@@ -5,6 +5,8 @@
 #'
 #' @param X dataset, assumed to be i.i.d. observations (rows) of an elliptical
 #' distribution.
+#' @param mu (estimated) mean of X.
+#' @param Sigma_m1 (estimated) inverse of the covariance matrix of X.
 #'
 #' @param grid vector containing the values at which we want the generator to be
 #' estimated.
@@ -25,8 +27,8 @@
 #' \code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.
 #'
 #' @param mpfr,precBits \code{mpfr} is a Boolean value indicating whether to use
-#' the package \link{Rmpfr} for more precise computations. If so, then \code{precBits}
-#' indicates how many bits of precision are used.
+#' the package \link[Rmpfr]{Rmpfr} for more precise computations. If so,
+#' then \code{precBits} indicates how many bits of precision are used.
 #'
 #' @param dopb a Boolean value indicating whether to print a progress bar.
 #'

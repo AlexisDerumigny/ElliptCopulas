@@ -41,7 +41,7 @@ If missing, a default sequence is used.}
 \code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.}
 
 \item{mpfr, precBits}{\code{mpfr} is a Boolean value indicating whether to use
-the package \link{Rmpfr} for more precise computations. If so, then \code{precBits}
+the package \link[Rmpfr]{Rmpfr} for more precise computations. If so, then \code{precBits}
 indicates how many bits of precision are used.}
 
 \item{dopb}{a Boolean value indicating whether to print a progress bar.}
