@@ -94,11 +94,11 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
   cat("Estimation of the AMSE...\n")
   for (i_a in 1:length(grid_a)){
     a = grid_a[i_a]
-    AMSE_estimated[i_a, ] = estimAMSE(X = X, mu = mu, Sigma_m1 = Sigma_m1,
-                                      grid = grid, h = h_firstStep_AMSE,
-                                      Kernel = Kernel, a = a,
-                                      mpfr = mpfr, precBits = precBits,
-                                      dopb = FALSE)
+    AMSE_estimated[i_a, ] = estim_tilde_AMSE(X = X, mu = mu, Sigma_m1 = Sigma_m1,
+                                             grid = grid, h = h_firstStep_AMSE,
+                                             Kernel = Kernel, a = a,
+                                             mpfr = mpfr, precBits = precBits,
+                                             dopb = FALSE)
   }
   best_a = rep(NA, length(grid))
   best_AMSE_abs = rep(NA, length(grid))
@@ -139,14 +139,15 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 }
 
 
-#' Estimate the AMSE
-#'
-#' @author Alexis Derumigny, Victor Ryan
+#' Estimate the part of the AMSE of the elliptical density generator that only depends
+#' on the parameter "a"
 #'
 #' @inheritParams EllDistrEst
 #'
 #' @returns a vector of the same size as the grid, with the corresponding value
-#' for the AMSE.
+#' for the \eqn{\widetilde{AMSE}}.
+#'
+#' @author Alexis Derumigny, Victor Ryan
 #'
 #' @examples
 #' # Comparison between the estimated and true generator of the Gaussian distribution
@@ -156,7 +157,7 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #' grid = seq(0, 5, by = 0.1)
 #' a = 1.5
 #'
-#' AMSE_est = estimAMSE(X = X, grid = grid, a = a, h = 0.09)
+#' AMSE_est = estim_tilde_AMSE(X = X, grid = grid, a = a, h = 0.09)
 #' plot(grid, abs(AMSE_est), type = "l")
 #'
 #' # Computation of true values
@@ -187,7 +188,7 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #'
 #' AMSE_est = rep(NA, length = length(vec_a))
 #' for (i in 1:length(vec_a)){
-#'   AMSE_est[i] = estimAMSE(X = X, grid = grid, a = vec_a[i], h = 0.09,
+#'   AMSE_est[i] = estim_tilde_AMSE(X = X, grid = grid, a = vec_a[i], h = 0.09,
 #'                           dopb = FALSE)
 #' }
 #'
@@ -217,11 +218,11 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #'      ylim = c(yliminf, ylimsup))
 #' lines(vec_a, abs(AMSE), col = "red")
 #'
-#' @export estimAMSE
+#' @export estim_tilde_AMSE
 #'
-estimAMSE <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
-                      grid, h, Kernel = "gaussian", a = 1,
-                      mpfr = FALSE, precBits = 100, dopb = TRUE)
+estim_tilde_AMSE <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
+                             grid, h, Kernel = "gaussian", a = 1,
+                             mpfr = FALSE, precBits = 100, dopb = TRUE)
 {
   etahat1 = compute_etahat(
     X = X, mu = mu, Sigma_m1 = Sigma_m1,
