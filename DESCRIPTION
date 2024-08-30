@@ -9,12 +9,13 @@ Description: Provides functions for the simulation and
 Authors@R: c(
   person("Alexis", "Derumigny",, email = "a.f.f.derumigny@tudelft.nl", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6163-8097")),
   person("Jean-David", "Fermanian",, email = "Jean-David.Fermanian@ensae.fr", role = "aut", comment = c(ORCID = "0000-0001-5960-5555")),
+  person("Victor", "Ryan",, role = "aut"),
   person("Rutger", "van der Spek",, role = "ctb")
   )
 License: GPL-3
 Encoding: UTF-8
 LazyLoad: yes
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Depends: 
   R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
@@ -22,11 +23,12 @@ Imports:
   Runuran,
   wdm,
   Matrix,
+  kStatistics,
   pbapply
 Suggests:
-    mvtnorm,
-    Rmpfr,
-    testthat (>= 3.0.0)
+  mvtnorm,
+  Rmpfr,
+  testthat (>= 3.0.0)
 BugReports: https://github.com/AlexisDerumigny/ElliptCopulas/issues
 URL: https://github.com/AlexisDerumigny/ElliptCopulas
 Config/testthat/edition: 3

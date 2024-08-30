@@ -1,4 +1,8 @@
 
+
+* New dependence: Import: `kStatistics`.
+
+
 # ElliptCopulas 0.1.4
 
 * `EllDistrEst` now works in a vectorized way, where `a` and/or `h` are vectors
@@ -21,6 +25,7 @@ if available in `blockStructure`.
 
 * New dependence: Suggest: `testthat`.
 
+
 # ElliptCopulas 0.1.3
 
 * New dependence `wdm` instead of `pcaPP` for fast computation of Kendall's tau.
@@ -42,11 +47,9 @@ potentially under structural assumptions.
 * New dependencies: Import: `Rmpfr`, `pbapply`. Suggest: `mvtnorm`.
 
 
-
 # ElliptCopulas 0.1.1
 
 * Completed the documentation about returned values of the exported functions.
-
 
 
 # ElliptCopulas 0.1.0
