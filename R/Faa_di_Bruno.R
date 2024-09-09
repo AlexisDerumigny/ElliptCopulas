@@ -22,7 +22,7 @@
 #'
 #' @returns a vector of size \code{length(x)} for which
 #' the \code{i}-th component is
-#' \code{(f ∘ g)^(k) (x[i])}
+#' \eqn{(f \circ g)^{(k)} (x[i])}
 #'
 #' @author Alexis Derumigny, Victor Ryan
 #'

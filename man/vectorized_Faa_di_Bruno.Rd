@@ -25,7 +25,7 @@ to \code{f} and \code{g}. This must be the same for all values of \code{x}.}
 \value{
 a vector of size \code{length(x)} for which
 the \code{i}-th component is
-\code{(f ∘ g)^(k) (x[i])}
+\eqn{(f \circ g)^{(k)} (x[i])}
 }
 \description{
 This code implements a vectorized version of the Faa di Bruno formula, relying
