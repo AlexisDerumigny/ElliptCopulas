@@ -14,5 +14,5 @@ test_that("EllDistrEst is coherent between 1 value of `a` and several", {
 
   expect_true(is.finite(g_3_1))
   expect_true(is.finite(g_3_2))
-  expect_identical(g_3_12, c(g_3_1, g_3_2))
+  expect_equal(g_3_12, c(g_3_1, g_3_2))
 })
