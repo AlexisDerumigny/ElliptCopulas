@@ -4,6 +4,7 @@
 #' \eqn{\hat{\eta}_k} is a quantity that is useful
 #' for estimating the \eqn{k}-th derivative of the generator
 #' of an elliptical distribution.
+#' It is defined in Section 3 of (Ryan and Derumigny, 2024).
 #'
 #' @template param-X-elliptical
 #' @template param-mu
@@ -126,6 +127,22 @@ compute_etahat <- function(X, mu = 0, Sigma_m1 = diag(d),
 
 
 #' Estimate the derivatives of a generator
+#'
+#' A continuous elliptical distribution has a density of the form
+#' \deqn{f_X(x) = {|\Sigma|}^{-1/2}
+#' g\left( (x-\mu)^\top \, \Sigma^{-1} \, (x-\mu) \right),
+#' }
+#' where \eqn{x \in \mathbb{R}^d},
+#' \eqn{\mu \in \mathbb{R}^d} is the mean,
+#' \eqn{\Sigma} is a \eqn{d \times d} positive-definite matrix
+#' and a function \eqn{g: \mathbb{R}_+ \rightarrow \mathbb{R}_+}, called the
+#' density generator of \eqn{X}.
+#' The goal is to estimate the derivatives of \eqn{g} at some point \eqn{\xi},
+#' by kernel smoothing, following Section 3 of (Ryan and Derumigny, 2024).
+#'
+#' Note that this function may be rather slow for higher-order derivatives.
+#' Furthermore, it is likely that the number of observations needs to be quite
+#' high for the higher-order derivatives to be estimated well enough.
 #'
 #' @template param-X-elliptical
 #' @template param-mu

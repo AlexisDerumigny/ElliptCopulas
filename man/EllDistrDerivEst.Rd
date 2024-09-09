@@ -61,7 +61,22 @@ with the estimated value of the generator and all its derivatives
 at all orders until and including \code{kmax}, at all points of the grid.
 }
 \description{
-Estimate the derivatives of a generator
+A continuous elliptical distribution has a density of the form
+\deqn{f_X(x) = {|\Sigma|}^{-1/2}
+g\left( (x-\mu)^\top \, \Sigma^{-1} \, (x-\mu) \right),
+}
+where \eqn{x \in \mathbb{R}^d},
+\eqn{\mu \in \mathbb{R}^d} is the mean,
+\eqn{\Sigma} is a \eqn{d \times d} positive-definite matrix
+and a function \eqn{g: \mathbb{R}_+ \rightarrow \mathbb{R}_+}, called the
+density generator of \eqn{X}.
+The goal is to estimate the derivatives of \eqn{g} at some point \eqn{\xi},
+by kernel smoothing, following Section 3 of (Ryan and Derumigny, 2024).
+}
+\details{
+Note that this function may be rather slow for higher-order derivatives.
+Furthermore, it is likely that the number of observations needs to be quite
+high for the higher-order derivatives to be estimated well enough.
 }
 \examples{
 

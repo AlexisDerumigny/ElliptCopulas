@@ -3,7 +3,7 @@
 \name{estim_tilde_AMSE}
 \alias{estim_tilde_AMSE}
 \title{Estimate the part of the AMSE of the elliptical density generator that only depends
-on the parameter "a"}
+on the parameter "a" assuming \eqn{h} has been optimally chosen}
 \usage{
 estim_tilde_AMSE(
   X,
@@ -29,7 +29,8 @@ a vector of dimension \eqn{d}.}
 This can be the true value or an estimate. It must be
 a matrix of dimension \eqn{d \times d}.}
 
-\item{grid}{grid of values on which to estimate the density generator.}
+\item{grid}{grid of values of \eqn{\xi} at which we want to estimate the
+density generator.}
 
 \item{h}{bandwidth of the kernel. Can be either a number or a vector of the
 size \code{length(grid)}.}
@@ -38,7 +39,7 @@ size \code{length(grid)}.}
 \code{"gaussian"}, \code{"epanechnikov"}, \code{"triangular"}.}
 
 \item{a}{tuning parameter to improve the performance at 0.
-See Liebscher (2005), Example p.210. Can be either a number or a vector of the
+Can be either a number or a vector of the
 size \code{length(grid)}. If this is a vector, the code will need to allocate
 a matrix of size \code{nrow(X) * length(grid)} which can be prohibitive in
 some cases.}
@@ -59,8 +60,38 @@ a vector of the same size as the grid, with the corresponding value
 for the \eqn{\widetilde{AMSE}}.
 }
 \description{
-Estimate the part of the AMSE of the elliptical density generator that only depends
-on the parameter "a"
+A continuous elliptical distribution has a density of the form
+\deqn{f_X(x) = {|\Sigma|}^{-1/2}
+g\left( (x-\mu)^\top \, \Sigma^{-1} \, (x-\mu) \right),
+}
+where \eqn{x \in \mathbb{R}^d},
+\eqn{\mu \in \mathbb{R}^d} is the mean,
+\eqn{\Sigma} is a \eqn{d \times d} positive-definite matrix
+and a function \eqn{g: \mathbb{R}_+ \rightarrow \mathbb{R}_+}, called the
+density generator of \eqn{X}.
+The goal is to estimate \eqn{g} at some point \eqn{\xi}, by
+\deqn{
+\widehat{g}_{n,h,a}(\xi)
+:= \dfrac{\xi^{\frac{-d+2}{2}} \psi_a'(\xi)}{n h s_d}
+\sum_{i=1}^n
+  K\left( \dfrac{ \psi_a(\xi) - \psi_a(\xi_i) }{h} \right)
++ K\left( \dfrac{ \psi_a(\xi) + \psi_a(\xi_i) }{h} \right),
+}
+where
+\eqn{s_d := \pi^{d/2} / \Gamma(d/2)},
+\eqn{\Gamma} is the Gamma function,
+\eqn{h} and \eqn{a} are tuning parameters (respectively the bandwidth and a
+parameter controlling the bias at \eqn{\xi = 0}),
+\eqn{\psi_a(\xi) := -a + (a^{d/2} + \xi^{d/2})^{2/d},}
+\eqn{\xi \in \mathbb{R}}, \eqn{K} is a kernel function and
+\eqn{\xi_i := (X_i - \mu)^\top \, \Sigma^{-1} \, (X_i - \mu),
+}
+for a sample \eqn{X_1, \dots, X_n}.
+Thanks to Proposition 2.2 in (Ryan and Derumigny, 2024), the asymptotic
+mean square error of \eqn{\widehat{g}_{n,h,a}(\xi)} can be decomposed into
+a product of a constant (that depends on the true \eqn{g}) and a term that
+depends on \eqn{g} and \eqn{a}. This function computes this term. It can be
+useful to find out the best value of the parameter \eqn{a} to be used.
 }
 \examples{
 # Comparison between the estimated and true generator of the Gaussian distribution

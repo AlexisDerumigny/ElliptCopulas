@@ -61,6 +61,7 @@ where \code{x[i]} is the \eqn{i}-th element of the grid.
 \eqn{\hat{\eta}_k} is a quantity that is useful
 for estimating the \eqn{k}-th derivative of the generator
 of an elliptical distribution.
+It is defined in Section 3 of (Ryan and Derumigny, 2024).
 }
 \examples{
 

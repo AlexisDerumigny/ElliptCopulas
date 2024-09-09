@@ -28,7 +28,9 @@ the \code{i}-th component is
 \code{(f ∘ g)^(k) (x[i])}
 }
 \description{
-Vectorized version of Faa di Bruno formula
+This code implements a vectorized version of the Faa di Bruno formula, relying
+internally on the Bell polynomials from the package kStatistics, via the
+function \link{kStatistics::eBellPol}.
 }
 \examples{
 g <- function(x, k, a){

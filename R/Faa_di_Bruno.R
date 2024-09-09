@@ -1,6 +1,10 @@
 
 #' Vectorized version of Faa di Bruno formula
 #'
+#' This code implements a vectorized version of the Faa di Bruno formula, relying
+#' internally on the Bell polynomials from the package kStatistics, via the
+#' function \link{kStatistics::eBellPol}.
+#'
 #' @param f,g two functions that take in argument\itemize{
 #'   \item a vector \code{x} of numeric values
 #'   \item an integer \code{k} which is as to be understood

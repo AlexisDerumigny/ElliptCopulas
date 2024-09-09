@@ -80,8 +80,36 @@ that only depends on \eqn{a}.
 }
 }
 \description{
-Estimation of the generator of the elliptical distribution by kernel smoothing
-with adaptive choice of the bandwidth
+A continuous elliptical distribution has a density of the form
+\deqn{f_X(x) = {|\Sigma|}^{-1/2}
+g\left( (x-\mu)^\top \, \Sigma^{-1} \, (x-\mu) \right),
+}
+where \eqn{x \in \mathbb{R}^d},
+\eqn{\mu \in \mathbb{R}^d} is the mean,
+\eqn{\Sigma} is a \eqn{d \times d} positive-definite matrix
+and a function \eqn{g: \mathbb{R}_+ \rightarrow \mathbb{R}_+}, called the
+density generator of \eqn{X}.
+The goal is to estimate \eqn{g} at some point \eqn{\xi}, by
+\deqn{
+\widehat{g}_{n,h,a}(\xi)
+:= \dfrac{\xi^{\frac{-d+2}{2}} \psi_a'(\xi)}{n h s_d}
+\sum_{i=1}^n
+  K\left( \dfrac{ \psi_a(\xi) - \psi_a(\xi_i) }{h} \right)
++ K\left( \dfrac{ \psi_a(\xi) + \psi_a(\xi_i) }{h} \right),
+}
+where
+\eqn{s_d := \pi^{d/2} / \Gamma(d/2)},
+\eqn{\Gamma} is the Gamma function,
+\eqn{h} and \eqn{a} are tuning parameters (respectively the bandwidth and a
+parameter controlling the bias at \eqn{\xi = 0}),
+\eqn{\psi_a(\xi) := -a + (a^{d/2} + \xi^{d/2})^{2/d},}
+\eqn{\xi \in \mathbb{R}}, \eqn{K} is a kernel function and
+\eqn{\xi_i := (X_i - \mu)^\top \, \Sigma^{-1} \, (X_i - \mu),
+}
+for a sample \eqn{X_1, \dots, X_n}.
+This function computes "optimal asymptotic" values for the bandwidth \eqn{h}
+and the tuning parameter \eqn{a} from a first step bandwidth that the user
+needs to provide.
 }
 \examples{
 n = 500
@@ -115,8 +143,9 @@ elliptical distribution density generator,
 \code{\link{EllDistrSim}} for the simulation of elliptical distribution samples.
 
 \code{\link{estim_tilde_AMSE}} which is used in this function. It estimates
-the component of the asymptotic mean-square error (AMSE) of the nonparametric
-estimator of the elliptical density generator that only depends on the parameter \code{a}.
+a component of the asymptotic mean-square error (AMSE) of the nonparametric
+estimator of the elliptical density generator assuming \eqn{h} has been optimally
+chosen.
 }
 \author{
 Alexis Derumigny, Victor Ryan

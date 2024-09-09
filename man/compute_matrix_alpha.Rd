@@ -20,7 +20,9 @@ at zero.}
 a \code{(kmax+1) * (kmax+1) * length(grid)} array
 }
 \description{
-Compute the matrix of coefficients alpha
+This matrix of coefficient is useful for the estimation of higher-order
+derivatives of an elliiptical distribution density generator. It is introduced
+in Section 3 of (Ryan and Derumigny, 2024).
 }
 \examples{
 kmax = 1
