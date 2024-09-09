@@ -3,6 +3,7 @@
 #' Estimation of the generator of the elliptical distribution by kernel smoothing
 #' with adaptive choice of the bandwidth
 #'
+#'
 #' @template param-X-elliptical
 #' @template param-mu
 #' @template param-Sigma_m1
@@ -52,6 +53,15 @@
 #' On the choice of the two tuning parameters for nonparametric estimation of an
 #' elliptical distribution generator
 #' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+#'
+#' @seealso \code{\link{EllDistrEst}} for the nonparametric estimation of the
+#' elliptical distribution density generator,
+#' \code{\link{EllDistrSim}} for the simulation of elliptical distribution samples.
+#'
+#' \code{\link{estim_tilde_AMSE}} which is used in this function. It estimates
+#' the component of the asymptotic mean-square error (AMSE) of the nonparametric
+#' estimator of the elliptical density generator that only depends on the parameter `a`.
+#'
 #'
 #' @examples
 #' n = 500

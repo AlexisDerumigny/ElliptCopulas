@@ -67,6 +67,10 @@ psi_a2 <- function (a, grid, d){
 #' elliptical distribution generator
 #' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 #'
+#' @seealso \code{\link{derivative.tau}} and \code{\link{derivative.rho}}.
+#' \code{\link{vectorized_Faa_di_Bruno}} which is used for the computation
+#' of the derivatives.
+#'
 #' @examples
 #'
 #' # Return the 5-th derivative of the inverse of psi
@@ -181,6 +185,11 @@ f2 <- function(x, a, d, k = 0){
 #' elliptical distribution generator
 #' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 #'
+#' @seealso \code{\link{derivative.psi}} and \code{\link{derivative.rho}}.
+#' \code{\link{vectorized_Faa_di_Bruno}} which is used for the computation
+#' of the derivatives.
+#'
+#'
 #' @examples
 #'
 #' # Return the 5-th derivative of tau at x = 1
@@ -284,6 +293,11 @@ f4 <- function(x, a, d, k = 0){
 #' On the choice of the two tuning parameters for nonparametric estimation of an
 #' elliptical distribution generator
 #' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+#'
+#' @seealso This function uses the internal functions \code{\link{derivative.tau}}
+#' and \code{\link{derivative.psi}}.
+#' See also \code{\link{vectorized_Faa_di_Bruno}}.
+#'
 #'
 #' @examples
 #' kmax = 1
@@ -400,6 +414,12 @@ compute_matrix_alpha <- function(kmax, grid, a, d)
 #' On the choice of the two tuning parameters for nonparametric estimation of an
 #' elliptical distribution generator
 #' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+#'
+#' @seealso \code{\link{derivative.tau}} and \code{\link{derivative.psi}}.
+#' \code{EllDistrDerivEst} for the nonparametric estimation of the derivatives
+#' of `g`, the elliptical distribution density generator.
+#' \code{\link{compute_matrix_alpha}} which is used for the computation
+#' of the derivatives.
 #'
 #' @examples
 #'

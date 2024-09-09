@@ -36,6 +36,11 @@ On the choice of the two tuning parameters for nonparametric estimation of an
 elliptical distribution generator
 \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 }
+\seealso{
+This function uses the internal functions \code{\link{derivative.tau}}
+and \code{\link{derivative.psi}}.
+See also \code{\link{vectorized_Faa_di_Bruno}}.
+}
 \author{
 Victor Ryan, Alexis Derumigny
 }

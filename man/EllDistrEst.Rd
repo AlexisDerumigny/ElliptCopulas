@@ -97,8 +97,22 @@ Journal of Multivariate Analysis, 92(1), 205.
 \doi{10.1016/j.jmva.2003.09.007}
 }
 \seealso{
-\code{\link{EllDistrSim}} for the simulation of elliptical distribution samples,
-\code{\link{EllCopEst}} for the estimation of elliptical copulas.
+\itemize{
+\item \code{\link{EllDistrSim}} for the simulation of elliptical distribution samples.
+
+\item \code{\link{estim_tilde_AMSE}} for the estimation of the component of
+the asymptotic mean-square error (AMSE) of this nonparametric estimator of
+the elliptical density generator that only depends on the parameter \code{a}.
+
+\item \code{\link{EllDistrEst.adapt}} for the adaptive nonparametric estimation
+of the generator of an elliptical distribution.
+
+\item \code{\link{EllDistrDerivEst}} for the nonparametric estimation of the
+derivatives of the generator.
+
+\item \code{\link{EllCopEst}} for the estimation of elliptical copulas
+density generators.
+}
 }
 \author{
 Alexis Derumigny, Rutger van der Spek

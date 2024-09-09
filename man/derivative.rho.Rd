@@ -45,6 +45,13 @@ On the choice of the two tuning parameters for nonparametric estimation of an
 elliptical distribution generator
 \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 }
+\seealso{
+\code{\link{derivative.tau}} and \code{\link{derivative.psi}}.
+\code{EllDistrDerivEst} for the nonparametric estimation of the derivatives
+of \code{g}, the elliptical distribution density generator.
+\code{\link{compute_matrix_alpha}} which is used for the computation
+of the derivatives.
+}
 \author{
 Victor Ryan, Alexis Derumigny
 }

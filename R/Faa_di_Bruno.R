@@ -22,6 +22,9 @@
 #'
 #' @author Alexis Derumigny, Victor Ryan
 #'
+#' @seealso \code{\link{compute_matrix_alpha}} which also uses the Bell polynomials
+#' in a similar way.
+#'
 #' @examples
 #' g <- function(x, k, a){
 #'   if (k == 0){ return ( exp(x) + a)

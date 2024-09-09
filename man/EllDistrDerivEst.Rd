@@ -88,6 +88,14 @@ On the choice of the two tuning parameters for nonparametric estimation of an
 elliptical distribution generator
 \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 }
+\seealso{
+\code{\link{EllDistrEst}} for the nonparametric estimation of the
+elliptical distribution density generator itself,
+\code{\link{EllDistrSim}} for the simulation of elliptical distribution samples.
+
+This function uses the internal functions \code{\link{compute_etahat}}
+and \code{\link{compute_matrix_alpha}}.
+}
 \author{
 Alexis Derumigny, Victor Ryan
 

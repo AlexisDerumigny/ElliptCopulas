@@ -59,6 +59,10 @@ vectorized_Faa_di_Bruno(f = f, g = g, x = x, k = 1,
 2 * exp(x) * ( exp(x) + 2 )
 
 }
+\seealso{
+\code{\link{compute_matrix_alpha}} which also uses the Bell polynomials
+in a similar way.
+}
 \author{
 Alexis Derumigny, Victor Ryan
 }

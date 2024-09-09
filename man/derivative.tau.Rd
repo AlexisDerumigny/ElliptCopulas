@@ -67,6 +67,11 @@ On the choice of the two tuning parameters for nonparametric estimation of an
 elliptical distribution generator
 \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 }
+\seealso{
+\code{\link{derivative.psi}} and \code{\link{derivative.rho}}.
+\code{\link{vectorized_Faa_di_Bruno}} which is used for the computation
+of the derivatives.
+}
 \author{
 Victor Ryan, Alexis Derumigny
 }
