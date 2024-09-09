@@ -48,6 +48,11 @@
 #'
 #' @author Alexis Derumigny, Victor Ryan
 #'
+#' @references Ryan, V., & Derumigny, A. (2024).
+#' On the choice of the two tuning parameters for nonparametric estimation of an
+#' elliptical distribution generator
+#' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+#'
 #' @examples
 #' n = 500
 #' d = 3
@@ -148,6 +153,11 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #' for the \eqn{\widetilde{AMSE}}.
 #'
 #' @author Alexis Derumigny, Victor Ryan
+#'
+#' @references Ryan, V., & Derumigny, A. (2024).
+#' On the choice of the two tuning parameters for nonparametric estimation of an
+#' elliptical distribution generator
+#' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 #'
 #' @examples
 #' # Comparison between the estimated and true generator of the Gaussian distribution

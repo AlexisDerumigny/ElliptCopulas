@@ -103,6 +103,12 @@ plot(grid, result$best_h, type = "l", col = "red")
 sum((g - result$g)^2, na.rm = TRUE) < sum((g - result$first_step_g)^2, na.rm = TRUE)
 
 }
+\references{
+Ryan, V., & Derumigny, A. (2024).
+On the choice of the two tuning parameters for nonparametric estimation of an
+elliptical distribution generator
+\href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+}
 \author{
 Alexis Derumigny, Victor Ryan
 }

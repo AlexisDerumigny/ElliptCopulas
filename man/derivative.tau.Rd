@@ -61,6 +61,12 @@ derivative.tau(x = 1, a = 1, d = 3, k = 0)
 derivative.tau(x = c(1,3), a = 1, d = 3, k = 5)
 
 }
+\references{
+Ryan, V., & Derumigny, A. (2024).
+On the choice of the two tuning parameters for nonparametric estimation of an
+elliptical distribution generator
+\href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+}
 \author{
 Victor Ryan, Alexis Derumigny
 }

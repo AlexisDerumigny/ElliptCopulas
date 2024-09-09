@@ -82,6 +82,14 @@ gprime = (-1/2) * exp(-grid/2)/(2*pi)^{3/2}
 lines(grid, gprime, col = "red")
 
 }
+\references{
+Ryan, V., & Derumigny, A. (2024).
+On the choice of the two tuning parameters for nonparametric estimation of an
+elliptical distribution generator
+\href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+}
 \author{
+Alexis Derumigny, Victor Ryan
+
 Victor Ryan, Alexis Derumigny
 }

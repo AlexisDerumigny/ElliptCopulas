@@ -151,6 +151,13 @@ compute_etahat <- function(X, mu = 0, Sigma_m1 = diag(d),
 #' with the estimated value of the generator and all its derivatives
 #' at all orders until and including \code{kmax}, at all points of the grid.
 #'
+#' @author Alexis Derumigny, Victor Ryan
+#'
+#' @references Ryan, V., & Derumigny, A. (2024).
+#' On the choice of the two tuning parameters for nonparametric estimation of an
+#' elliptical distribution generator
+#' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+#'
 #' @examples
 #'
 #' # Comparison between the estimated and true generator of the Gaussian distribution
@@ -239,6 +246,11 @@ EllDistrDerivEst <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 #' at all orders until and including \code{kmax}, at all points of the grid.
 #'
 #' @author Victor Ryan, Alexis Derumigny
+#'
+#' @references Ryan, V., & Derumigny, A. (2024).
+#' On the choice of the two tuning parameters for nonparametric estimation of an
+#' elliptical distribution generator
+#' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 #'
 #' @examples
 #'

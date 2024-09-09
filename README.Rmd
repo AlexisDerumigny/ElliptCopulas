@@ -72,6 +72,7 @@ X = EllDistrSim(n = 1000, d = 3, A = chol(cov1), mu = mu,
 plot(X[, 1], X[, 2])
 ```
 
+
 * `EllDistrEst`: nonparametric estimation of the generator of an elliptical distribution.
 
 
@@ -82,6 +83,14 @@ estDensityGenerator = EllDistrEst(X = X, mu = mu, Sigma_m1 = solve(cov1),
 plot(grid, estDensityGenerator, type = "l", ylab = "Estimated & true density generators")
 lines(grid, generator, col = "red")
 ```
+
+
+* `EllDistrDerivEst`: nonparametric estimation of the derivatives of the generator
+of an elliptical distribution.
+
+* `EllDistrEst.adapt`: adaptive nonparametric estimation of the generator of an
+elliptical distribution.
+
 
 ## 2. Estimation of correlation matrix
 
@@ -149,7 +158,12 @@ Derumigny, A., & Fermanian, J. D. (2022). Identifiability and estimation of meta
 Journal of Multivariate Analysis, article 104962. [doi:10.1016/j.jmva.2022.104962](https://doi.org/doi:10.1016/j.jmva.2022.104962), [arXiv:2106.12367](https://arxiv.org/pdf/2106.12367.pdf).
 
 Liebscher, E. (2005). A semiparametric density estimator based on elliptical distributions.
-Journal of Multivariate Analysis, 92, 205–225. [doi:10.1016/j.jmva.2003.09.007](https://doi.org/10.1016/j.jmva.2003.09.007)
+Journal of Multivariate Analysis, 92, 205–225. [doi:10.1016/j.jmva.2003.09.007](https://doi.org/10.1016/j.jmva.2003.09.007).
+
+Ryan, V., & Derumigny, A. (2024).
+On the choice of the two tuning parameters for nonparametric estimation of an
+elliptical distribution generator.
+[arxiv:2408.17087](https://arxiv.org/abs/2408.17087).
 
 van der Spek, R., & Derumigny, A. (2022).
 Fast estimation of Kendall's Tau and conditional Kendall's Tau matrices under structural assumptions.

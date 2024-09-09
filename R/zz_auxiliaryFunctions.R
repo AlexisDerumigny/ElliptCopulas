@@ -62,6 +62,11 @@ psi_a2 <- function (a, grid, d){
 #'
 #' @author Victor Ryan, Alexis Derumigny
 #'
+#' @references Ryan, V., & Derumigny, A. (2024).
+#' On the choice of the two tuning parameters for nonparametric estimation of an
+#' elliptical distribution generator
+#' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+#'
 #' @examples
 #'
 #' # Return the 5-th derivative of the inverse of psi
@@ -171,6 +176,11 @@ f2 <- function(x, a, d, k = 0){
 #'
 #' @author Victor Ryan, Alexis Derumigny
 #'
+#' @references Ryan, V., & Derumigny, A. (2024).
+#' On the choice of the two tuning parameters for nonparametric estimation of an
+#' elliptical distribution generator
+#' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+#'
 #' @examples
 #'
 #' # Return the 5-th derivative of tau at x = 1
@@ -269,6 +279,11 @@ f4 <- function(x, a, d, k = 0){
 #' @returns a \code{(kmax+1) * (kmax+1) * length(grid)} array
 #'
 #' @author Victor Ryan, Alexis Derumigny
+#'
+#' @references Ryan, V., & Derumigny, A. (2024).
+#' On the choice of the two tuning parameters for nonparametric estimation of an
+#' elliptical distribution generator
+#' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 #'
 #' @examples
 #' kmax = 1
@@ -380,6 +395,11 @@ compute_matrix_alpha <- function(kmax, grid, a, d)
 #' where \eqn{N} is the length of the grid
 #'
 #' @author Victor Ryan, Alexis Derumigny
+#'
+#' @references Ryan, V., & Derumigny, A. (2024).
+#' On the choice of the two tuning parameters for nonparametric estimation of an
+#' elliptical distribution generator
+#' \href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
 #'
 #' @examples
 #'

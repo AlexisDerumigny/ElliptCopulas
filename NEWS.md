@@ -1,9 +1,20 @@
 
-
-* New dependence: Import: `kStatistics`.
-
-
 # ElliptCopulas 0.1.4
+
+## New features
+
+* New functions (written with Victor Ryan @VictorRyan12 ) :
+  
+  * `EllDistrDerivEst`: nonparametric estimation of the derivatives of
+  the generator of an elliptical distribution.
+  
+  * `EllDistrEst.adapt`: adaptive nonparametric estimation of the generator
+  of an elliptical distribution.
+  
+  * `estim_tilde_AMSE`: estimate the component of the asymptotic mean-square error (AMSE)
+  of the nonparametric estimator of the elliptical density generator that only
+  depends on the parameter `a`.
+
 
 * `EllDistrEst` now works in a vectorized way, where `a` and/or `h` are vectors
 of the same length as the `grid` on which the estimator is computed. Each value
@@ -16,14 +27,22 @@ corresponding to the averaging of a random set of entries in the off-diagonal bl
 * The output of `KTMatrixEst` now has colnames and rownames set to the names
 if available in `blockStructure`.
 
+
+## Bug fixes
+
 * Fixed a bug in `KTMatrixEst`
 (whose output did not have ones on the diagonal, contrary to the documentation).
 
 * Fixed a bug in `EllDistrEst` when the variance matrix is not the identity.
 
+
+## Dependencies
+
 * Moving dependence `Rmpfr` from Import to Suggest.
 
 * New dependence: Suggest: `testthat`.
+
+* New dependence: Import: `kStatistics`.
 
 
 # ElliptCopulas 0.1.3

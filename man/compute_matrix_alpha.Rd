@@ -30,6 +30,12 @@ a = 0.8
 compute_matrix_alpha(kmax = kmax, grid = grid, a = a, d = d)
 
 }
+\references{
+Ryan, V., & Derumigny, A. (2024).
+On the choice of the two tuning parameters for nonparametric estimation of an
+elliptical distribution generator
+\href{https://arxiv.org/abs/2408.17087}{arxiv:2408.17087}.
+}
 \author{
 Victor Ryan, Alexis Derumigny
 }

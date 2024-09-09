@@ -77,6 +77,12 @@ lines(grid, generator, col = "red")
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
+- `EllDistrDerivEst`: nonparametric estimation of the derivatives of the
+  generator of an elliptical distribution.
+
+- `EllDistrEst.adapt`: adaptive nonparametric estimation of the
+  generator of an elliptical distribution.
+
 ## 2. Estimation of correlation matrix
 
 - `KTMatrixEst`: fast estimation of Kendall’s tau correlation matrix
@@ -152,7 +158,11 @@ article 104962.
 
 Liebscher, E. (2005). A semiparametric density estimator based on
 elliptical distributions. Journal of Multivariate Analysis, 92, 205–225.
-[doi:10.1016/j.jmva.2003.09.007](https://doi.org/10.1016/j.jmva.2003.09.007)
+[doi:10.1016/j.jmva.2003.09.007](https://doi.org/10.1016/j.jmva.2003.09.007).
+
+Ryan, V., & Derumigny, A. (2024). On the choice of the two tuning
+parameters for nonparametric estimation of an elliptical distribution
+generator. [arxiv:2408.17087](https://arxiv.org/abs/2408.17087).
 
 van der Spek, R., & Derumigny, A. (2022). Fast estimation of Kendall’s
 Tau and conditional Kendall’s Tau matrices under structural assumptions.
