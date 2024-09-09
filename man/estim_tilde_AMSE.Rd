@@ -45,7 +45,7 @@ a matrix of size \code{nrow(X) * length(grid)} which can be prohibitive in
 some cases.}
 
 \item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is used
-via the package \link[Rmpfr]{Rmpfr}.
+via the package \link[Rmpfr:Rmpfr]{Rmpfr}.
 This allows for a higher (numerical) accuracy, at the expense of computing time.
 It is recommended to use this option for higher dimensions.}
 

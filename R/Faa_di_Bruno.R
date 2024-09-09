@@ -3,7 +3,7 @@
 #'
 #' This code implements a vectorized version of the Faa di Bruno formula, relying
 #' internally on the Bell polynomials from the package kStatistics, via the
-#' function \link{kStatistics::eBellPol}.
+#' function \link[kStatistics:eBellPol]{kStatistics::eBellPol}.
 #'
 #' @param f,g two functions that take in argument\itemize{
 #'   \item a vector \code{x} of numeric values

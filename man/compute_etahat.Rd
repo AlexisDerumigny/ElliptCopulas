@@ -42,7 +42,7 @@ size \code{length(grid)}.}
 \item{k}{order of the derivative}
 
 \item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is used
-via the package \link[Rmpfr]{Rmpfr}.
+via the package \link[Rmpfr:Rmpfr]{Rmpfr}.
 This allows for a higher (numerical) accuracy, at the expense of computing time.
 It is recommended to use this option for higher dimensions.}
 

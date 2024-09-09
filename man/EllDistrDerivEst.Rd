@@ -45,7 +45,7 @@ generator and of its derivative. \code{k = 2} corresponds to the estimation
 of the generator as well as its first and second derivatives.}
 
 \item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is used
-via the package \link[Rmpfr]{Rmpfr}.
+via the package \link[Rmpfr:Rmpfr]{Rmpfr}.
 This allows for a higher (numerical) accuracy, at the expense of computing time.
 It is recommended to use this option for higher dimensions.}
 

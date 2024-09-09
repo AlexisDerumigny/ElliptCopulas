@@ -30,7 +30,7 @@ the \code{i}-th component is
 \description{
 This code implements a vectorized version of the Faa di Bruno formula, relying
 internally on the Bell polynomials from the package kStatistics, via the
-function \link{kStatistics::eBellPol}.
+function \link[kStatistics:eBellPol]{kStatistics::eBellPol}.
 }
 \examples{
 g <- function(x, k, a){
