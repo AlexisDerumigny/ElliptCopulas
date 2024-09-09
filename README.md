@@ -154,7 +154,7 @@ Derumigny, A., & Fermanian, J. D. (2022). Identifiability and estimation
 of meta-elliptical copula generators. Journal of Multivariate Analysis,
 article 104962.
 [doi:10.1016/j.jmva.2022.104962](https://doi.org/doi:10.1016/j.jmva.2022.104962),
-[arXiv:2106.12367](https://arxiv.org/pdf/2106.12367.pdf).
+[arXiv:2106.12367](https://arxiv.org/pdf/2106.12367).
 
 Liebscher, E. (2005). A semiparametric density estimator based on
 elliptical distributions. Journal of Multivariate Analysis, 92, 205–225.
@@ -166,4 +166,4 @@ generator. [arxiv:2408.17087](https://arxiv.org/abs/2408.17087).
 
 van der Spek, R., & Derumigny, A. (2022). Fast estimation of Kendall’s
 Tau and conditional Kendall’s Tau matrices under structural assumptions.
-[arXiv:2204.03285](https://arxiv.org/pdf/2204.03285.pdf).
+[arXiv:2204.03285](https://arxiv.org/pdf/2204.03285).
