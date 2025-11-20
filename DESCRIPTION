@@ -15,7 +15,7 @@ Authors@R: c(
 License: GPL-3
 Encoding: UTF-8
 LazyLoad: yes
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Depends: 
   R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
