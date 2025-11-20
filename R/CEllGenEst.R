@@ -121,7 +121,7 @@
 CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
                                 Kernel = "epanechnikov", a = 1, h_psi = NULL)
 {
-  kernelFun = ElliptCopulas:::getKernel(Kernel = Kernel)
+  kernelFun = getKernel(Kernel = Kernel)
   d = ncol( dataMatrix )
   n = nrow( dataMatrix )
   nz = length( gridZ )
@@ -187,7 +187,7 @@ CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
 
   if(is.null(h_psi)) {
     psiR_pooled = as.vector(psiR)
-    h_psi = 1.06 * sd(psiR_pooled) * n^(-1/5)
+    h_psi = 1.06 * stats::sd(psiR_pooled) * n^(-1/5)
   }
 
   for(i in 1:nz){

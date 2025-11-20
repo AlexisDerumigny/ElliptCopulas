@@ -90,7 +90,7 @@ CMeanEst <- function(dataMatrix, observedZ, gridZ, h, Kernel = "epanechnikov")
 computeWeights <- function(vectorZ, h, pointZ, Kernel = "epanechnikov", normalization = TRUE) {
   n = length(vectorZ)
 
-  kernelFun = ElliptCopulas:::getKernel(Kernel = Kernel)
+  kernelFun = getKernel(Kernel = Kernel)
 
   u = (vectorZ - pointZ) / h
   w_raw = kernelFun(u)
