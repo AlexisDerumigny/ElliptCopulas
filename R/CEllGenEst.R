@@ -31,7 +31,8 @@
 #' \eqn{h > 0} and \eqn{a > 0} are tuning parameters, \eqn{K} is a kernel
 #' function, and \eqn{w_{n,i}(z)} are Nadaraya-Watson weights:
 #' \deqn{
-#' w_{n,i}(z) = \frac{K\left( (z - Z_i)/h \right)}{\sum_{j=1}^n K\left( (z - Z_j)/h \right)}.
+#' w_{n,i}(z) = \frac{K\left( (z - Z_i)/h \right)}{
+#' \sum_{j=1}^n K\left( (z - Z_j)/h \right)}.
 #' }
 #'
 #' @param dataMatrix a matrix of size \eqn{n \times d} containing the \eqn{n}
@@ -63,8 +64,8 @@
 #'   \eqn{\psi(\xi)}. If not specified, the Silverman's rule of thumb is used.
 #'
 #' @return A matrix of size \eqn{\code{length(grid)} \times
-#'   \code{length(gridZ)}}, \eqn{\widehat{g}_{n}(\xi \mid z)} containing the estimated conditional density
-#'   generator at each \eqn{\xi} and \eqn{z}.
+#'   \code{length(gridZ)}}, \eqn{\widehat{g}_{n}(\xi \mid z)} containing the
+#'   estimated conditional density generator at each \eqn{\xi} and \eqn{z}.
 #'
 #' @references Liebscher, E. (2005). A semiparametric density estimator based on
 #' elliptical distributions. Journal of Multivariate Analysis, 92(1), 205-222.
@@ -130,7 +131,7 @@ CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
   if(length(observedZ) != n) {
     stop(errorCondition(
       message = paste0("The length of observedZ and the number of rows in ",
-                       "'dataMatrix'must be equal. Here they are respectively: ",
+                       "'dataMatrix' must be equal. Here they are respectively: ",
                        length(observedZ), ", ", n),
       class = "DifferentLengthsError") )
   }
@@ -138,7 +139,7 @@ CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
   if (ncol(mu) != nz) {
     stop(errorCondition(
       message = paste0("The number of columns in 'mu' (", ncol(mu),
-                       ") must equal length(gridZ) (", nz, ")."),
+                       ") must be equal to length(gridZ) (", nz, ")."),
       class = "DifferentLengthsError"
     ))
   }
@@ -156,7 +157,7 @@ CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
   if (dim(sigma)[3] != nz) {
     stop(errorCondition(
       message = paste0("The third dimension of 'sigma' (", dim(sigma)[3],
-                       ") must equal length(gridZ) (", nz, ")."),
+                       ") must be equal to length(gridZ) (", nz, ")."),
       class = "DifferentLengthsError"
     ))
   }

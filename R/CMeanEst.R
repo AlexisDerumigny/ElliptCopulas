@@ -87,7 +87,8 @@ CMeanEst <- function(dataMatrix, observedZ, gridZ, h, Kernel = "epanechnikov")
 
 #' @keywords internal
 #'
-computeWeights <- function(vectorZ, h, pointZ, Kernel = "epanechnikov", normalization = TRUE) {
+computeWeights <- function(vectorZ, h, pointZ, Kernel = "epanechnikov",
+                           normalization = TRUE) {
   n = length(vectorZ)
 
   kernelFun = getKernel(Kernel = Kernel)
