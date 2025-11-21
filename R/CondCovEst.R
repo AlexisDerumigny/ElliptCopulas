@@ -16,7 +16,7 @@
 #' The supported estimators are:
 #'
 #' \describe{
-#'   \item{type = 1}{
+#'   \item{type = "`grid_mean`"}{
 #'     Covariance estimator using the conditional mean evaluated at the grid point:
 #'     \deqn{
 #'       \widehat{\Sigma}_n(z)
@@ -26,7 +26,7 @@
 #'     }
 #'   }
 #'
-#'   \item{type = 2}{
+#'   \item{type = "`obs_mean`"}{
 #'     Covariance estimator using the conditional mean evaluated at each observation:
 #'     \deqn{
 #'       \widetilde{\Sigma}_n(z)
@@ -36,7 +36,7 @@
 #'     }
 #'   }
 #'
-#'   \item{type = 3}{
+#'   \item{type = "`pairwise`"}{
 #'     Pairwise covariance estimator:
 #'     \deqn{
 #'       \widecheck{\Sigma}_n(z)
@@ -63,11 +63,20 @@
 #'
 #' @template param-Kernel
 #'
-#' @param type integer in \{1,2,3\} indicating which estimator to compute.
+#' @param type indicates which estimator to use. Possible choices are "`grid_mean`",
+#' "`obs_mean`" and "`pairwise`".
 #'
 #' @return An array of dimension \eqn{d \times d \times \code{length(gridZ)}},
 #' \eqn{\widehat{\Sigma}_n(z)} containing the estimated conditional covariance
 #' matrices of the \eqn{d}-dimensional random variable \eqn{X} at each point of `gridZ`.
+#'
+#' @details
+#' Computational complexity:
+#' \itemize{
+#'   \item `grid_mean`: O(n * d^2 * \code{length(gridZ))}.
+#'   \item `obs_mean`: O(n * d^2 * \code{length(gridZ))}.
+#'   \item `pairwise`: O(n^2 * d^2 * \code{length(gridZ))}.
+#' }
 #'
 #' @examples
 #' # Comparison between the estimated and true conditional covariance
@@ -81,7 +90,7 @@
 #' gridZ = seq(-2, 2, length.out = 50)
 #' h = 0.2
 #'
-#' Sigma_est = CCovEst(X, Z, gridZ, h, type = 1)
+#' Sigma_est = CondCovEst(X, Z, gridZ, h, type = 1)
 #' cov_X1X2 = sapply(1:length(gridZ), function(i) Sigma_est[1,2,i])
 #' true_cov = 0.3 * gridZ
 #'
@@ -93,8 +102,8 @@
 #'
 #' @export
 #'
-CCovEst <- function(dataMatrix, observedZ, gridZ, h , Kernel = "epanechnikov",
-                          type = 1)
+CondCovEst <- function(dataMatrix, observedZ, gridZ, h , Kernel = "epanechnikov",
+                       type = "grid_mean")
 {
   d = ncol( dataMatrix )
   n = nrow( dataMatrix )
@@ -108,89 +117,96 @@ CCovEst <- function(dataMatrix, observedZ, gridZ, h , Kernel = "epanechnikov",
       class = "DifferentLengthsError") )
   }
 
-  if(type == 1){
-    meanEst = CMeanEst(
-      dataMatrix = dataMatrix, observedZ = observedZ,
-      gridZ = gridZ, h = h,
-      Kernel = Kernel)
+  estimate = switch(type,
 
-    matrixWeights = matrix(data = NA, nrow = n, ncol = nz)
+    grid_mean = {
 
-    for(i in 1:nz){
-      matrixWeights[,i] = computeWeights(
-        vectorZ = observedZ,h = h,
-        pointZ = gridZ[i], Kernel = Kernel,
-        normalization = TRUE)
-    }
-
-    estimate = array(data = NA, dim = c(d,d,nz))
-
-    for(i in 1:nz){
-      S = matrix(0,d,d)
-      for(j in 1:n){
-        diff = dataMatrix[j,] - meanEst[,i]
-        S = S + matrixWeights[j,i] * (diff %*% t(diff))
-      }
-      estimate[,,i] = S
-    }
-
-  }
-
-  if(type == 2){
-
-    matrixWeights = matrix(data = NA, nrow = n, ncol = nz)
-
-    for(i in 1:nz){
-      matrixWeights[,i] = computeWeights(
-        vectorZ = observedZ, h = h,
-        pointZ = gridZ[i], Kernel = Kernel,
-        normalization = TRUE)
-    }
-
-    estimate = array(data = NA, dim = c(d,d,nz))
-
-    for(i in 1:nz){
-      meanEst = CMeanEst(
+      meanEst = CondMeanEst(
         dataMatrix = dataMatrix, observedZ = observedZ,
-        gridZ = observedZ[i], h = h,
+        gridZ = gridZ, h = h,
         Kernel = Kernel)
-      S = matrix(0,d,d)
-      for(j in 1:n){
-        diff = dataMatrix[j,] - meanEst
-        S = S + matrixWeights[j,i] * (diff %*% t(diff))
+
+      matrixWeights = matrix(data = NA, nrow = n, ncol = nz)
+
+      for(i in 1:nz){
+        matrixWeights[,i] = computeWeights(
+          vectorZ = observedZ,h = h,
+          pointZ = gridZ[i], Kernel = Kernel,
+          normalization = TRUE)
       }
-      estimate[,,i] = S
-    }
-  }
 
-  if(type == 3){
+      estimate = array(data = NA, dim = c(d,d,nz))
 
-    matrixWeights = matrix(data = NA, nrow = n, ncol = nz)
+      for(i in 1:nz){
+        diffMat = t(t(dataMatrix) - meanEst[,i])
+        W = diag(matrixWeights[,i])
+        estimate[,,i] = t(diffMat) %*% W %*% diffMat
+      }
 
-    for(i in 1:nz){
-      matrixWeights[,i] = computeWeights(
-        vectorZ = observedZ, h = h,
-        pointZ = gridZ[i], Kernel = Kernel,
-        normalization = FALSE)
-    }
+      estimate
+    },
 
-    estimate = array(data = NA, dim = c(d,d,nz))
+    obs_mean = {
 
-    for(i in 1:nz){
-      S = matrix(0,d,d)
-      denom = 0
-      for(j in 1:(n-1)){
-        for(k in (j+1):n){
-          w = matrixWeights[j,i] * matrixWeights[k,i]
-          diff = dataMatrix[j,] - dataMatrix[k,]
-          S = S + w * (diff %*% t(diff))
-          denom = denom + w
+      matrixWeights = matrix(data = NA, nrow = n, ncol = nz)
+
+      for(i in 1:nz){
+        matrixWeights[,i] = computeWeights(
+          vectorZ = observedZ, h = h,
+          pointZ = gridZ[i], Kernel = Kernel,
+          normalization = TRUE)
+      }
+
+      estimate = array(data = NA, dim = c(d,d,nz))
+
+      meanEst = CondMeanEst(
+        dataMatrix = dataMatrix, observedZ = observedZ,
+        gridZ = observedZ, h = h,
+        Kernel = Kernel)
+
+      diffMat = dataMatrix - t(meanEst)
+
+      for(i in 1:nz){
+        diffMat = dataMatrix - t(meanEst)
+        estimate[,,i] = t(diffMat) %*% (diffMat * matrixWeights[,i])
+      }
+
+      estimate
+    },
+
+    pairwise = {
+
+      matrixWeights = matrix(data = NA, nrow = n, ncol = nz)
+
+      for(i in 1:nz){
+        matrixWeights[,i] = computeWeights(
+          vectorZ = observedZ, h = h,
+          pointZ = gridZ[i], Kernel = Kernel,
+          normalization = FALSE)
+      }
+
+      estimate = array(data = NA, dim = c(d,d,nz))
+
+      for(i in 1:nz){
+        S = matrix(0,d,d)
+        denom = 0
+        for(j in 1:(n-1)){
+          for(k in (j+1):n){
+            w = matrixWeights[j,i] * matrixWeights[k,i]
+            diff = dataMatrix[j,] - dataMatrix[k,]
+            S = S + w * (diff %*% t(diff))
+            denom = denom + w
+          }
         }
+        S = S / (2* denom)
+        estimate[,,i] = S
       }
-      S = S/ (2* denom)
-      estimate[,,i] = S
-    }
-  }
+
+      estimate
+    },
+
+    stop("Invalid type. Must be one of 'grid_mean', 'obs_mean', or 'pairwise'.")
+  )
 
   return(estimate)
 }
