@@ -88,7 +88,8 @@ where
 \eqn{h > 0} and \eqn{a > 0} are tuning parameters, \eqn{K} is a kernel
 function, and \eqn{w_{n,i}(z)} are Nadaraya-Watson weights:
 \deqn{
-w_{n,i}(z) = \frac{K\left( (z - Z_i)/h \right)}{\sum_{j=1}^n K\left( (z - Z_j)/h \right)}.
+w_{n,i}(z) = \frac{K\left( (z - Z_i)/h \right)}{
+\sum_{j=1}^n K\left( (z - Z_j)/h \right)}.
 }
 }
 \examples{

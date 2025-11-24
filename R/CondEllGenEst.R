@@ -31,7 +31,8 @@
 #' \eqn{h > 0} and \eqn{a > 0} are tuning parameters, \eqn{K} is a kernel
 #' function, and \eqn{w_{n,i}(z)} are Nadaraya-Watson weights:
 #' \deqn{
-#' w_{n,i}(z) = \frac{K\left( (z - Z_i)/h \right)}{\sum_{j=1}^n K\left( (z - Z_j)/h \right)}.
+#' w_{n,i}(z) = \frac{K\left( (z - Z_i)/h \right)}{
+#' \sum_{j=1}^n K\left( (z - Z_j)/h \right)}.
 #' }
 #'
 #' @param dataMatrix a matrix of size \eqn{n \times d} containing the \eqn{n}
@@ -136,7 +137,7 @@ CondEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
   if(length(observedZ) != n) {
     stop(errorCondition(
       message = paste0("The length of observedZ and the number of rows in ",
-                       "'dataMatrix'must be equal. Here they are respectively: ",
+                       "'dataMatrix' must be equal. Here they are respectively: ",
                        length(observedZ), ", ", n),
       class = "DifferentLengthsError") )
   }
@@ -144,7 +145,7 @@ CondEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
   if (ncol(mu) != nz) {
     stop(errorCondition(
       message = paste0("The number of columns in 'mu' (", ncol(mu),
-                       ") must equal length(gridZ) (", nz, ")."),
+                       ") must be equal to length(gridZ) (", nz, ")."),
       class = "DifferentLengthsError"
     ))
   }
@@ -162,7 +163,7 @@ CondEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
   if (dim(sigma)[3] != nz) {
     stop(errorCondition(
       message = paste0("The third dimension of 'sigma' (", dim(sigma)[3],
-                       ") must equal length(gridZ) (", nz, ")."),
+                       ") must be equal to length(gridZ) (", nz, ")."),
       class = "DifferentLengthsError"
     ))
   }
@@ -212,7 +213,7 @@ CondEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
 
   if(is.null(h_psi)) {
     psiR_pooled = as.vector(psiR)
-    h_psi = 1.06 * sd(psiR_pooled) * n^(-1/5)
+    h_psi = 1.06 * stats::sd(psiR_pooled) * n^(-1/5)
   }
 
   for(i in 1:nz){
