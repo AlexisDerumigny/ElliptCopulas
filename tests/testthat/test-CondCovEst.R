@@ -17,9 +17,13 @@ test_that("CondCovEst returns correct dimensions", {
   gridZ = seq(0, 1, length.out = 4)
   h = 0.5
   
-  est = CondCovEst(X, Z, gridZ, h)
+  est_1 = CondCovEst(X, Z, gridZ, h, type = "grid_mean")
+  est_2 = CondCovEst(X, Z, gridZ, h, type = "obs_mean")
+  est_3 = CondCovEst(X, Z, gridZ, h, type = "pairwise")
   
-  expect_equal(dim(est), c(2, 2, 4))
+  expect_equal(dim(est_1), c(2, 2, 4))
+  expect_equal(dim(est_2), c(2, 2, 4))
+  expect_equal(dim(est_3), c(2, 2, 4))
 })
 
 

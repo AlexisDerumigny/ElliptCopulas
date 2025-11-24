@@ -1,14 +1,14 @@
 * New functions:
 
   - `CondMeanEst`: nonparametric estimation of the conditional mean.
-  (#2, thanks to Rutger van der Spek)
+  (#6, thanks to Rutger van der Spek)
   
   - `CondCovEst`: nonparametric estimation of the conditional covariance matrix.
-  (#2, thanks to Rutger van der Spek)
+  (#6, thanks to Rutger van der Spek)
   
   - `CondEllGenEst`: nonparametric estimation of the conditional density generator
   of an elliptical distribution.
-  (#2, thanks to Rutger van der Spek)
+  (#6, thanks to Rutger van der Spek)
 
 # ElliptCopulas 0.1.4
 

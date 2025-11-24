@@ -34,7 +34,7 @@ test_that("CondEllGenEst throws error for incompatible mu dimensions", {
   )
 })
 
-test_that("CondEllGenEst returns matrix with correct dimensions", {
+test_that("CondEllGenEst returns correct dimensions and similar results across precision modes", {
   n = 30
   d = 2
   
@@ -58,8 +58,19 @@ test_that("CondEllGenEst returns matrix with correct dimensions", {
     h = 0.3
   )
   
+  gEst_mpfr = CondEllGenEst(
+    dataMatrix = dataMatrix,
+    observedZ  = observedZ,
+    mu = mu, sigma = sigma,
+    gridZ = gridZ, grid = grid,
+    h = 0.3, mpfr = TRUE
+  )
+  
   expect_true(is.matrix(gEst))
+  expect_true(is.matrix(gEst_mpfr))
   expect_equal(dim(gEst), c(length(grid), length(gridZ)))
+  expect_equal(dim(gEst_mpfr), c(length(grid), length(gridZ)))
+  expect_equal(gEst, gEst_mpfr, tolerance = 1e-6)
 })
 
 test_that("CondEllGenEst produces finite, non-negative values for simple Gaussian data", {
@@ -87,4 +98,59 @@ test_that("CondEllGenEst produces finite, non-negative values for simple Gaussia
   
   expect_true(all(is.finite(gEst)))
   expect_true(all(gEst >= 0))
+})
+
+test_that("CondEllGenEst works correctly with non-identity covariance matrices", {
+  n = 50
+  d = 2
+  set.seed(999)
+  
+  Z = runif(n)
+  dataMatrix = cbind(
+    rnorm(n, mean = 0.5 * Z),
+    rnorm(n, mean = -0.3 * Z)
+  )
+  
+  gridZ = c(0.25, 0.75)
+  grid  = seq(0, 3, length.out = 20)
+  
+  Sigma1 = matrix(c(1.0, 0.4,
+                    0.4, 2.0), nrow = 2)
+  Sigma2 = matrix(c(1.5, -0.2,
+                    -0.2,  1.2), nrow = 2)
+  
+  sigma = array(0, dim = c(2, 2, 2))
+  sigma[,,1] = Sigma1
+  sigma[,,2] = Sigma2
+  
+  mu = rbind(gridZ, 0.6 * gridZ)
+  
+  gStd = CondEllGenEst(
+    dataMatrix = dataMatrix,
+    observedZ  = Z,
+    mu = mu, sigma = sigma,
+    gridZ = gridZ, grid = grid,
+    h = 0.25
+  )
+  
+  gMPFR = CondEllGenEst(
+    dataMatrix = dataMatrix,
+    observedZ  = Z,
+    mu = mu, sigma = sigma,
+    gridZ = gridZ, grid = grid,
+    h = 0.25,
+    mpfr = TRUE
+  )
+  
+  expect_true(is.matrix(gStd))
+  expect_true(is.matrix(gMPFR))
+  expect_equal(dim(gStd), c(length(grid), length(gridZ)))
+  expect_equal(dim(gMPFR), c(length(grid), length(gridZ)))
+  
+  expect_true(all(is.finite(gStd)))
+  expect_true(all(is.finite(gMPFR)))
+  expect_true(all(gStd >= 0))
+  expect_true(all(gMPFR >= 0))
+  
+  expect_equal(gStd, gMPFR, tolerance = 1e-6)
 })
