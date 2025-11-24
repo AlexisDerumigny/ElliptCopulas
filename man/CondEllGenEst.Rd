@@ -49,6 +49,17 @@ evaluated.}
 
 \item{h_psi}{optional bandwidth for kernel smoothing over
 \eqn{\psi(\xi)}. If not specified, the Silverman's rule of thumb is used.}
+
+\item{mpfr}{if \code{mpfr = TRUE}, multiple precision floating point is used
+via the package \link[Rmpfr:Rmpfr]{Rmpfr}.
+This allows for a higher (numerical) accuracy, at the expense of computing time.
+It is recommended to use this option for higher dimensions.}
+
+\item{precBits}{number of precBits used for floating point precision
+(only used if \code{mpfr = TRUE}).}
+
+\item{dopb}{a Boolean value.
+If \code{dopb = TRUE}, a progress bar is displayed.}
 }
 \value{
 A matrix of size \eqn{\code{length(grid)} \times
