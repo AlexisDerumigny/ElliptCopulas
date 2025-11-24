@@ -63,6 +63,9 @@
 #' @param h_psi optional bandwidth for kernel smoothing over
 #'   \eqn{\psi(\xi)}. If not specified, the Silverman's rule of thumb is used.
 #'
+#' @template param-mpfr
+#' @template param-dopb
+#'
 #' @return A matrix of size \eqn{\code{length(grid)} \times
 #'   \code{length(gridZ)}}, \eqn{\widehat{g}_{n}(\xi \mid z)} containing the
 #'   estimated conditional density generator at each \eqn{\xi} and \eqn{z}.
