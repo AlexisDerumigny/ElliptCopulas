@@ -152,14 +152,22 @@ EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
   if (length(a) == 1){
     vector_Y = rep(NA , n)
 
-    for (i in 1:n) {
+    if (mpfr) {
       # The matrix product is the expensive part (in high dimensions)
       # and should not use the mpfr library.
       # (mpfr is only used in the exponentiation, after)
-      vector_Y[i] = as.numeric(
-        -a + (a ^ (d/2) + ( (X[i,] - mu) %*% Sigma_m1 %*% (X[i,] - mu) )
-              ^ (d/2) ) ^ (2/d) )
-      if (dopb){ pbapply::setpb(pb, i) }
+      for (i in 1:n) {
+        x_quad = Rmpfr::mpfr(as.numeric((X[i,] - mu) %*% Sigma_m1 %*% (X[i,] - mu)),
+                             precBits)
+        vector_Y[i] = as.numeric( -a + (a^(d/2) + (x_quad)^(d/2))^(2/d) )
+        if (dopb){ pbapply::setpb(pb, i) }
+      }
+    } else {
+      for (i in 1:n) {
+        x_quad = as.numeric((X[i,]-mu) %*% Sigma_m1 %*% (X[i,] - mu))
+        vector_Y[i] = as.numeric( -a + (a^(d/2) + (x_quad) ^(d/2))^(2/d) )
+        if (dopb){ pbapply::setpb(pb, i) }
+      }
     }
 
     for (i1 in 1:n1){
@@ -168,7 +176,7 @@ EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
       psiPZ = z^(d/2 - 1) * (a ^ (d/2) + z^(d/2)) ^ (2/d - 1)
       # This should use mean.default() (not the mpfr version) to save computation time.
       h_ny = (1/h[i1]) * base::mean( kernelFun((psiZ - vector_Y)/h[i1]) +
-                                      kernelFun((psiZ + vector_Y)/h[i1]) )
+                                     kernelFun((psiZ + vector_Y)/h[i1]) )
       gn_z = 1/s_d * z^(-d/2 + 1) * psiPZ * h_ny
       grid_g[i1] = as.numeric(gn_z)
 
@@ -179,14 +187,22 @@ EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
 
     matrix_Y = matrix(nrow = n1, ncol = n)
 
-    for (i in 1:n) {
+    if (mpfr) {
       # The matrix product is the expensive part (in high dimensions)
       # and should not use the mpfr library.
       # (mpfr is only used in the exponentiation, after)
-      matrix_Y[, i] = as.numeric(
-        -a + (a ^ (d/2) + c( (X[i,] - mu) %*% Sigma_m1 %*% (X[i,] - mu) )
-              ^ (d/2) ) ^ (2/d) )
-      if (dopb){ pbapply::setpb(pb, i) }
+      for (i in 1:n) {
+        x_quad = Rmpfr::mpfr(as.numeric((X[i,] - mu) %*% Sigma_m1 %*% (X[i,] - mu)),
+                             precBits)
+        matrix_Y[, i] = as.numeric( -a + (a^(d/2) + (x_quad)^(d/2))^(2/d) )
+        if (dopb){ pbapply::setpb(pb, i) }
+      }
+    } else {
+      for (i in 1:n) {
+        x_quad = as.numeric((X[i,]-mu) %*% Sigma_m1 %*% (X[i,]-mu))
+        matrix_Y[, i] = -a + (a^(d/2) + (x_quad)^(d/2))^(2/d)
+        if (dopb){ pbapply::setpb(pb, i) }
+      }
     }
 
     for (i1 in 1:n1){
@@ -195,7 +211,7 @@ EllDistrEst <- function(X, mu = 0, Sigma_m1 = diag(d),
       psiPZ = z^(d/2 - 1) * (a[i1] ^ (d/2) + z^(d/2)) ^ (2/d - 1)
       # This should use mean.default() (not the mpfr version) to save computation time.
       h_ny = (1/h[i1]) * base::mean( kernelFun((psiZ - matrix_Y[i1, ])/h[i1]) +
-                                      kernelFun((psiZ + matrix_Y[i1, ])/h[i1]) )
+                                     kernelFun((psiZ + matrix_Y[i1, ])/h[i1]) )
       gn_z = 1/s_d * z^(-d/2 + 1) * psiPZ * h_ny
       grid_g[i1] = as.numeric(gn_z)
 

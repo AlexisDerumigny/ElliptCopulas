@@ -14,9 +14,9 @@
 #'   w_{n,i}(z)
 #'   =
 #'   \frac{ K\!\left( \frac{Z_i - z}{h} \right) }
-#'        { \sum_{j=1}^n K\!\left( \frac{Z_j - z}{h} \right) } .
+#'        { \sum_{j=1}^n K\!\left( \frac{Z_j - z}{h} \right) }.
 #' }
-#'
+#' Here, \eqn{K} is the kernel function, and \eqn{h > 0} the bandwidth.
 #'
 #' @param dataMatrix a matrix of size \eqn{n \times d} containing the \eqn{n}
 #' observations of the \eqn{d}-dimensional response variable \eqn{X}. The pairs
@@ -44,10 +44,10 @@
 #' X = matrix(2 * Z + rnorm(n), ncol = d)
 #' gridZ = seq(-2, 2, length.out = 50)
 #' h = 0.3
-#' CMean_estimates = CMeanEst(X, Z, gridZ, h)
+#' CondMean_estimates = CondMeanEst(X, Z, gridZ, h)
 #'
 #' true_mean = 2 * gridZ
-#' plot(gridZ, CMean_estimates, type = "l", col = "blue", lwd = 2,
+#' plot(gridZ, CondMean_estimates, type = "l", col = "blue", lwd = 2,
 #'      ylab = "Conditional Mean", xlab = "Z")
 #' lines(gridZ, true_mean, col = "red", lwd = 2, lty = 2)
 #' legend("topleft", legend = c("Estimated", "True"), col = c("blue", "red"),
@@ -55,7 +55,7 @@
 #'
 #' @export
 #'
-CMeanEst <- function(dataMatrix, observedZ, gridZ, h, Kernel = "epanechnikov")
+CondMeanEst <- function(dataMatrix, observedZ, gridZ, h, Kernel = "epanechnikov")
 {
   d = ncol( dataMatrix )
   n = nrow( dataMatrix )

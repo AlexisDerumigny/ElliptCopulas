@@ -63,6 +63,9 @@
 #' @param h_psi optional bandwidth for kernel smoothing over
 #'   \eqn{\psi(\xi)}. If not specified, the Silverman's rule of thumb is used.
 #'
+#' @template param-mpfr
+#' @template param-dopb
+#'
 #' @return A matrix of size \eqn{\code{length(grid)} \times
 #'   \code{length(gridZ)}}, \eqn{\widehat{g}_{n}(\xi \mid z)} containing the
 #'   estimated conditional density generator at each \eqn{\xi} and \eqn{z}.
@@ -80,20 +83,25 @@
 #' data_X = matrix(NA, n, d)
 #' for (i in 1:n) {
 #'   mean_i  = rep(Z[i], d)
-#'    sigma_i = matrix(c(Z[i],   Z[i]/2, Z[i]/3,
-#'                       Z[i]/2, Z[i],   Z[i]/2,
-#'                       Z[i]/3, Z[i]/2, Z[i]), nrow = d)
-#'   data_X[i,] = mvtnorm::rmvnorm(1, mean = mean_i, sigma = sigma_i)
+#'   sigma_i = matrix(c(Z[i],   Z[i]/2, Z[i]/3,
+#'                      Z[i]/2, Z[i],   Z[i]/2,
+#'                      Z[i]/3, Z[i]/2, Z[i]), nrow = d)
+#'   data_X[i,] = EllDistrSim(
+#'     n = 1, d = d,
+#'     A = chol(sigma_i),
+#'     mu = mean_i,
+#'     density_R2 = function(x) { (2*pi)^(-d/2) * exp(-x/2) }
+#'   )
 #' }
 #'
 #' h     <- 1.06 * sd(Z) * n^(-1/5)
 #' gridZ <- c(0.2, 0.8)
 #'
-#' mu_est    = CMeanEst(data_X, Z, gridZ, h)
-#' Sigma_est = CCovEst(data_X, Z, gridZ, h, type = 1)
+#' mu_est    = CondMeanEst(data_X, Z, gridZ, h)
+#' Sigma_est = CondCovEst(data_X, Z, gridZ, h, type = 1)
 #'
 #' grid = seq(0, 8, length.out = 80)
-#' g_est  = CEllGenEst(
+#' g_est  = CondEllGenEst(
 #'   dataMatrix = data_X,
 #'   observedZ  = Z,
 #'   mu         = mu_est,
@@ -119,8 +127,9 @@
 #'
 #' @export
 #'
-CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
-                                Kernel = "epanechnikov", a = 1, h_psi = NULL)
+CondEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
+                          Kernel = "epanechnikov", a = 1, h_psi = NULL,
+                          mpfr = FALSE, precBits = 100, dopb = TRUE)
 {
   kernelFun = getKernel(Kernel = Kernel)
   d = ncol( dataMatrix )
@@ -162,15 +171,33 @@ CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
     ))
   }
 
+  if(mpfr) {
+    if (!requireNamespace("Rmpfr")){
+      stop("`Rmpfr` package should be installed to use the option `mpfr = TRUE`.")
+    }
+
+    a = Rmpfr::mpfr(a, precBits = precBits)
+    d = Rmpfr::mpfr(d, precBits = precBits)
+    grid = Rmpfr::mpfr(grid, precBits = precBits)
+  }
+
   R = matrix(data = NA, nrow = n, ncol = nz)
   psiR = matrix(data = NA, nrow = n, ncol = nz)
 
-  for(i in 1:n){
-    for(j in 1:nz){
-      R[i,j] = t(dataMatrix[i,] - mu[,j]) %*% solve(sigma[,,j]) %*%
-        (dataMatrix[i,] - mu[,j])
-      psiR[i,j] = -a + (a ^ (d/2) + ( R[i,j] ) ^ (d/2) ) ^ (2/d)
+  if(dopb){ pb = pbapply::startpb(max = nz*n + nz*n + nz*n1 + n1*nz) }
+  counter = 0
+
+  for(i in 1:nz){
+    if(mpfr){
+      X_centered = t(t(dataMatrix) - mu[,i])
+      R[,i] = rowSums((X_centered %*% solve(sigma[,,i])) * X_centered)
+      psiR[,i] = as.numeric(-a + (a^(d/2) + Rmpfr::mpfr(R[,i], precBits)^(d/2))^(2/d))
+    } else {
+      X_centered = t(t(dataMatrix) - mu[,i])
+      R[,i] = rowSums((X_centered %*% solve(sigma[,,i])) * X_centered)
+      psiR[,i] = -a + (a^(d/2) + R[,i]^(d/2))^(2/d)
     }
+    if(dopb){ counter = counter + n; pbapply::setpb(pb, counter) }
   }
 
   matrixWeights = matrix(data = NA, nrow = n, ncol = nz)
@@ -180,11 +207,12 @@ CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
       vectorZ = observedZ, h = h,
       pointZ = gridZ[i], Kernel = Kernel,
       normalization = TRUE)
+    if(dopb){ counter = counter + n; pbapply::setpb(pb, counter) }
   }
 
   qEst = matrix(data = NA, nrow = n1, ncol = nz)
 
-  psiGrid = -a + (a ^ (d/2) + ( grid ) ^ (d/2) ) ^ (2/d)
+  psiGrid = as.numeric(-a + (a ^ (d/2) + ( grid ) ^ (d/2) ) ^ (2/d))
 
   if(is.null(h_psi)) {
     psiR_pooled = as.vector(psiR)
@@ -193,13 +221,12 @@ CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
 
   for(i in 1:nz){
     for(j in 1:n1){
-      S = 0
-      for(k in 1:n){
-        S = S + matrixWeights[k,i] / (h_psi) *
-          ( kernelFun( (psiGrid[j] - psiR[k,i]) / h_psi ) +
-              kernelFun( (psiGrid[j] + psiR[k,i]) / h_psi ) )
-      }
-      qEst[j,i] = S
+      qEst[j,i] = sum(
+        matrixWeights[,i] / h_psi *
+          (kernelFun((psiGrid[j] - psiR[,i]) / h_psi) +
+           kernelFun((psiGrid[j] + psiR[,i]) / h_psi))
+      )
+      if(dopb){ counter = counter + 1; pbapply::setpb(pb, counter) }
     }
   }
 
@@ -209,10 +236,10 @@ CEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
 
   for(i in 1:n1){
     psiPGrid = grid[i]^(d/2 - 1) * (a ^ (d/2) + grid[i]^(d/2)) ^ (2/d - 1)
-    for(j in 1:nz){
-      gEst[i,j] = 1/s_d * grid[i]^(-d/2 + 1) * psiPGrid * qEst[i,j]
-    }
+    gEst[i,] = as.numeric(1/s_d * grid[i]^(-d/2 + 1) * psiPGrid * qEst[i,])
+    if(dopb){ counter = counter + nz; pbapply::setpb(pb, counter) }
   }
 
+  if(dopb){ pbapply::closepb(pb) }
   return(gEst)
 }
