@@ -6,7 +6,9 @@ test_that("EllCopSim simulates from the correct correlation matrix", {
                    0.7,   1), nrow = 2, ncol = 2)
 
   set.seed(1)
-  X = EllCopSim(n = 10000, d = 2, grid = grid, Sigma = cor1, g_d = exp(-grid/2))
+  U = EllCopSim(n = 10000, d = 2, grid = grid, Sigma = cor1, g_d = exp(-grid/2))
+  X = apply(U, MARGIN = 1:2, qnorm)
 
-  expect_equal(cor1, cor(X), tolerance = 0.04)
+  cor_est = cor(X)
+  expect_equal(cor1, cor_est, tolerance = 0.02)
 })
