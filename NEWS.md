@@ -11,6 +11,10 @@
   (#6, #9, thanks to Rutger van der Spek)
 
 
+* `EllDistrSim` has a new argument `Sigma` which can be used to specify directly
+the covariance matrix of `X`, provided that the density of R^2 is entered correctly.
+
+
 # ElliptCopulas 0.1.4
 
 ## NEW FEATURES
