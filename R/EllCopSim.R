@@ -6,7 +6,11 @@
 #' @param d dimension of X.
 #' @param grid grid on which values of density generator are known.
 #' @param g_d vector of values of the density generator on the `grid`.
-#' @param A square-root of the correlation matrix of X.
+#'
+#' @param A,Sigma A is the square-root of the covariance matrix \code{Sigma} of
+#' \eqn{X}. It can be computed as \code{A = t(chol(Sigma))}.
+#' For convenience, it is possible to specify \code{Sigma} directly; this
+#' overrides \code{A}.
 #'
 #' @param genR additional arguments for the generation of the squared radius.
 #' It must be a list with a component method: \itemize{
@@ -45,7 +49,7 @@
 #'
 #' @export
 #'
-EllCopSim <- function(n, d, grid, g_d, A = diag(d), genR = list(method = "pinv"))
+EllCopSim <- function(n, d, grid, g_d, A = diag(d), Sigma = NULL, genR = list(method = "pinv"))
 {
   # Probability density function of R^2
   fR2 <- Convert_gd_To_fR2(grid = grid, g_d = g_d, d = d)
@@ -56,7 +60,7 @@ EllCopSim <- function(n, d, grid, g_d, A = diag(d), genR = list(method = "pinv")
   F_g1 = Convert_g1_To_Fg1(grid = grid , g_1 = g_1)
 
   # Sampling from the associated elliptical distribution
-  ellDistrVectors = EllDistrSim(n = n, d = d, A = A, mu = 0,
+  ellDistrVectors = EllDistrSim(n = n, d = d, A = A, Sigma = Sigma, mu = 0,
                                 density_R2 = fR2, genR = genR)
 
   ellCopVectors = matrix(nrow = n, ncol = d)

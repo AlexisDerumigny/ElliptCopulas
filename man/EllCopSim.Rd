@@ -4,7 +4,15 @@
 \alias{EllCopSim}
 \title{Simulation from an elliptical copula model}
 \usage{
-EllCopSim(n, d, grid, g_d, A = diag(d), genR = list(method = "pinv"))
+EllCopSim(
+  n,
+  d,
+  grid,
+  g_d,
+  A = diag(d),
+  Sigma = NULL,
+  genR = list(method = "pinv")
+)
 }
 \arguments{
 \item{n}{number of observations.}
@@ -15,7 +23,10 @@ EllCopSim(n, d, grid, g_d, A = diag(d), genR = list(method = "pinv"))
 
 \item{g_d}{vector of values of the density generator on the \code{grid}.}
 
-\item{A}{square-root of the correlation matrix of X.}
+\item{A, Sigma}{A is the square-root of the covariance matrix \code{Sigma} of
+\eqn{X}. It can be computed as \code{A = t(chol(Sigma))}.
+For convenience, it is possible to specify \code{Sigma} directly; this
+overrides \code{A}.}
 
 \item{genR}{additional arguments for the generation of the squared radius.
 It must be a list with a component method: \itemize{
