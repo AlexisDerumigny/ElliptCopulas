@@ -90,6 +90,7 @@ EllDistrSim <- function(
   if (!is.null(Sigma)){
     A = t(chol(Sigma))
   }
+
   switch(genR$method,
          "pinv" = {
            gen = Runuran::pinv.new(pdf = density_R2, lb=0.001, ub=Inf, center=1)
@@ -104,6 +105,24 @@ EllDistrSim <- function(
          # },
 
          "MH" = {
+           # Checking user input for the function 'density_R2'
+           #
+           # In theory, 'density_R2' should return 0 for all negative values.
+           # As a simple check, we compute its value at the point -1.
+           # Further checks could be possible, like on a grid
+           # but this could waste computation time.
+           # Probably checking at only 1 point will catch most of the programming errors.
+           #
+           if (density_R2(-1) > 0){
+             stop(errorCondition(
+               message = paste0("'density_R2' must return 0 for negative inputs.\n",
+                                "Here density_R2(-1) = ", density_R2(-1), "\n",
+                                "See the example section for examples on how to give a",
+                                "valid 'density_R2' function.", collapse = ""),
+               class = "InvalidInput") )
+           }
+
+
            vector_R2 = simulation_MH(
              n = n, densityFUN = density_R2,
              niter = ifelse(is.null(genR$niter), 100, genR$niter),

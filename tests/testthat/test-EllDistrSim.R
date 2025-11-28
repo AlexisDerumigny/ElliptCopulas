@@ -48,3 +48,14 @@ test_that("EllDistrSim simulates from the correct covariance matrix", {
 })
 
 
+test_that("EllDistrSim checks if 'density_R2' is supported on [0,+infty]", {
+
+  expect_error(
+    { EllDistrSim(n = 3,
+                  d = 2,
+                  density_R2 = function(x){ exp(-x) },
+                  genR = list(method = "MH")
+    )} ,
+    class = "InvalidInput"
+  )
+})
