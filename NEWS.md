@@ -13,6 +13,12 @@
 
 * `EllDistrSim` has a new argument `Sigma` which can be used to specify directly
 the covariance matrix of `X`, provided that the density of R^2 is entered correctly.
+Similarly, `EllCopSim` has a new argument `Sigma` which can be used to specify
+directly the correlation matrix of the corresponding `X`.
+
+* `EllDistrSim` (and therefore `EllCopSim`) starts to be stricter in checking that
+the provided density `density_R2` indeed returns 0 for negative inputs (as it is
+documented since R^2 must be supported on [0, +infty) ).
 
 
 # ElliptCopulas 0.1.4
