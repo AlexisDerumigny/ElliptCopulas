@@ -20,6 +20,11 @@ directly the correlation matrix of the corresponding `X`.
 the provided density `density_R2` indeed returns 0 for negative inputs (as it is
 documented since R^2 must be supported on [0, +infty) ).
 
+* Fixed a bug in `Convert_gd_To_fR2` where a multiplicative error factor was
+missing. This did not affect simulation via `EllDistrSim` or `EllCopSim` if that
+generator was used, since they also work in the case where the density of R^2
+is given up to some constant multiplicative factor. Thanks to Rutger van der Spek.
+
 
 # ElliptCopulas 0.1.4
 

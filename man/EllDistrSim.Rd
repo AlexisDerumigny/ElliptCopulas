@@ -33,7 +33,11 @@ and \eqn{A} is the identity matrix.
 Note that this function \strong{must} return \eqn{0} for negative inputs,
 otherwise negative values of \eqn{R^2} may be generated.
 The simplest way to do this is to add \verb{ * (x > 0)} at the end of the
-return value of the provided \code{density_R2} function (see example below).}
+return value of the provided \code{density_R2} function (see example below).
+
+Note that this function does not need to be normalized (i.e. its integral may
+be different from 1); in this case, it must be a multiple of the density
+function of \eqn{R^2} up to a constant factor.}
 
 \item{genR}{additional arguments for the generation of the squared radius.
 It must be a list with a component method: \itemize{

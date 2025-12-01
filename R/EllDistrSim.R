@@ -26,6 +26,10 @@
 #' The simplest way to do this is to add ` * (x > 0)` at the end of the
 #' return value of the provided `density_R2` function (see example below).
 #'
+#' Note that this function does not need to be normalized (i.e. its integral may
+#' be different from 1); in this case, it must be a multiple of the density
+#' function of \eqn{R^2} up to a constant factor.
+#'
 #' @param genR additional arguments for the generation of the squared radius.
 #' It must be a list with a component method: \itemize{
 #'   \item If `genR$method == "pinv"`, the radius is generated
