@@ -90,7 +90,7 @@
 #'     n = 1, d = d,
 #'     A = chol(sigma_i),
 #'     mu = mean_i,
-#'     density_R2 = function(x) { (2*pi)^(-d/2) * exp(-x/2) }
+#'     density_R2 = function(x) { (2*pi)^(-d/2) * exp(-x/2) * (x > 0) }
 #'   )
 #' }
 #'

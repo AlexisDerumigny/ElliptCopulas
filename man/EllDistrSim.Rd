@@ -8,6 +8,7 @@ EllDistrSim(
   n,
   d,
   A = diag(d),
+  Sigma = NULL,
   mu = 0,
   density_R2,
   genR = list(method = "pinv")
@@ -18,7 +19,10 @@ EllDistrSim(
 
 \item{d}{dimension of \eqn{X}.}
 
-\item{A}{square-root of the covariance matrix of \eqn{X}.}
+\item{A, Sigma}{A is the square-root of the covariance matrix \code{Sigma} of
+\eqn{X}. It can be computed as \code{A = t(chol(Sigma))}.
+For convenience, it is possible to specify \code{Sigma} directly; this
+overrides \code{A}.}
 
 \item{mu}{mean of \eqn{X}. It should be a vector of size \code{d}.}
 
@@ -41,7 +45,7 @@ with a \eqn{N(0,1)} move at each step.
 }}
 }
 \value{
-a matrix of dimensions \code{(n,d)} of simulated observations.
+a matrix of dimensions \code{(n, d)} of simulated observations.
 }
 \description{
 This function uses the decomposition \eqn{X = \mu + R * A * U}
@@ -51,19 +55,34 @@ and \eqn{U} is a uniform random variable of the d-dimensional unit sphere.
 Note that \eqn{R} is generated using the Metropolis-Hasting algorithm.
 }
 \examples{
-# Sample from a 3-dimensional normal distribution
+# Sample from the 3-dimensional standard normal distribution
 X = EllDistrSim(n = 200, d = 3, density_R2 = function(x){stats::dchisq(x=x,df=3)})
 plot(X[,1], X[,2])
+hist(X[,1])
+cov(X)
+
 X = EllDistrSim(n = 200, d = 3, density_R2 = function(x){stats::dchisq(x=x,df=3)},
                 genR = list(method = "MH", niter = 500))
 plot(X[,1], X[,2])
 
-# Sample from an Elliptical distribution for which the squared radius
-# follows an exponential distribution
-cov1 = rbind(c(1,0.5), c(0.5,1))
-X = EllDistrSim(n = 1000, d = 2,
-                A = chol(cov1), mu = c(2,6),
-                density_R2 = function(x){return(exp(-x) * (x > 0))} )
+
+# Sample from the t distribution with 6 degrees of freedom
+
+df = 6
+d = 2
+cov1 = rbind(c(1, 0.5), c(0.5, 1))
+
+density_R2_student_t <- function(r2){
+  (r2 > 0) * r2^{d/2-1} *
+  gamma((df + d)/2) / ( gamma(df/2) * gamma(1/2)^d * (df - 2) ) *
+  (1 + r2 / (df - 2) )^(-(df + d)/2)
+}
+
+X = EllDistrSim(n = 1000, d = d,
+                Sigma = cov1, mu = c(2, 6),
+                density_R2 = density_R2_student_t)
+plot(X[,1], X[,2])
+cov(X)
 
 }
 \seealso{

@@ -6,4 +6,5 @@
 ^tests\/testthat\/test-kernelChoice\.R$
 man-roxygen
 ^\.github$
+revdep\/$
 

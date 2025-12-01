@@ -9,7 +9,12 @@
 #'
 #' @param n number of observations.
 #' @param d dimension of \eqn{X}.
-#' @param A square-root of the covariance matrix of \eqn{X}.
+#'
+#' @param A,Sigma A is the square-root of the covariance matrix \code{Sigma} of
+#' \eqn{X}. It can be computed as \code{A = t(chol(Sigma))}.
+#' For convenience, it is possible to specify \code{Sigma} directly; this
+#' overrides \code{A}.
+#'
 #' @param mu mean of \eqn{X}. It should be a vector of size \code{d}.
 #'
 #' @param density_R2 density of the random variable \eqn{R^2},
@@ -25,10 +30,12 @@
 #' It must be a list with a component method: \itemize{
 #'   \item If `genR$method == "pinv"`, the radius is generated
 #'   using the function [Runuran::pinv.new()].
+#
 # Not developed yet, maybe later:
 #   \item If `genR$method == "invgrid"`, the user needs also to supply a `grid`
 #   as an additional component of `genR` and the generation of the squared radius
 #   will be done by inverting the approximation of the CDF on this grid.
+#
 #'   \item If `genR$method == "MH"`,
 #'   the generation is done using the Metropolis-Hasting algorithm,
 #'   with a \eqn{N(0,1)} move at each step.
@@ -41,29 +48,49 @@
 #' \code{\link{EllDistrSimCond}} for the conditional simulation of
 #' elliptically distributed random vectors given some observe components.
 #'
-#' @return a matrix of dimensions \code{(n,d)} of simulated observations.
+#' @return a matrix of dimensions \code{(n, d)} of simulated observations.
 #'
 #' @examples
-#' # Sample from a 3-dimensional normal distribution
+#' # Sample from the 3-dimensional standard normal distribution
 #' X = EllDistrSim(n = 200, d = 3, density_R2 = function(x){stats::dchisq(x=x,df=3)})
 #' plot(X[,1], X[,2])
+#' hist(X[,1])
+#' cov(X)
+#'
 #' X = EllDistrSim(n = 200, d = 3, density_R2 = function(x){stats::dchisq(x=x,df=3)},
 #'                 genR = list(method = "MH", niter = 500))
 #' plot(X[,1], X[,2])
 #'
-#' # Sample from an Elliptical distribution for which the squared radius
-#' # follows an exponential distribution
-#' cov1 = rbind(c(1,0.5), c(0.5,1))
-#' X = EllDistrSim(n = 1000, d = 2,
-#'                 A = chol(cov1), mu = c(2,6),
-#'                 density_R2 = function(x){return(exp(-x) * (x > 0))} )
+#'
+#' # Sample from the t distribution with 6 degrees of freedom
+#'
+#' df = 6
+#' d = 2
+#' cov1 = rbind(c(1, 0.5), c(0.5, 1))
+#'
+#' density_R2_student_t <- function(r2){
+#'   (r2 > 0) * r2^{d/2-1} *
+#'   gamma((df + d)/2) / ( gamma(df/2) * gamma(1/2)^d * (df - 2) ) *
+#'   (1 + r2 / (df - 2) )^(-(df + d)/2)
+#' }
+#'
+#' X = EllDistrSim(n = 1000, d = d,
+#'                 Sigma = cov1, mu = c(2, 6),
+#'                 density_R2 = density_R2_student_t)
+#' plot(X[,1], X[,2])
+#' cov(X)
 #'
 #' @export
 #'
 EllDistrSim <- function(
-  n, d, A = diag(d), mu = 0, density_R2, genR = list(method = "pinv"))
+  n, d, A = diag(d), Sigma = NULL, mu = 0, density_R2, genR = list(method = "pinv"))
 {
   result = matrix(nrow = n, ncol = d)
+
+  if (!is.null(Sigma)){
+    A = t(chol(Sigma))
+  }
+
   switch(genR$method,
          "pinv" = {
            gen = Runuran::pinv.new(pdf = density_R2, lb=0.001, ub=Inf, center=1)
@@ -78,6 +105,24 @@ EllDistrSim <- function(
          # },
 
          "MH" = {
+           # Checking user input for the function 'density_R2'
+           #
+           # In theory, 'density_R2' should return 0 for all negative values.
+           # As a simple check, we compute its value at the point -1.
+           # Further checks could be possible, like on a grid
+           # but this could waste computation time.
+           # Probably checking at only 1 point will catch most of the programming errors.
+           #
+           if (density_R2(-1) > 0){
+             stop(errorCondition(
+               message = paste0("'density_R2' must return 0 for negative inputs.\n",
+                                "Here density_R2(-1) = ", density_R2(-1), "\n",
+                                "See the example section for examples on how to give a",
+                                "valid 'density_R2' function.", collapse = ""),
+               class = "InvalidInput") )
+           }
+
+
            vector_R2 = simulation_MH(
              n = n, densityFUN = density_R2,
              niter = ifelse(is.null(genR$niter), 100, genR$niter),
