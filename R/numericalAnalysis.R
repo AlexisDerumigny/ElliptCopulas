@@ -137,8 +137,10 @@ Convert_g1_To_f1 <- function(grid , g_1)
 #' @export
 Convert_gd_To_fR2 <- function(grid, g_d, d){
   g_d_FUN = stats::approxfun(grid, g_d, yleft = 0, yright = 0)
+
+  s_d = 2 * pi^(d / 2) / gamma(d / 2)  # Surface area of the unit ball in R^d
   fR2 <- function(x){
-    return (as.numeric(x >= 0) * abs(x)^(d/2-1) * g_d_FUN(x))
+    return (as.numeric(x >= 0) * (s_d / 2) * abs(x)^(d/2-1) * g_d_FUN(x))
   }
 
   return (fR2)
