@@ -25,6 +25,9 @@ missing. This did not affect simulation via `EllDistrSim` or `EllCopSim` if that
 generator was used, since they also work in the case where the density of R^2
 is given up to some constant multiplicative factor. Thanks to Rutger van der Spek.
 
+* Fixed a bug in `EllDistrEst` when the variance matrix is not the identity.
+This reverts a change introduced in version 0.1.4. Thanks to Rutger van der Spek.
+
 
 # ElliptCopulas 0.1.4
 
