@@ -98,7 +98,7 @@
 #' gridZ <- c(0.2, 0.8)
 #'
 #' mu_est    = CondMeanEst(data_X, Z, gridZ, h)
-#' Sigma_est = CondCovEst(data_X, Z, gridZ, h, type = 1)
+#' Sigma_est = CondCovEst(data_X, Z, gridZ, h, type = "grid_mean")
 #'
 #' grid = seq(0, 8, length.out = 80)
 #' g_est  = CondEllGenEst(
@@ -224,7 +224,7 @@ CondEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
       qEst[j,i] = sum(
         matrixWeights[,i] / h_psi *
           (kernelFun((psiGrid[j] - psiR[,i]) / h_psi) +
-           kernelFun((psiGrid[j] + psiR[,i]) / h_psi))
+             kernelFun((psiGrid[j] + psiR[,i]) / h_psi))
       )
       if(dopb){ counter = counter + 1; pbapply::setpb(pb, counter) }
     }
@@ -235,8 +235,7 @@ CondEllGenEst <- function(dataMatrix, observedZ, mu, sigma, gridZ, grid, h,
   s_d = pi^(d/2) / gamma(d/2)
 
   for(i in 1:n1){
-    psiPGrid = grid[i]^(d/2 - 1) * (a ^ (d/2) + grid[i]^(d/2)) ^ (2/d - 1)
-    gEst[i,] = as.numeric(1/s_d * grid[i]^(-d/2 + 1) * psiPGrid * qEst[i,])
+    gEst[i,] = as.numeric(1/s_d * (a ^ (d/2) + grid[i]^(d/2)) ^ (2/d - 1) * qEst[i,])
     if(dopb){ counter = counter + nz; pbapply::setpb(pb, counter) }
   }
 

@@ -128,7 +128,7 @@ h     <- 1.06 * sd(Z) * n^(-1/5)
 gridZ <- c(0.2, 0.8)
 
 mu_est    = CondMeanEst(data_X, Z, gridZ, h)
-Sigma_est = CondCovEst(data_X, Z, gridZ, h, type = 1)
+Sigma_est = CondCovEst(data_X, Z, gridZ, h, type = "grid_mean")
 
 grid = seq(0, 8, length.out = 80)
 g_est  = CondEllGenEst(
