@@ -33,7 +33,11 @@ and \eqn{A} is the identity matrix.
 Note that this function \strong{must} return \eqn{0} for negative inputs,
 otherwise negative values of \eqn{R^2} may be generated.
 The simplest way to do this is to add \verb{ * (x > 0)} at the end of the
-return value of the provided \code{density_R2} function (see example below).}
+return value of the provided \code{density_R2} function (see example below).
+
+Note that this function does not need to be normalized (i.e. its integral may
+be different from 1); in this case, it must be a multiple of the density
+function of \eqn{R^2} up to a constant factor.}
 
 \item{genR}{additional arguments for the generation of the squared radius.
 It must be a list with a component method: \itemize{
@@ -73,14 +77,18 @@ d = 2
 cov1 = rbind(c(1, 0.5), c(0.5, 1))
 
 density_R2_student_t <- function(r2){
-  (r2 > 0) * r2^{d/2-1} *
-  gamma((df + d)/2) / ( gamma(df/2) * gamma(1/2)^d * (df - 2) ) *
-  (1 + r2 / (df - 2) )^(-(df + d)/2)
+  s_d = 2 * pi^(d / 2) / gamma(d / 2)  # Surface area of the unit ball in R^d
+
+  return ( (r2 > 0) * r2^(d/2 - 1) * (s_d / 2) *
+    gamma((df + d)/2) / ( gamma(df/2) * gamma(1/2)^d * (df - 2) ) *
+    (1 + r2 / (df - 2) )^(-(df + d)/2)
+  )
 }
 
 X = EllDistrSim(n = 1000, d = d,
                 Sigma = cov1, mu = c(2, 6),
                 density_R2 = density_R2_student_t)
+hist(X[,1])
 plot(X[,1], X[,2])
 cov(X)
 
