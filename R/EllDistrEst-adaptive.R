@@ -161,7 +161,7 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
 
   }
   cat("First step estimation of g...\n")
-  first_step_g = ElliptCopulas::EllDistrEst(
+  first_step_g = EllDistrEst(
     X = X, mu = mu, Sigma_m1 = Sigma_m1, grid = grid,
     h = h_firstStep_estim_g, Kernel = Kernel,
     a = best_a, mpfr = mpfr, precBits = precBits, dopb = FALSE)
@@ -175,7 +175,7 @@ EllDistrEst.adapt <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
     vec_psi_prime_a / best_AMSE_abs^(2/5)
 
   cat("Second step estimation of g...\n")
-  second_step_g = ElliptCopulas::EllDistrEst(
+  second_step_g = EllDistrEst(
     X = X, mu = mu, Sigma_m1 = Sigma_m1, grid = grid,
     h = best_h, Kernel = Kernel,
     a = best_a, mpfr = mpfr, precBits = precBits, dopb = FALSE)

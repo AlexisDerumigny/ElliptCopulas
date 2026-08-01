@@ -220,7 +220,7 @@ EllDistrDerivEst <- function(X, mu = 0, Sigma_m1 = diag(NCOL(X)),
       k = 1,
       mpfr = mpfr, precBits = precBits, dopb = dopb)
 
-    ghat = ElliptCopulas::EllDistrEst(
+    ghat = EllDistrEst(
       X = X, mu = mu, Sigma_m1 = Sigma_m1,
       grid = grid, h = h, Kernel = Kernel, a = a,
       mpfr = mpfr, precBits = precBits, dopb = dopb)
