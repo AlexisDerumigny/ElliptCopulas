@@ -15,7 +15,6 @@ Authors@R: c(
 License: GPL-3
 Encoding: UTF-8
 LazyLoad: yes
-RoxygenNote: 7.3.3
 Depends: 
   R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
@@ -32,3 +31,4 @@ Suggests:
 BugReports: https://github.com/AlexisDerumigny/ElliptCopulas/issues
 URL: https://github.com/AlexisDerumigny/ElliptCopulas
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0
